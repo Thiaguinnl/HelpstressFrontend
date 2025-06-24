@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Exclusão de Conta - HelpStress</title>
+    <link rel="stylesheet" href="/assets/css/cadastro.css">
+    <link rel="stylesheet" href="/assets/css/editarPerfil.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #fafbfc;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .delete-confirmation-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        .delete-account-image {
+            width: 350px;
+            height: auto;
+            margin-bottom: 25px;
+        }
+        .confirmation-title {
+            font-size: 1.8rem;
+            color: #2563EB;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        .confirmation-message {
+            font-family: 'Poppins', 'SF UI Display', Arial, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: #1B0031;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .delete-account-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .btn-back {
+            font-family: 'Poppins', 'SF UI Display', Arial, sans-serif;
+            background-color: #eee;
+            color: #1B0031;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+        .btn-back:hover {
+            background-color: #e0e2e5;
+        }
+        .delete-account-btn {
+            font-family: 'Poppins', 'SF UI Display', Arial, sans-serif;
+            background-color: #ffffff;
+            color: #dc3545;
+            padding: 12px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: border-color 0.3s ease;
+        }
+        .delete-account-btn:hover {
+            color: #ce192b;
+            border-color: #f1495a;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-confirmation-container">
+        <img src="/assets/img/Card.jpg" alt="Imagem Sentiremos sua falta" class="delete-account-image">
+        <h1 class="confirmation-title">Sentiremos sua falta...</h1>
+        <p class="confirmation-message">Você tem certeza que deseja excluir sua conta? Esta ação é irreversível e todos os seus dados, posts e interações serão permanentemente removidos.</p>
+        <div class="delete-account-buttons">
+            <button id="backFromDeleteBtn" class="btn-back">Voltar</button>
+            <button id="confirmDeleteAccountBtn" class="delete-account-btn">Excluir a conta</button>
+        </div>
+    </div>
+    <script type="module" src="/assets/js/confirmarExclusao.js"></script>
+</body>
+</html> 

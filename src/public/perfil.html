@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - HelpStress</title>
+    <link rel="stylesheet" href="/assets/css/cadastro.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/tags.css"> 
+    <link rel="stylesheet" href="/assets/css/comunidade.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-perfil">
+        <nav>
+            <div class="logo">
+                <img src="/assets/img/helpStressLogo.jpeg" alt="HelpStress">
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="ansiedadeBlog.html">Sobre ansiedade</a>
+                <a href="dicasTecnicas.html">Dicas & Técnicas</a>
+                <a href="comunidade.html">Comunidade</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="perfil-hero"> 
+            <div class="perfil-container"> 
+                <div class="perfil-header"> 
+                    <img src="/assets/img/user.png" alt="Avatar" class="perfil-avatar">
+                    <div class="perfil-info">
+                        <div class="perfil-info-header">
+                            <h2 id="perfil-nome-usuario">Nome do Usuário</h2>
+                            <button class="perfil-edit-btn" id="editar-perfil-button" onclick="window.location.href='editarPerfil.html'">
+                                <img src="/assets/img/config.png" alt="Editar Perfil" height="20">
+                            </button>
+                        </div>
+                        <p class="perfil-bio" id="perfil-descricao-usuario">Uma breve descrição sobre o usuário...</p>
+                    </div>
+                </div>
+
+                <div class="tags-container" id="tagsContainer">
+                    <div class="tag">Design</div>
+                        <div class="tag">Development</div>
+                        <div class="tag">Marketing</div>
+                        <button class="add-button" id="addButton">+</button>
+                </div>
+
+                <div class="perfil-nav-tabs">
+                    <ul>
+                        <li><a href="#" class="active" id="posts-tab"><img src="/assets/img/post.png" alt="Posts" height="20"> Posts</a></li>
+                        <li><a href="#" id="likes-tab"><img src="/assets/img/like.png" alt="Curtidas" height="20"> Curtidas</a></li>
+                        <li><a href="#" id="saved-tab"><img src="/assets/img/save.png" alt="Salvos" height="20"> Salvos</a></li>
+                    </ul>
+                </div>
+
+                <div id="noPostsMessage" class="no-content-message hidden">
+                    <img src="/assets/img/seta.gif" alt="No Content Icon" class="no-content-icon">
+                    <h2>Comente seus posts</h2>
+                    <p>Que tal dividir suas histórias, experiências e aprendizados com a comunidade? Sua vivência pode fazer a diferença!</p>
+                    <button class="share-post-button">COMPARTILHE SUA PRIMEIRA POSTAGEM</button>
+                </div>
+
+                <div class="perfil-posts-grid">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="perfil-footer">
+        <div class="footer-conteudo perfil-footer-content">
+            <div class="footer-section perfil-footer-section">
+                <h3 class="pensando">Pensando Em Você</h3>
+                <p>Todas as informações do nosso site são formuladas a partir de bons profissionais adequados a todos os níveis de ansiedade.</p>
+            </div>
+            <div class="footer-section perfil-footer-section">
+                <h3 class="redes">Confira nossas redes sociais</h3>
+                <div class="social-links perfil-footer-social-links">
+                    <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom perfil-footer-bottom">
+            <p>&copy;2025 Help Stress. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+
+        const shareBtn = document.querySelector('.share-post-button');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', function() {
+                window.location.href = '.comunidade.html#postahgem';
+            });
+        }
+    </script>
+    <script type="module" src="/assets/js/perfil.js"></script>
+    <script type="module" src="/assets/js/profileTags.js"></script>
+
+    <!-- Modal de Adicionar Tag -->
+    <div id="addTagModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <img src="/assets/img/LOGO.png" alt="HelpStress Logo" class="modal-logo">
+            <h2>Crie suas <u><em>TAGS!</em></u></h2>
+            <p class="modal-subtitle">Conte-nos mais sobre você em apenas uma frase</p>
+            <input type="text" id="newTagInput" placeholder="Digite a tag aqui...">
+            <div class="modal-buttons">
+                <button id="confirmAddTag" class="modal-button confirm-button">ADICIONAR</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

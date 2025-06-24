@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - HelpStress</title>
+    <link rel="stylesheet" href="/assets/css/cadastro.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/assets/img/helpStressLogo.jpeg" alt="HelpStress">
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="cadastro-hero">
+            <div class="cadastro-card">
+                <img src="/assets/img/helpStressLogo.jpeg" alt="HelpStress Logo" class="cadastro-card-logo">
+                <h2 class="cadastro-card-title">Acesse sua conta</h2>
+                <p class="cadastro-card-subtitle">Bem-vindo(a) de volta!</p>
+                <form id="formLogin" class="cadastro-form">
+                    <div class="input-group">
+                        <img src="/assets/img/email.png" alt="Email">
+                        <input type="email" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group password-input-group">
+                        <img src="/assets/img/senha.png" alt="Senha">
+                        <input type="password" id="senha" placeholder="Senha" required>
+                        <span class="toggle-password" onclick="togglePasswordVisibility()">
+                            <i class="far fa-eye-slash" style="color: #757575;"></i>
+                        </span>
+                    </div>
+                    <button type="submit">Entrar</button>
+                </form>
+                <div id="login-message" style="margin-top: 15px; text-align: center; font-weight: bold;"></div>
+                <div class="or-separator">
+                    <span>OU</span>
+                </div>
+                <p class="login-link">Não tem uma conta? <a href="cadastro.html">Cadastre-se aqui.</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-conteudo">
+            <div class="footer-section">
+                <h3 class="pensando">Pensando Em Você</h3>
+                <p>Todas as informações do nosso site são formuladas a partir de bons profissionais adequados a todos os níveis de ansiedade.</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="redes">Confira nossas redes sociais</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy;2025 Help Stress. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+    <script type="module" src="/assets/js/login.js"></script>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('senha');
+            const toggleIcon = document.querySelector('.toggle-password i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - HelpStress</title>
+    <link rel="stylesheet" href="/assets/css/editarPerfil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/cadastro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-perfil">
+        <nav>
+            <div class="logo">
+                <img src="/assets/img/helpStressLogo.jpeg" alt="HelpStress">
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="ansiedadeBlog.html">Sobre ansiedade</a>
+                <a href="dicasTecnicas.html">Dicas & Técnicas</a>
+                <a href="comunidade.html">Comunidade</a>
+            </div>
+        </nav>
+    </header>
+    <div class="editar-perfil-wrapper">
+        <div class="editar-perfil-topo">
+            <img src="/assets/img/user.png" alt="Avatar" class="editar-perfil-avatar">
+            <div class="editar-perfil-header-text">
+                <div class="editar-perfil-titulo-linha">
+                    <span class="editar-perfil-nome">Nome do Usuário</span>
+                    <span class="editar-perfil-barra">/</span>
+                    <span class="editar-perfil-categoria">Geral</span>
+                </div>
+                <p class="editar-perfil-descricao">Atualize e configure as informações da sua conta aqui.</p>
+            </div>
+        </div>
+
+        <div class="editar-perfil-content-wrapper">
+            <div class="editar-perfil-tabs">
+                <ul class="tabs-list">
+                  <li class="tab-item active">Geral</li>
+                  <li class="tab-item">Editar Perfil</li>
+                  <li class="tab-item">Senha</li>
+                </ul>
+                <div class="delete-account-menu-item" id="deleteAccountBtn">
+                    Excluir Conta
+                </div>
+              </div>
+    
+              <div class="editar-perfil-container">
+                <main class="editar-perfil-main">
+                    
+                    <div id="geral-content" class="tab-content active">
+                        <div class="form-group">
+                            <label for="accountEmail" class="form-label">Email da Conta</label>
+                            <input type="email" id="accountEmail" class="form-input" value="" placeholder="email@exemplo.com">
+                        </div>
+                        <div class="form-group logout-button-container">
+                            <button id="logoutButtonGeral" class="save-changes-btn logout-btn">Sair da Conta</button>
+                        </div>
+
+                        <div class="recent-posts-section">
+                            <h3 class="section-title">Posts Recentes</h3>
+                            <div id="recentPostsContainer" class="posts-grid">
+                            </div>
+                            <p id="noPostsMessage" class="no-posts-message" style="display: none;">Você ainda não possui postagens.</p>
+                        </div>
+                        <button id="saveChangesBtn" class="save-changes-btn">Salvar Mudanças</button>
+                    </div>
+
+                    <div id="editar-perfil-content" class="tab-content">
+                        <div class="profile-picture-section">
+                            <img id="profileAvatar" src="/assets/img/user.png" alt="Avatar" class="profile-avatar">
+                            <div class="profile-picture-actions">
+                                <label for="uploadProfilePicture" class="btn-upload-new-picture">Adicionar nova foto</label>
+                                <input type="file" id="uploadProfilePicture" accept="image/*" style="display: none;">
+                                <button id="deleteProfilePicture" class="btn-delete-picture">Excluir</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profileName" class="form-label">Nome</label>
+                            <input type="text" id="profileName" class="form-input" placeholder="Seu nome">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profileBio" class="form-label">Bio</label>
+                            <textarea id="profileBio" class="form-input textarea-bio"></textarea>
+                            <p class="form-helper-text">Conte quem você é, do seu jeito.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profilePhone" class="form-label">Telefone</label>
+                            <input type="tel" id="profilePhone" class="form-input" placeholder="(XX) XXXXX-XXXX">
+                        </div>
+                        <button id="saveProfileChangesBtn" class="save-changes-btn">Salvar Mudanças</button>
+                    </div>
+
+                    <div id="senha-content" class="tab-content">
+                        <div class="form-group">
+                            <label for="oldPassword" class="form-label">Senha antiga</label>
+                            <input type="password" id="oldPassword" class="form-input" placeholder="Digite sua senha antiga">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">Senha nova</label>
+                            <input type="password" id="newPassword" class="form-input" placeholder="Digite sua nova senha">
+                        </div>
+                        <button id="savePasswordChangesBtn" class="save-changes-btn">Salvar Mudanças</button>
+                    </div>
+                </main>
+              </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+    <script type="module" src="/assets/js/cloudinary-config.js"></script>
+    <script type="module" src="/assets/js/editarPerfil.js"></script>
+</body>
+</html> 

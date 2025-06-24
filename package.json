@@ -1,0 +1,27 @@
+{
+  "name": "helpstress",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento de estresse",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thiaguinnl/HelpstressMain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thiaguinnl/HelpstressMain/issues"
+  },
+  "homepage": "https://github.com/Thiaguinnl/HelpstressMain#readme",
+  "dependencies": {
+    "json-server": "^0.17.4",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

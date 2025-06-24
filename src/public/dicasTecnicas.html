@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HelpStress</title>
+  <link rel="stylesheet" href="assets/css/dicasTecnicas.CSS" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="assets/img/logo.png" alt="Help Stress" />
+      </div>
+      
+      <div class="nav-links">
+        <a href="index.html" class="active">Início</a>
+        <a href="sobre.html">Sobre ansiedade</a>
+        <a href="comunidade.html">Comunidade</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-section">
+    <div class="hero-blur-img">
+      <img src="assets/img/blur1.png" alt="Blur decorativo" />
+    </div>
+    
+    <div class="hero-content">
+      <div class="hero-grid">
+        <div class="pill pill-1">Encontre aqui o alívio que você precisa.</div>
+        <div class="pill pill-2">Técnicas simples para momentos difíceis.</div>
+        <div class="pill pill-3">Encontre o que funciona para você.</div>
+        
+        <p class="pill-text">
+          As dicas e técnicas apresentadas aqui <span>não substituem um diagnóstico profissional.</span> Se os sintomas forem persistentes ou intensos, é fundamental buscar a orientação de um <span>especialista em saúde mental.</span>
+        </p>
+
+        <div class="hero-card card-blog">
+          <img src="/assets/img/blog.png" alt="Comunidade Help Stress">
+          <div>
+            <strong>Blog</strong>
+            <p>Leia agora nosso artigo sobre ansiedade e avalie seu nível com um teste.</p>
+            <a href="comunidade.html">Ver agora <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="hero-card card-go">
+          <a href="#cards-container">
+            <span>Explorar</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <p class="hero-description">
+        Explore ferramentas e técnicas desenvolvidas e testadas para te ajudar a encontrar o bem-estar e a paz interior no seu dia a dia.
+      </p>
+    </div>
+  </section>
+
+  <div class="hero-blur-img hero-blur-img2">
+    <img src="assets/img/blur2.png" alt="Blur decorativo esquerdo" />
+  </div>
+
+  <main>
+    <h1>Dicas & Técnicas</h1>
+
+    <div class="cards-container" id="cards-container">
+      <div class="card">
+        <div class="card-img-wrapper">
+          <img src="assets/img/desacelera.jpg" alt="Desacelera" />
+        </div>
+        <h3>Desacelera</h3>
+        <p>Regule a ansiedade e o estresse em menos de 5 minutos.</p>
+        <a href="detalhes.html?card=desacelera" class="btn">Experimente</a>
+      </div>
+      <div class="card">
+        <div class="card-img-wrapper">
+          <img src="assets/img/sono.jpg" alt="Durmazen" />
+        </div>
+        <h3>Durmazen</h3>
+        <p>Vença a insônia com nosso relaxamento guiado online.</p>
+        <a href="detalhes.html?card=durmazen" class="btn">Experimente</a>
+      </div>
+      <div class="card">
+        <div class="card-img-wrapper">
+          <img src="assets/img/meditação.jpg" alt="Aqui e Agora" />
+        </div>
+        <h3>Aqui e Agora</h3>
+        <p>4 meditações para formar uma âncora de bem-estar no momento presente.</p>
+        <a href="detalhes.html?card=aquieagora" class="btn">Experimente</a>
+      </div>
+    </div>
+
+    <section class="bottom-section">
+      <dotlottie-player class="lottie-parallax" src="https://lottie.host/4c6dac7e-bf52-4b92-ac70-fd726d8d3a57/T295lJckNw.lottie" background="transparent" speed="1" style="width: 100%; height: 100%; min-height: 400px;" loop autoplay></dotlottie-player>
+      <div class="info-cards-container">
+        <div class="info-card">
+          <h4>🛌 Sono</h4>
+          <p>Dicas para melhorar a qualidade do sono e reduzir preocupações.</p>
+        </div>
+        <div class="info-card">
+          <h4>🏃‍♂️ Exercícios</h4>
+          <p>Atividades físicas que ajudam no controle da ansiedade.</p>
+        </div>
+        <div class="info-card">
+          <h4>🧘 Meditação</h4>
+          <p>Práticas meditativas para reduzir o estresse e ansiedade.</p>
+        </div>
+        <div class="info-card">
+          <h4>🌬️ Respiração</h4>
+          <p>Técnicas de respiração para acalmar a mente e relaxar o corpo.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-conteudo">
+      <div class="footer-section">
+        <h3 class="pensando">Pensando Em Você</h3>
+        <p>Todas as informações do nosso site são formuladas a partir de bons profissionais adequados a todos os níveis de ansiedade.</p>
+      </div>
+      <div class="footer-section">
+        <h3 class="redes">Confira nossas redes sociais</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+          <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy;2025 Help Stress. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/scriptTecnicas.js"></script>
+</body>
+</html>

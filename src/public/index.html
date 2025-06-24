@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helpstress</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!--*google fonts*-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="/assets/img/LOGO.png" alt="Help Stress" width="120px">
+            </div>
+            <button class="menu-hamburguer">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li class="mobile-menu-logo"><img src="/assets/img/LOGO.png" alt="Help Stress" width="100px"></li>
+                <li><a href="#oferecemos">Início</a></li>
+                <li><a href="#entendendo-ansiedade">Sobre ansiedade</a></li>
+                <li><a href="#dicas-tecnicas">Dicas & Técnicas</a></li>
+                <li><a href="#comunidade">Comunidade</a></li>
+                <li class="mobile-user-icon">
+                    <div id="user-not-logged-in-mobile">
+                        <button class="btn-criar-conta"><img src="/assets/img/user.png" alt="Usuário" height="20"> Fazer Login</button>
+                    </div>
+                    <div id="user-logged-in-mobile" class="hidden">
+                        <button class="btn-criar-conta logged-in"><img src="/assets/img/user.png" alt="Usuário" height="58" width="58" id="mobile-user-profile-img"></button>
+                    </div>
+                </li>
+            </ul>
+            <div class="icone-usuario">
+                <div id="user-not-logged-in-desktop">
+                    <button class="btn-criar-conta"><img src="/assets/img/user.png" alt="Usuário" height="20"> Fazer Login</button>
+                </div>
+                <div id="user-logged-in-desktop" class="hidden">
+                    <button class="btn-criar-conta logged-in"><img src="/assets/img/user.png" alt="Usuário" height="58" width="58" id="desktop-user-profile-img"></button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1>Não Deixe a Ansiedade<br>Ser Sua Tormenta.</h1>
+            <p class="subtitle">Aqui você encontrará a experiência completa para te ajudar e cuidar de você durante
+                crises</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisa">
+                <button><img src="/assets/img/pesquisa.png" alt="Pesquisar" height="10"></button>
+            </div>
+        </div>
+    </main>
+    <section class="oferecemos-section" id="oferecemos">
+        <div class="oferecemos-container">
+            <h2>O que oferecemos</h2>
+            <div id="oferecemos-cards" class="oferecemos-cards"></div>
+        </div>
+    </section>
+
+    <section class="entendendo-ansiedade-section" id="entendendo-ansiedade">
+        <div class="entendendo-ansiedade-container">
+            <div class="title-with-lines">
+                <h2>Entendendo a Ansiedade</h2>
+            </div>
+            <div class="entendendo-ansiedade-cards">
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                         <img src="/assets/img/c.png" alt="O que é Ansiedade?" class="card-icon">
+                    </div>
+                    <h3>O que é Ansiedade?</h3>
+                    <p>A ansiedade é uma resposta natural do corpo ao estresse, mas quando excessiva pode afetar nossa qualidade de vida.</p>
+                    <a href="#">Saiba mais →</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon-wrapper">
+                         <img src="/assets/img/s.png" alt="Sintomas Comuns" class="card-icon">
+                    </div>
+                    <h3>Sintomas Comuns</h3>
+                    <p>Conheça os sinais físicos e emocionais da ansiedade e aprenda a identificá-los no seu dia a dia.</p>
+                    <a href="#">Saiba mais →</a>
+                </div>
+                <div class="card">
+                     <div class="card-icon-wrapper">
+                         <img src="/assets/img/m.png" alt="Formas de Tratamento" class="card-icon">
+                    </div>
+                    <h3>Formas de Tratamento</h3>
+                    <p>Existem diversos métodos eficazes para tratar a ansiedade, desde terapia até mudanças no estilo de vida.</p>
+                    <a href="#">Saiba mais →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="dicas-tecnicas-section" id="dicas-tecnicas">
+        <div class="dicas-tecnicas-content">
+            <img src="/assets/img/gradiente.png" alt="Gradiente decorativo">
+            <h2><span>Dicas</span> <span class="&class">&</span> <span>Técnicas</span></h2>
+            <div class="dicas-card">
+                <h3>Descubra os melhores exercicios</h3>
+                <p class="subtitle">"As informações que fornecemos não devem ser interpretadas como um diagnóstico definitivo. Aconselhamos sempre a busca por orientação médica profissional e o tratamento apropriado."</p>
+                <ul>
+                    <li><img src="/assets/img/V.svg" alt="Checkmark"> Artigos informativos</li>
+                    <li><img src="/assets/img/V.svg" alt="Checkmark"> Exercícios para fazer em casa</li>
+                    <li><img src="/assets/img/V.svg" alt="Checkmark"> Vídeos explicativos</li>
+                    <li><img src="/assets/img/V.svg" alt="Checkmark"> Dicas práticas para lidar com a situação</li>
+                    <li><img src="/assets/img/V.svg" alt="Checkmark"> Estratégias e truques funcionais</li>
+                    <li><img src="/assets/img/V.svg" alt="Checkmark"> Relatos e experiências de outras pessoas</li>
+                </ul>
+                <button class="dicas-btn" onclick="window.location.href='dicasTecnicas.html'">Dicas & Tecnicas</button>
+                <div class="spline-background">
+                    <iframe src='https://my.spline.design/abstract3diconset-9toPczSO0oLKIyACRbVIMf3x/' frameborder='0' width='100%' height='100%'></iframe>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="comunidade" id="comunidade">
+        <img src="assets/img/LinhaEsq.svg" alt="Linha decorativa esquerda" class="linha-esquerda">
+        <img src="assets/img/Linha direita.png" alt="Linha decorativa direita" class="linha-direita">
+        <img src="assets/img/MãoEsq.png" alt="Mão esquerda" class="mao-esquerda">
+        <img src="assets/img/MãoDir.png" alt="Mão direita" class="mao-direita">
+        <img src="assets/img/LampEsq.png" alt="Lâmpada esquerda" class="lampada-esquerda">
+        <img src="assets/img/LampDir.png" alt="Lâmpada direita" class="lampada-direita">
+        <img src="assets/img/Linha meio.png" alt="Linha no meio do texto" class="linha-meio">
+        <div class="social-icons">
+            <img src="assets/img/Face.png" alt="Ícone do Facebook" class="icon-facebook">
+            <img src="assets/img/Yout.png" alt="Ícone do YouTube" class="icon-youtube">
+        </div>
+        <div class="comunidade-content">
+            <h1>Não se sinta sozinho junte-se a todos nós</h1>
+            <button class="comunidade-btn" onclick="window.location.href='comunidadeOFF.html'">COMUNIDADE</button>
+            <p>Nosso time colaborou com futuros profissionais na aréa e juntos criamos um ambiente seguro para nossos
+                usuarios, nossa comunidade conta com mais 100.000 usuarios e profissionais que ajudam em tempo real.</p>
+        </div>
+    </section>
+
+    <section class="carousel-section">
+      <div class="carousel-container">
+        <div class="testimonial-card" id="card-display">
+          <!-- Card será carregado aqui pelo js -->
+        </div>
+      </div>
+    </section>
+
+    <footer>
+        <div class="footer-conteudo">
+            <div class="footer-section">
+                <h3 class="pensando">Pensando Em Você</h3>
+                <p>Todas as informações do nosso site são formuladas a partir de bons profissionais adequados a todos os
+                    níveis de ansiedade.</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="redes">Confira nossas redes sociais</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy;2025 Help Stress. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathHelper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Physics2DPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MorphSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script type="module" src="assets/js/script.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script>
+        function redirecionarComunidade(event) {
+            event.preventDefault();
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'comunidade.html';
+            } else {
+                window.location.href = 'comunidadeOFF.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

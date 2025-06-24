@@ -1,0 +1,323 @@
+#btn-proximo {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 1rem auto;
+  padding: 0.95rem 0;
+  background: linear-gradient(90deg, #2563EB 60%, #8ecae6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  transition: 
+    background 0.4s cubic-bezier(.4,1.5,.5,1),
+    transform 0.18s cubic-bezier(.4,1.5,.5,1),
+    box-shadow 0.3s,
+    filter 0.3s;
+  letter-spacing: 0.5px;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+#btn-proximo::after {
+  content: '';
+  position: absolute;
+  left: -60%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,1.5,.5,1);
+  pointer-events: none;
+}
+#btn-proximo:hover {
+  background: linear-gradient(90deg, #1746a0 60%, #8ecae6 100%);
+  transform: translateY(-3px) scale(1.045);
+  box-shadow: 0 8px 32px rgba(37,99,235,0.18);
+  filter: brightness(1.07);
+}
+#btn-proximo:hover::after {
+  left: 100%;
+}
+#btn-proximo:active {
+  transform: scale(0.98);
+  filter: brightness(0.97);
+}
+
+#btn-tranquilo {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 0.95rem 0;
+  background: #f7faff;
+  color: #2563EB;
+  border: 2px solid #2563EB;
+  border-radius: 32px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+  transition: 
+    background 0.4s cubic-bezier(.4,1.5,.5,1),
+    color 0.3s,
+    border 0.3s,
+    transform 0.18s cubic-bezier(.4,1.5,.5,1),
+    box-shadow 0.3s;
+  letter-spacing: 0.5px;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+#btn-tranquilo::after {
+  content: '';
+  position: absolute;
+  left: -60%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(37,99,235,0.08) 0%, rgba(255,255,255,0.01) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,1.5,.5,1);
+  pointer-events: none;
+}
+#btn-tranquilo:hover {
+  background: #2563EB;
+  color: #fff;
+  border-color: #1746a0;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(37,99,235,0.13);
+}
+#btn-tranquilo:hover::after {
+  left: 100%;
+}
+#btn-tranquilo:active {
+  transform: scale(0.98);
+  filter: brightness(0.97);
+}
+
+#btn-voltar {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 0.95rem 0;
+  background: linear-gradient(90deg, #2563EB 60%, #8ecae6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  transition: 
+    background 0.4s cubic-bezier(.4,1.5,.5,1),
+    transform 0.18s cubic-bezier(.4,1.5,.5,1),
+    box-shadow 0.3s,
+    filter 0.3s;
+  letter-spacing: 0.5px;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+#btn-voltar::after {
+  content: '';
+  position: absolute;
+  left: -60%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,1.5,.5,1);
+  pointer-events: none;
+}
+#btn-voltar:hover {
+  background: linear-gradient(90deg, #1746a0 60%, #8ecae6 100%);
+  transform: translateY(-3px) scale(1.045);
+  box-shadow: 0 8px 32px rgba(37,99,235,0.18);
+  filter: brightness(1.07);
+}
+#btn-voltar:hover::after {
+  left: 100%;
+}
+#btn-voltar:active {
+  transform: scale(0.98);
+  filter: brightness(0.97);
+}
+
+.instrucoes-respiracao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.3rem;
+}
+.instrucoes-respiracao > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#btn-proximo-grounding, #btn-proximo-grounding2 {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 0.95rem 0;
+  background: linear-gradient(90deg, #2563EB 60%, #8ecae6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  transition: 
+    background 0.4s cubic-bezier(.4,1.5,.5,1),
+    transform 0.18s cubic-bezier(.4,1.5,.5,1),
+    box-shadow 0.3s,
+    filter 0.3s;
+  letter-spacing: 0.5px;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+#btn-proximo-grounding::after, #btn-proximo-grounding2::after {
+  content: '';
+  position: absolute;
+  left: -60%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,1.5,.5,1);
+  pointer-events: none;
+}
+#btn-proximo-grounding:hover, #btn-proximo-grounding2:hover {
+  background: linear-gradient(90deg, #1746a0 60%, #8ecae6 100%);
+  transform: translateY(-3px) scale(1.045);
+  box-shadow: 0 8px 32px rgba(37,99,235,0.18);
+  filter: brightness(1.07);
+}
+#btn-proximo-grounding:hover::after, #btn-proximo-grounding2:hover::after {
+  left: 100%;
+}
+#btn-proximo-grounding:active, #btn-proximo-grounding2:active {
+  transform: scale(0.98);
+  filter: brightness(0.97);
+}
+
+#btn-proximo-grounding3, #btn-proximo-grounding4 {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 0.95rem 0;
+  background: linear-gradient(90deg, #2563EB 60%, #8ecae6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  transition: 
+    background 0.4s cubic-bezier(.4,1.5,.5,1),
+    transform 0.18s cubic-bezier(.4,1.5,.5,1),
+    box-shadow 0.3s,
+    filter 0.3s;
+  letter-spacing: 0.5px;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+#btn-proximo-grounding3::after, #btn-proximo-grounding4::after {
+  content: '';
+  position: absolute;
+  left: -60%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,1.5,.5,1);
+  pointer-events: none;
+}
+#btn-proximo-grounding3:hover, #btn-proximo-grounding4:hover {
+  background: linear-gradient(90deg, #1746a0 60%, #8ecae6 100%);
+  transform: translateY(-3px) scale(1.045);
+  box-shadow: 0 8px 32px rgba(37,99,235,0.18);
+  filter: brightness(1.07);
+}
+#btn-proximo-grounding3:hover::after, #btn-proximo-grounding4:hover::after {
+  left: 100%;
+}
+#btn-proximo-grounding3:active, #btn-proximo-grounding4:active {
+  transform: scale(0.98);
+  filter: brightness(0.97);
+}
+
+#btn-proximo-exercicio, #btn-finalizar-grounding, #btn-proximo-exercicio2, #btn-finalizar-shaking {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 1rem auto;
+  padding: 0.95rem 0;
+  background: linear-gradient(90deg, #2563EB 60%, #8ecae6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  font-size: 1.13rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.10);
+  transition: 
+    background 0.4s cubic-bezier(.4,1.5,.5,1),
+    transform 0.18s cubic-bezier(.4,1.5,.5,1),
+    box-shadow 0.3s,
+    filter 0.3s;
+  letter-spacing: 0.5px;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+#btn-proximo-exercicio, #btn-proximo-exercicio2 {
+  background: #f7faff;
+  color: #2563EB;
+  border: 2px solid #2563EB;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+#btn-proximo-exercicio::after, #btn-finalizar-grounding::after, #btn-proximo-exercicio2::after, #btn-finalizar-shaking::after {
+  content: '';
+  position: absolute;
+  left: -60%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.5s cubic-bezier(.4,1.5,.5,1);
+  pointer-events: none;
+}
+#btn-proximo-exercicio:hover, #btn-finalizar-grounding:hover, #btn-proximo-exercicio2:hover, #btn-finalizar-shaking:hover {
+  background: linear-gradient(90deg, #1746a0 60%, #8ecae6 100%);
+  color: #fff;
+  border-color: #1746a0;
+  transform: translateY(-3px) scale(1.045);
+  box-shadow: 0 8px 32px rgba(37,99,235,0.18);
+  filter: brightness(1.07);
+}
+#btn-proximo-exercicio:hover::after, #btn-finalizar-grounding:hover::after, #btn-proximo-exercicio2:hover::after, #btn-finalizar-shaking:hover::after {
+  left: 100%;
+}
+#btn-proximo-exercicio:active, #btn-finalizar-grounding:active, #btn-proximo-exercicio2:active, #btn-finalizar-shaking:active {
+  transform: scale(0.98);
+  filter: brightness(0.97);
+}
