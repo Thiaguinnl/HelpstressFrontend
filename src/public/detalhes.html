@@ -11,9 +11,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&family=Quicksand:wght@400;600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://murf.ai/embeds/widget.js" ></script>
   <style>
     @keyframes float-durmazen {
       0%, 100% { transform: translateY(0); }
@@ -57,6 +59,46 @@
       background: #4eaaff !important;
       color: #181c25 !important;
     }
+    @keyframes fadeInDetalhe { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Button styles */
+    .btn-exercicio-action {
+      display: inline-block;
+      max-width: 320px;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 24px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.9rem 2.2rem;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .btn-exercicio-action.primary {
+      background: linear-gradient(90deg, #2563EB 60%, #8ecae6 100%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 18px rgba(37,99,235,0.15);
+    }
+    .btn-exercicio-action.primary:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.2);
+      filter: brightness(1.1);
+    }
+    .btn-exercicio-action.secondary {
+      background: #f7faff;
+      color: #2563EB;
+      border: 2px solid #2563EB;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    }
+    .btn-exercicio-action.secondary:hover {
+      transform: translateY(-2px);
+      background: #eaf2ff;
+    }
   </style>
 </head>
 <body>
@@ -65,6 +107,27 @@
       <!-- Conteúdo dinâmico será inserido aqui -->
     </section>
   </main>
+
+  <!-- Miniplayer YouTube arrastável -->
+  <div id="miniplayer-youtube" style="display:none; position:fixed; bottom:32px; right:32px; z-index:9999; width:340px; background:linear-gradient(120deg, #1e2746 60%, #2563eb 100%); border-radius:18px; box-shadow:0 8px 32px #0002; border:2px solid #2563EB; padding:0.7rem 0.7rem 0.4rem 0.7rem;">
+    <div style="display:flex; flex-direction:row; align-items:center; gap:0.7rem; margin-bottom:0.4rem; position:relative;">
+      <div style="display:flex; align-items:center; gap:0.4rem; background:rgba(30,39,70,0.85); border-radius:22px; padding:0.18rem 0.7rem 0.18rem 0.18rem;">
+        <span id="drag-miniplayer" style="display:flex; align-items:center; cursor:grab; padding:4px; margin-right:0.2rem;">
+          <lord-icon
+            src="https://cdn.lordicon.com/tewlfgbl.json"
+            trigger="click"
+            state="loop-scale"
+            colors="primary:#848484"
+            style="width:32px;height:32px;"
+          ></lord-icon>
+        </span>
+        <button id="btn-prev-video" style="background:#2563eb; border:none; color:#fff; font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:50%; width:32px; height:32px; margin:0 0.13rem 0 0.13rem;"><i class="fas fa-step-backward"></i></button>
+        <button id="btn-next-video" style="background:#2563eb; border:none; color:#fff; font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:50%; width:32px; height:32px; margin:0 0.13rem 0 0.13rem;"><i class="fas fa-step-forward"></i></button>
+      </div>
+      <button id="fechar-miniplayer" style="background:none; border:none; color:#fff; font-size:1.3rem; cursor:pointer; position:absolute; top:0; right:0; z-index:10;">&times;</button>
+    </div>
+    <div id="miniplayer-video-container"></div>
+  </div>
 
   <script>
     // Função para obter o parâmetro da URL
@@ -99,10 +162,10 @@
               </div>
             </div>
             <div class="instrucoes-respiracao" style="color:#222; font-size:1.1rem; margin-bottom:1.5rem; text-align:left;">
-              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="morph" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Inspire por 4 segundos</div>
-              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="morph" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Segure por 4 segundos</div>
-              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="morph" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Expire por 4 segundos</div>
-              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="morph" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Segure por 4 segundos</div>
+              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="loop" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Inspire por 4 segundos</div>
+              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="loop" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Segure por 4 segundos</div>
+              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="loop" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Expire por 4 segundos</div>
+              <div style='display:flex;align-items:center;gap:10px;'><lord-icon src="https://cdn.lordicon.com/rxgzsafd.json" trigger="loop" state="morph-check-in-1" colors="primary:#3080e8" style="width:19px;height:19px"></lord-icon>Segure por 4 segundos</div>
               <div style="color:#2563EB; margin-top:0.7rem; font-size:1.2rem;">Repita 4 vezes e sinta seu corpo relaxar</div>
             </div>
             <button id="btn-proximo" style="display:block; width:100%; max-width:320px; margin:0 auto 1rem auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Próximo exercício</button>
@@ -133,6 +196,31 @@
     if (cardsContent[card]) {
       detalhesCard.innerHTML = cardsContent[card].conteudo;
       fadeInExercicio();
+      setTimeout(function() {
+        var btnIniciarDurmazen = document.getElementById('btn-iniciar-durmazen');
+        if (btnIniciarDurmazen) {
+          btnIniciarDurmazen.addEventListener('click', function() {
+            renderizarChecklistAmbiente();
+          });
+        }
+        // Adiciona listeners para o card 'desacelera'
+        var btnProximo = document.getElementById('btn-proximo');
+        if (btnProximo) {
+          btnProximo.addEventListener('click', function() {
+            renderizarDesacelera2();
+          });
+        }
+        var btnTranquilo = document.getElementById('btn-tranquilo');
+        if (btnTranquilo) {
+          btnTranquilo.addEventListener('click', function() {
+            if (card === 'desacelera') {
+              renderizarTelaAgradecimento();
+            } else {
+              renderizarTelaFinal();
+            }
+          });
+        }
+      }, 100);
     } else {
       detalhesCard.innerHTML = '<h2>Conteúdo não encontrado</h2><p>Escolha uma técnica válida para ver os detalhes.</p>';
       fadeInExercicio();
@@ -148,382 +236,355 @@
         }
       }, 40);
     }
-  </script>
-  <script>
-    // Função para renderizar a tela de agradecimento
-    function renderizarTelaAgradecimento() {
+
+    // Adicione no início do <script> principal, após a função fadeInExercicio()
+    function renderizarEscolhaPlataforma() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
         <div class="respira-detalhe">
-          <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Nós da Helpstress ficamos contentes em ajudar</h2>
-          <p style="color:#6c757d; font-size:1.1rem; margin-bottom:2rem;">Desejamos um dia cheio de tranquilidade pra você!</p>
-          <div style="margin-bottom:1.5rem;">
-            <img src='https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2J6d2J6b2J2b2J6d2J6b2J6b2J6b2J6b2J6b2J6b2J6b2J6/g9582DNuQppxC/giphy.gif' alt='Gif relaxante' style='width:160px; height:160px; border-radius:18px; box-shadow:0 4px 18px rgba(37,99,235,0.10); object-fit:cover;'>
+          <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Solta o som DJ!</h2>
+          <p style="color:#6c757d; font-size:1.1rem; margin-bottom:2rem;">Escolha uma plataforma de música para te acompanhar nos exercícios.</p>
+          <div id="plataforma-musica" style="display:flex; flex-direction:row; gap:1.5rem; justify-content:center; margin-bottom:2.2rem;">
+            <button id="btn-spotify" type="button" class="btn-plataforma" style="display:flex; align-items:center; gap:0.7rem; background:#1DB954; color:#fff; border:none; border-radius:30px; font-size:1.13rem; font-weight:700; padding:1.1rem 2.2rem; cursor:pointer; box-shadow:0 4px 18px rgba(30,215,96,0.13); transition:transform 0.18s, box-shadow 0.3s, filter 0.3s;">
+              <i class="fab fa-spotify" style="font-size:1.5rem;"></i> Spotify
+            </button>
+            <button id="btn-youtube" type="button" class="btn-plataforma" style="display:flex; align-items:center; gap:0.7rem; background:#FF0000; color:#fff; border:none; border-radius:30px; font-size:1.13rem; font-weight:700; padding:1.1rem 2.2rem; cursor:pointer; box-shadow:0 4px 18px rgba(255,0,0,0.13); transition:transform 0.18s, box-shadow 0.3s, filter 0.3s;">
+              <i class="fab fa-youtube" style="font-size:1.5rem;"></i> YouTube
+            </button>
           </div>
-          <div style="color:#2563EB; font-size:1.1rem; margin-bottom:2.2rem;">Lembre-se: você merece momentos de paz!<br><img src='/assets/img/feliz.gif' alt='Sorriso' style='width:32px; height:32px; vertical-align:middle; margin-right:6px;'>Volte sempre que precisar de uma pausa.</div>
-          <button id="btn-voltar" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Voltar</button>
+          <button id="btn-proximo-musica" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; opacity:0.6; pointer-events:none; transition:background 0.2s;">Escolher música</button>
         </div>
       `;
       fadeInExercicio();
       setTimeout(function() {
-        var btnVoltar = document.getElementById('btn-voltar');
+        let plataformaSelecionada = null;
+        const btnSpotify = document.getElementById('btn-spotify');
+        const btnYoutube = document.getElementById('btn-youtube');
+        const btnProximoMusica = document.getElementById('btn-proximo-musica');
+        function atualizarSelecao() {
+          btnSpotify.style.filter = plataformaSelecionada === 'spotify' ? 'brightness(1.15) drop-shadow(0 0 8px #1DB95455)' : 'none';
+          btnSpotify.style.outline = plataformaSelecionada === 'spotify' ? '3px solid #1DB954' : 'none';
+          btnYoutube.style.filter = plataformaSelecionada === 'youtube' ? 'brightness(1.15) drop-shadow(0 0 8px #FF000055)' : 'none';
+          btnYoutube.style.outline = plataformaSelecionada === 'youtube' ? '3px solid #FF0000' : 'none';
+          btnSpotify.style.transform = plataformaSelecionada === 'spotify' ? 'scale(1.08)' : 'scale(1)';
+          btnSpotify.style.transition = 'transform 0.22s cubic-bezier(.4,1.5,.5,1), outline 0.18s, filter 0.18s';
+          btnYoutube.style.transform = plataformaSelecionada === 'youtube' ? 'scale(1.08)' : 'scale(1)';
+          btnYoutube.style.transition = 'transform 0.22s cubic-bezier(.4,1.5,.5,1), outline 0.18s, filter 0.18s';
+          const spotifyIcon = btnSpotify.querySelector('i');
+          if (spotifyIcon) {
+            spotifyIcon.style.transform = plataformaSelecionada === 'spotify' ? 'scale(1.18)' : 'scale(1)';
+            spotifyIcon.style.transition = 'transform 0.22s cubic-bezier(.4,1.5,.5,1)';
+          }
+          btnSpotify.style.fontSize = plataformaSelecionada === 'spotify' ? '1.22rem' : '1.13rem';
+          const youtubeIcon = btnYoutube.querySelector('i');
+          if (youtubeIcon) {
+            youtubeIcon.style.transform = plataformaSelecionada === 'youtube' ? 'scale(1.18)' : 'scale(1)';
+            youtubeIcon.style.transition = 'transform 0.22s cubic-bezier(.4,1.5,.5,1)';
+          }
+          btnYoutube.style.fontSize = plataformaSelecionada === 'youtube' ? '1.22rem' : '1.13rem';
+          if (plataformaSelecionada) {
+            btnProximoMusica.style.opacity = '1';
+            btnProximoMusica.style.pointerEvents = 'auto';
+            btnProximoMusica.style.background = '#2563EB';
+            btnProximoMusica.style.color = '#fff';
+            btnProximoMusica.style.filter = 'none';
+          } else {
+            btnProximoMusica.style.opacity = '0.6';
+            btnProximoMusica.style.pointerEvents = 'none';
+            btnProximoMusica.style.background = '#1a2950';
+            btnProximoMusica.style.color = '#bfc9e6';
+            btnProximoMusica.style.filter = 'grayscale(0.2)';
+          }
+        }
+        btnSpotify.addEventListener('click', function() {
+          plataformaSelecionada = 'spotify';
+          atualizarSelecao();
+        });
+        btnYoutube.addEventListener('click', function() {
+          plataformaSelecionada = 'youtube';
+          atualizarSelecao();
+        });
+        btnProximoMusica.addEventListener('click', function() {
+          if (plataformaSelecionada === 'spotify') {
+            // ...renderiza tela do Spotify...
+            renderizarTelaSpotify();
+          } else if (plataformaSelecionada === 'youtube') {
+            // ...renderiza tela do YouTube...
+            renderizarTelaYoutube();
+          }
+        });
+        atualizarSelecao();
+          }, 100);
+    }
+
+    // Crie as funções para renderizar as telas do Spotify e do YouTube:
+    function renderizarTelaSpotify() {
+                const detalhesCard = document.getElementById('detalhes-card');
+                detalhesCard.innerHTML = `
+                  <div class="respira-detalhe">
+          <h2 style="color:#1DB954; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Sua playlist que vai te acompanhar nos exercícios</h2>
+          <p style="color:#6c757d; font-size:1.08rem; margin-bottom:1.5rem;">No Spotify é preciso ter conta para utilizar ele durante os exercícios, caso não tenha conta utilize o YouTube.</p>
+          <div id="playlists-spotify" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:2rem; width:100%; max-width:900px; margin:0 auto 1.5rem auto;">
+            <div class="playlist-opcao" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem;">
+              <div style="font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;">Relaxante</div>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX63ofZH0W5TQ?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                      </div>
+            <div class="playlist-opcao" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem;">
+              <div style="font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;">Lofi</div>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6zCID88oNjNv9zx6puDHKj?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
+            <div class="playlist-opcao" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem;">
+              <div style="font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;">Peace</div>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXdCsscAsbRNz?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        </div>
+            <div class="playlist-opcao" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem;">
+              <div style="font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;">Nature Sounds</div>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4PP3DA4J0N8?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                      </div>
+            <div class="playlist-opcao" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem;">
+              <div style="font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;">Rain Sounds</div>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8ymr6UES7vc?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
+            <div class="playlist-opcao" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem;">
+              <div style="font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;">Sleep Sounds</div>
+              <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5K2xFlFvv5aDkXDI8hjUda?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                  </div>
+                            </div>
+          <div style="display:flex; flex-direction:row; gap:1.2rem; justify-content:center; margin-top:2.2rem;">
+            <button id="btn-voltar-spotify" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Voltar</button>
+            <button id="btn-iniciar-exercicio-spotify" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Iniciar exercício</button>
+                          </div>
+                              </div>
+        <style>
+          @media (max-width: 900px) {
+            #playlists-spotify { grid-template-columns: 1fr; }
+          }
+          .playlist-opcao:hover {
+            border:2.5px solid #8ecae6 !important;
+            box-shadow:0 4px 24px #2563eb22;
+            transform: translateY(-2px) scale(1.02);
+          }
+          .playlist-opcao.selecionada {
+            border:2.5px solid #2563EB !important;
+            box-shadow:0 0 0 3px #2563eb22;
+            background: #20243a;
+          }
+        </style>
+                      `;
+                      fadeInExercicio();
+                      setTimeout(function() {
+        const btnVoltar = document.getElementById('btn-voltar-spotify');
         if (btnVoltar) {
           btnVoltar.addEventListener('click', function() {
-            window.location.href = 'dicasTecnicas.html';
+            renderizarEscolhaPlataforma();
           });
+        }
+        // Lógica do botão iniciar exercício...
+        const btnIniciarExercicioSpotify = document.getElementById('btn-iniciar-exercicio-spotify');
+        if (btnIniciarExercicioSpotify) {
+          btnIniciarExercicioSpotify.addEventListener('click', function() {
+            renderizarExercicioEscaneamentoCorporal();
+                                            });
+                                          }
+                                        }, 100);
+    }
+
+    // Lista de vídeos do YouTube para o miniplayer
+    const videosYoutube = [
+      {
+        src: "https://www.youtube.com/embed/G55IO9IDhzg?si=xBYvqvsHUQUz5KGe&controls=1&autoplay=1",
+        title: "Calm your mind"
+      },
+      {
+        src: "https://www.youtube.com/embed/xDih5SwFs_c?si=tptzZzOwwIpaCeYK&controls=1&autoplay=1",
+        title: "2am"
+      },
+      {
+        src: "https://www.youtube.com/embed/n61ULEU7CO0?si=dDPSv8CACvQpPOrI&controls=1&autoplay=1",
+        title: "Lofi"
+      },
+      {
+        src: "https://www.youtube.com/embed/BYTxPFj44uo?si=FrC5qcX-6EWkKqRW&controls=1&autoplay=1",
+        title: "Why the rush?"
+      }
+    ];
+    let videoAtualIndex = 0;
+
+    function ativarMiniplayerYoutube(videoSrc, videoTitle) {
+      const miniplayer = document.getElementById('miniplayer-youtube');
+      const videoContainer = document.getElementById('miniplayer-video-container');
+      miniplayer.style.display = 'block';
+      videoContainer.innerHTML = `<div style='font-weight:700; color:#8ecae6; margin-bottom:0.3rem; font-size:1.01rem; text-align:left;'>${videoTitle}</div><iframe width='100%' height='180' src='${videoSrc}' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen style='border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);'></iframe>`;
+      // Atualiza o índice do vídeo atual
+      videoAtualIndex = videosYoutube.findIndex(v => v.src.split('?')[0] === videoSrc.split('?')[0]);
+      // (Re)atribui listeners das setas sempre que o miniplayer for exibido
+                                                  setTimeout(function() {
+        const btnPrev = document.getElementById('btn-prev-video');
+        const btnNext = document.getElementById('btn-next-video');
+        if (btnPrev && btnNext) {
+          btnPrev.onclick = function(e) { e.stopPropagation(); trocarVideoMiniplayer('prev'); };
+          btnNext.onclick = function(e) { e.stopPropagation(); trocarVideoMiniplayer('next'); };
+        }
+      }, 50);
+    }
+
+    // Função para trocar vídeo do miniplayer
+    function trocarVideoMiniplayer(direcao) {
+      if (direcao === 'prev') {
+        videoAtualIndex = (videoAtualIndex - 1 + videosYoutube.length) % videosYoutube.length;
+      } else if (direcao === 'next') {
+        videoAtualIndex = (videoAtualIndex + 1) % videosYoutube.length;
+      }
+      const video = videosYoutube[videoAtualIndex];
+      ativarMiniplayerYoutube(video.src, video.title);
+    }
+
+    // Drag and drop do miniplayer (apenas pelo ícone de arrastar)
+    (function() {
+      const miniplayer = document.getElementById('miniplayer-youtube');
+      const dragIcon = document.getElementById('drag-miniplayer');
+      let offsetX = 0, offsetY = 0, isDragging = false;
+      dragIcon.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        dragIcon.style.cursor = 'grabbing';
+        offsetX = e.clientX - miniplayer.getBoundingClientRect().left;
+        offsetY = e.clientY - miniplayer.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+      document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+          miniplayer.style.left = (e.clientX - offsetX) + 'px';
+          miniplayer.style.top = (e.clientY - offsetY) + 'px';
+          miniplayer.style.right = 'auto';
+          miniplayer.style.bottom = 'auto';
+        }
+      });
+      document.addEventListener('mouseup', function() {
+        isDragging = false;
+        dragIcon.style.cursor = 'grab';
+        document.body.style.userSelect = '';
+      });
+    })();
+
+    // Botão fechar miniplayer
+    const btnFecharMiniplayer = document.getElementById('fechar-miniplayer');
+    if (btnFecharMiniplayer) {
+      btnFecharMiniplayer.addEventListener('click', function() {
+        document.getElementById('miniplayer-youtube').style.display = 'none';
+        document.getElementById('miniplayer-video-container').innerHTML = '';
+      });
+    }
+
+    function renderizarTelaYoutube() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe">
+          <h2 style="color:#FF0000; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Músicas relaxantes diretamente do YouTube</h2>
+          <p style="color:#6c757d; font-size:1.08rem; margin-bottom:1.5rem;">Escolha uma playlist relaxante para ouvir.</p>
+          <div id="videos-youtube" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:2rem; width:100%; max-width:900px; margin:0 auto 1.5rem auto;">
+            <div class="video-opcao" data-src="https://www.youtube.com/embed/G55IO9IDhzg?si=xBYvqvsHUQUz5KGe&amp;controls=1&amp;autoplay=1" data-title="Calm your mind" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem; transition: all 0.3s ease; cursor:pointer; position:relative; overflow:hidden;">
+              <div style='font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;'>Calm your mind</div>
+              <div class="overlay-ativar-miniplayer" style="position:absolute;top:38px;left:0;width:100%;height:200px;z-index:2;cursor:pointer;background:rgba(37,99,235,0.08);transition:background 0.18s;"></div>
+              <iframe class="youtube-iframe" width="100%" height="200" src="https://www.youtube.com/embed/G55IO9IDhzg?si=xBYvqvsHUQUz5KGe&amp;controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10); position:relative; z-index:1;"></iframe>
+            </div>
+            <div class="video-opcao" data-src="https://www.youtube.com/embed/xDih5SwFs_c?si=tptzZzOwwIpaCeYK&amp;controls=1&amp;autoplay=1" data-title="2am" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem; transition: all 0.3s ease; cursor:pointer; position:relative; overflow:hidden;">
+              <div style='font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;'>2am</div>
+              <div class="overlay-ativar-miniplayer" style="position:absolute;top:38px;left:0;width:100%;height:200px;z-index:2;cursor:pointer;background:rgba(37,99,235,0.08);transition:background 0.18s;"></div>
+              <iframe class="youtube-iframe" width="100%" height="200" src="https://www.youtube.com/embed/xDih5SwFs_c?si=tptzZzOwwIpaCeYK&amp;controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10); position:relative; z-index:1;"></iframe>
+            </div>
+            <div class="video-opcao" data-src="https://www.youtube.com/embed/n61ULEU7CO0?si=dDPSv8CACvQpPOrI&amp;controls=1&amp;autoplay=1" data-title="Lofi" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem; transition: all 0.3s ease; cursor:pointer; position:relative; overflow:hidden;">
+              <div style='font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;'>Lofi</div>
+              <div class="overlay-ativar-miniplayer" style="position:absolute;top:38px;left:0;width:100%;height:200px;z-index:2;cursor:pointer;background:rgba(37,99,235,0.08);transition:background 0.18s;"></div>
+              <iframe class="youtube-iframe" width="100%" height="200" src="https://www.youtube.com/embed/n61ULEU7CO0?si=dDPSv8CACvQpPOrI&amp;controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10); position:relative; z-index:1;"></iframe>
+            </div>
+            <div class="video-opcao" data-src="https://www.youtube.com/embed/BYTxPFj44uo?si=FrC5qcX-6EWkKqRW&amp;controls=1&amp;autoplay=1" data-title="Why the rush?" style="background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem; transition: all 0.3s ease; cursor:pointer; position:relative; overflow:hidden;">
+              <div style='font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;'>Why the rush?</div>
+              <div class="overlay-ativar-miniplayer" style="position:absolute;top:38px;left:0;width:100%;height:200px;z-index:2;cursor:pointer;background:rgba(37,99,235,0.08);transition:background 0.18s;"></div>
+              <iframe class="youtube-iframe" width="100%" height="200" src="https://www.youtube.com/embed/BYTxPFj44uo?si=FrC5qcX-6EWkKqRW&amp;controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10); position:relative; z-index:1;"></iframe>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:row; gap:1.2rem; justify-content:center; margin-top:2.2rem;">
+            <button id="btn-voltar-youtube" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Voltar</button>
+            <button id="btn-iniciar-exercicio-youtube" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Iniciar exercício</button>
+          </div>
+        </div>
+        <style>
+          @media (max-width: 900px) {
+            #videos-youtube { grid-template-columns: 1fr; }
+          }
+          .video-opcao {
+            box-shadow: none !important;
+            border: none !important;
+            transition: none !important;
+            position: relative;
+          }
+          .video-opcao:hover {
+            box-shadow: none !important;
+            border: none !important;
+            transform: none !important;
+          }
+          .overlay-ativar-miniplayer {
+            position: absolute;
+            top: 38px;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 2;
+            cursor: pointer;
+            background: transparent !important;
+            transition: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .video-opcao:hover .overlay-ativar-miniplayer {
+            background: transparent !important;
+            box-shadow: none !important;
+          }
+          .video-opcao.selecionada {
+            border: none !important;
+            box-shadow: none !important;
+            background: #20243a;
+          }
+        </style>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnVoltar = document.getElementById('btn-voltar-youtube');
+        if (btnVoltar) {
+          btnVoltar.addEventListener('click', function() {
+            renderizarEscolhaPlataforma();
+          });
+        }
+        // Seleção e ativação do miniplayer ao clicar no overlay
+        const videoOpcoes = document.querySelectorAll('.video-opcao');
+        let videoSelecionado = null;
+        videoOpcoes.forEach(function(opcao) {
+          const overlay = opcao.querySelector('.overlay-ativar-miniplayer');
+          overlay.addEventListener('click', function(e) {
+            e.preventDefault();
+            videoOpcoes.forEach(o => o.classList.remove('selecionada'));
+            opcao.classList.add('selecionada');
+            videoSelecionado = {
+              src: opcao.getAttribute('data-src'),
+              title: opcao.getAttribute('data-title')
+            };
+            ativarMiniplayerYoutube(videoSelecionado.src, videoSelecionado.title);
+            overlay.style.display = 'none'; // Remove o overlay após o clique
+          });
+        });
+        // Lógica do botão iniciar exercício...
+        const btnIniciarExercicio = document.getElementById('btn-iniciar-exercicio-youtube');
+        if (btnIniciarExercicio) {
+          btnIniciarExercicio.onclick = function() {
+            renderizarExercicioEscaneamentoCorporal();
+          };
         }
       }, 100);
     }
 
-    // Redireciona para dicasTecnicas.html ao clicar no botão de tranquilidade
-    document.addEventListener('DOMContentLoaded', function() {
-      var btnTranquilo = document.getElementById('btn-tranquilo');
-      if (btnTranquilo) {
-        btnTranquilo.addEventListener('click', function() {
-          renderizarTelaAgradecimento();
-        });
-      }
-
-      // Lógica do botão Próximo exercício
-      var btnProximo = document.getElementById('btn-proximo');
-      if (btnProximo) {
-        btnProximo.addEventListener('click', function() {
-          const detalhesCard = document.getElementById('detalhes-card');
-          detalhesCard.innerHTML = `
-            <div class="respira-detalhe">
-              <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Não pare de respirar... a tranquilidade está logo ali!</h2>
-              <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Este exercício ajuda a aterrar a mente ao momento presente, ótimo para quando a ansiedade dispara.</div>
-              <div class="card-svg-breath" style="background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;">
-                <div class="gif-container">
-                  <lord-icon src='https://cdn.lordicon.com/etqbfrgp.json' trigger="hover" colors='primary:#2563eb' style='width:70px;height:70px'></lord-icon>
-                  <lord-icon src="https://cdn.lordicon.com/yquwpfkc.json" trigger="hover" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
-                  <lord-icon src="https://cdn.lordicon.com/cbtlerlm.json" trigger="hover" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
-                  <lord-icon src="https://cdn.lordicon.com/mchvarrg.json" trigger="morph" state="morph-open" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
-                  <lord-icon src="https://cdn.lordicon.com/wahyhize.json" trigger="morph" state="morph-sea" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
-                </div>
-              </div>
-              <div class="grounding-steps" style="margin-bottom:2.2rem;">
-                <div class="step" style="opacity:0; display:flex; flex-direction:column; align-items:center; gap:0.7rem;">
-                  <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-                    <img src="assets/img/olho.gif" width="30" height="30" style="vertical-align:middle;">
-                    <span>Liste 5 coisas que você pode ver</span>
-                  </div>
-                  <div style="color:#6c757d; font-size:1rem; margin-top:0.3rem;">(Caso consiga fale em voz alta)</div>
-                </div>
-              </div>
-              <button id="btn-proximo-grounding" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Próximo exercício</button>
-            </div>
-          `;
-          fadeInExercicio();
-          // Animação sequencial dos passos
-          setTimeout(function() {
-            const steps = document.querySelectorAll('.grounding-steps .step');
-            steps.forEach((step, i) => {
-              setTimeout(() => {
-                step.style.opacity = 1;
-                step.style.transition = 'opacity 1s';
-              }, i * 2000);
-            });
-          }, 100);
-          // Botão próximo exercício para o passo 2 (tocar)
-          setTimeout(function() {
-            var btnProximoGrounding = document.getElementById('btn-proximo-grounding');
-            if (btnProximoGrounding) {
-              btnProximoGrounding.addEventListener('click', function() {
-                const detalhesCard = document.getElementById('detalhes-card');
-                detalhesCard.innerHTML = `
-                  <div class="respira-detalhe">
-                    <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Estamos fazendo um ótimo trabalho!!</h2>
-                    <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, foque em 4 coisas que você pode tocar ao seu redor.</div>
-                    <div class="card-svg-breath" style="background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;">
-                      <div style="display:flex; justify-content:center; margin-bottom:0.5rem;">
-                        <dotlottie-player
-                          src="https://lottie.host/82cb5a5b-862d-49fc-9505-59dcb253bc28/NmJFKbGmGS.lottie"
-                          background="transparent"
-                          speed="1"
-                          style="width: 300px; height: 300px"
-                          loop
-                          autoplay
-                        ></dotlottie-player>
-                      </div>
-                    </div>
-                    <div class="grounding-steps" style="margin-bottom:2.2rem;">
-                      <div class="step" style="opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;">
-                        <div style="display:flex; align-items:center; justify-content:center;">
-                          <lord-icon src="https://cdn.lordicon.com/wyupmbaf.json" trigger="hover" colors="primary:#2563eb" style="width:44px;height:44px; margin-right:-6px;"></lord-icon>
-                          <span>Enquanto faz a lista tente imaginar a sensação de tocar esses objetos.</span>
-                        </div>
-                      </div>
-                    </div>
-                    <button id="btn-proximo-grounding2" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Próximo exercício</button>
-                  </div>
-                `;
-                fadeInExercicio();
-                // Aqui você pode adicionar lógica para o próximo passo (outra etapa do grounding)
-                setTimeout(function() {
-                  var btnProximoGrounding2 = document.getElementById('btn-proximo-grounding2');
-                  if (btnProximoGrounding2) {
-                    btnProximoGrounding2.addEventListener('click', function() {
-                      const detalhesCard = document.getElementById('detalhes-card');
-                      detalhesCard.innerHTML = `
-                        <div class="respira-detalhe">
-                          <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Estamos indo muito bem — continue assim!</h2>
-                          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, foque em 3 coisas que você pode ouvir ao seu redor.</div>
-                          <div class="card-svg-breath" style="background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;">
-                            <div class="gif-container" style="display:flex; gap:18px; justify-content:center; margin-bottom:0.5rem;">
-                              <lord-icon src="https://cdn.lordicon.com/wdskumse.json" trigger="hover" style="width:70px;height:70px"></lord-icon>
-                              <lord-icon src="https://cdn.lordicon.com/pkqesxyl.json" trigger="hover" colors="primary:#121331,secondary:#fad1e6,tertiary:#ebe6ef,quaternary:#9cc2f4,quinary:#ee66aa" style="width:70px;height:70px"></lord-icon>
-                              <lord-icon src="https://cdn.lordicon.com/ampqqopm.json" trigger="hover" state="hover-draw" style="width:70px;height:70px"></lord-icon>
-                            </div>
-                          </div>
-                          <div class="grounding-steps" style="margin-bottom:2.2rem;">
-                            <div class="step" style="opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;">
-                              <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-                                <lord-icon src="https://cdn.lordicon.com/btnnftrg.json" trigger="hover" style="width:24px;height:24px"></lord-icon>
-                                <span>Faça a lista desses 3 sons</span>
-                              </div>
-                              <div style="color:#6c757d; font-size:1rem; margin-top:0.3rem;">(Tente focar em 1 por vez)</div>
-                            </div>
-                          </div>
-                          <button id="btn-proximo-grounding3" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Próximo exercício</button>
-                        </div>
-                      `;
-                      fadeInExercicio();
-                      // Aqui você pode adicionar lógica para o próximo passo (outra etapa do grounding)
-                      setTimeout(function() {
-                        var btnProximoGrounding3 = document.getElementById('btn-proximo-grounding3');
-                        if (btnProximoGrounding3) {
-                          btnProximoGrounding3.addEventListener('click', function() {
-                            const detalhesCard = document.getElementById('detalhes-card');
-                            detalhesCard.innerHTML = `
-                              <div class="respira-detalhe">
-                                <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Você está quase lá!</h2>
-                                <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, foque em 2 coisas que você pode cheirar ao seu redor.</div>
-                                <div class="card-svg-breath" style="background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;">
-                                  <div class="gif-container" style="display:flex; gap:18px; justify-content:center; margin-bottom:0.5rem;">
-                                    <lord-icon src="https://cdn.lordicon.com/elcmkycs.json" trigger="hover" colors="primary:#121331,secondary:#e5d1fa,tertiary:#eeaa66" style="width:70px;height:70px"></lord-icon>
-                                    <lord-icon src="https://cdn.lordicon.com/gxazedvy.json" trigger="hover" style="width:70px;height:70px"></lord-icon>
-                                  </div>
-                                </div>
-                                <div class="grounding-steps" style="margin-bottom:2.2rem;">
-                                  <div class="step" style="opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;">
-                                    <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-                                      <span>Se preferir, pode fechar os olhos e se lembrar de um cheiro nostálgico e calmante para você.</span>
-                                    </div>
-                                    <lord-icon src="https://cdn.lordicon.com/gtqfjljk.json" trigger="loop" delay="500" colors="primary:#121331,secondary:#2ca58d,tertiary:#e83a30" style="width:44px;height:44px"></lord-icon>
-                                    <div style="color:#6c757d; font-size:1rem; margin-top:0.3rem;">(Pode ser perfume, comida, natureza...)</div>
-                                  </div>
-                                </div>
-                                <button id="btn-proximo-grounding4" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Próximo exercício</button>
-                              </div>
-                            `;
-                            fadeInExercicio();
-                            // Aqui você pode adicionar lógica para o próximo passo (saborear ou tela final)
-                            setTimeout(function() {
-                              var btnProximoGrounding4 = document.getElementById('btn-proximo-grounding4');
-                              if (btnProximoGrounding4) {
-                                btnProximoGrounding4.addEventListener('click', function() {
-                                  const detalhesCard = document.getElementById('detalhes-card');
-                                  detalhesCard.innerHTML = `
-                                    <div class="respira-detalhe">
-                                      <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Parabéns, você chegou ao último passo!</h2>
-                                      <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, que tal encontrar algo por perto que tenha um gostinho bom? </div>
-                                      <div class="card-svg-breath" style="background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;">
-                                        <div class="gif-container" style="display:flex; justify-content:center; margin-bottom:0.5rem;">
-                                          <dotlottie-player src="https://lottie.host/ef30fcca-dbbd-4f54-857a-a752b33e6043/OrWaG9EOqb.lottie" background="transparent" speed="1" style="width: 350px; height: 350px" loop autoplay></dotlottie-player>
-                                        </div>
-                                      </div>
-                                      <div class="grounding-steps" style="margin-bottom:2.2rem;">
-                                        <div class="step" style="opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;">
-                                          <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-                                            <span>Se não estiver com nada para saborear, apenas imagine o gosto de algo que você gosta.</span>
-                                          </div>
-                                          <div style="color:#6c757d; font-size:1rem; margin-top:0.3rem;">(Pode ser uma fruta, doce, café... o que preferir!)</div>
-                                        </div>
-                                      </div>
-                                      <button id="btn-proximo-exercicio3" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Próximo exercício</button>
-                                      <button id="btn-finalizar-grounding" style="display:block; width:100%; max-width:320px; margin:1rem auto 1rem auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;">Finalizar</button>
-                                    </div>
-                                  `;
-                                  fadeInExercicio();
-                                  // Adiciona o listener do botão Próximo exercício 3 imediatamente após criar o botão
-                                  setTimeout(function() {
-                                    var btnProximoExercicio3 = document.getElementById('btn-proximo-exercicio3');
-                                    if (btnProximoExercicio3) {
-                                      btnProximoExercicio3.addEventListener('click', function() {
-                                        const detalhesCard = document.getElementById('detalhes-card');
-                                        detalhesCard.innerHTML = `
-                                          <div class=\"respira-detalhe\">
-                                            <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Vamos se chacoalhar!!</h2>
-                                            <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Libere as tensões do corpo</div>
-                                            <div class=\"card-svg-breath\" style=\"background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;\">
-                                              <div class=\"gif-container\" style=\"display:flex; justify-content:center; margin-bottom:0.5rem;\"> 
-                                                <img src=\"https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3o5aTlsd2lpb2ZqYnpyYXptYzlpZDh6ODJjNWs2Nmc4Y2EzaGl0dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qe3gu0bH7Shj2/giphy.gif\" alt=\"Gif de chacoalhar\" style=\"width: 220px; height: 220px; border-radius: 18px; object-fit: cover;\">
-                                              </div>
-                                              <div class=\"grounding-steps\" style=\"margin-bottom:2.2rem;\">
-                                                <div class=\"step\" style=\"opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;\">
-                                                  <div style=\"display:flex; align-items:center; justify-content:center; gap:10px;\">
-                                                    <span>
-                                                      Talvez, em um primeiro momento, isso pareça algo simples ou até sem importância...<br>
-                                                    </span>
-                                                    <button id=\"toggle-dica\" style=\"background:none; border:none; cursor:pointer; margin-left:8px; vertical-align:middle;\">
-                                                      <i id=\"seta-dica\" class=\"fas fa-chevron-down\" style=\"transition: transform 0.3s; font-size:1.2rem; color:#2563EB;\"></i>
-                                                    </button>
-                                                  </div>
-                                                  <div id=\"caixa-dica\" style=\"display:none; background:#f7faff; border:1px solid #c7d8fe; border-radius:12px; margin-top:12px; padding:1rem; color:#2563EB; font-size:1rem;\">
-                                                    <strong>Por que isso funciona?</strong><br>
-                                                    Esse tipo de soltura, ensina seu cérebro a relaxar as escápulas e andar com menos contrações descnecessárias, melhorando sua postura e te deixando mais relaxado. Não precisa ser bonito, faça do seu jeito!
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              <div style=\"color:#2563EB; font-size:1rem; margin-top:0.7rem;\">Se quiser, coloque uma música animada para ajudar.</div>
-                                            </div>
-                                            <button id=\"btn-proximo-exercicio2\" style=\"display:block; width:100%; max-width:320px; margin:0 auto 1rem auto; padding:0.9rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;\">Próximo exercício</button>
-                                            <button id=\"btn-finalizar-shaking\" style=\"display:block; width:100%; max-width:320px; margin:0 auto 1rem auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;\">Finalizar</button>
-                                          </div>
-                                        `;
-                                        fadeInExercicio();
-                                        // Adiciona o listener da seta de dica imediatamente após renderizar o HTML
-                                        setTimeout(function() {
-                                          var btnToggle = document.getElementById('toggle-dica');
-                                          var caixaDica = document.getElementById('caixa-dica');
-                                          var setaDica = document.getElementById('seta-dica');
-                                          if (btnToggle && caixaDica && setaDica) {
-                                            btnToggle.addEventListener('click', function() {
-                                              if (caixaDica.style.display === 'none') {
-                                                caixaDica.style.display = 'block';
-                                                setaDica.style.transform = 'rotate(180deg)';
-                                              } else {
-                                                caixaDica.style.display = 'none';
-                                                setaDica.style.transform = 'rotate(0deg)';
-                                              }
-                                            });
-                                          }
-                                        }, 100);
-                                        // Adiciona o listener do botão próximo-exercicio2
-                                        setTimeout(function() {
-                                          var btnProximoExercicio2 = document.getElementById('btn-proximo-exercicio2');
-                                          if (btnProximoExercicio2) {
-                                            btnProximoExercicio2.addEventListener('click', function() {
-                                              const detalhesCard = document.getElementById('detalhes-card');
-                                              detalhesCard.innerHTML = `
-                                                <div class=\"respira-detalhe\">
-                                                  <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">E agora, para concluirmos com leveza nossa jornada de hoje...</h2>
-                                                  <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Assista a esse vídeo curtinho — ele pode te ajudar a se sentir melhor agora.</div>
-                                                  <div style=\"display:flex; justify-content:center; margin-bottom:1.5rem;\">
-                                                    <div style="position:relative; display:inline-block;">
-                                                      <iframe id="video-youtube" class="zoomable-video" width="100%" height="400" src="https://www.youtube.com/embed/pv-aymg97JM?si=b2WXS7qSYn4JCmou" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:16px; box-shadow:0 4px 18px rgba(37,99,235,0.10);"></iframe>
-                                                      <div id="video-overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer; background:transparent;"></div>
-                                                    </div>
-                                                  </div>
-                                                  <div style=\"color:#2563EB; font-size:1.1rem; margin-bottom:2.2rem; text-align:center;\">Para uma experiência mais imersiva, recomendamos o uso de fones de ouvido.<br>Equipe Helpstress te parabeniza por chegar até aqui.</div>
-                                                  <button id=\"btn-voltar-video\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;\">Voltar</button>
-                                                </div>
-                                              `;
-                                              fadeInExercicio();
-                                              setTimeout(function() {
-                                                var btnVoltarVideo = document.getElementById('btn-voltar-video');
-                                                if (btnVoltarVideo) {
-                                                  btnVoltarVideo.addEventListener('click', function() {
-                                                    renderizarTelaAgradecimento();
-                                                  });
-                                                }
-                                                //CODIGO AQUI!!
-                                                // --- EFEITO DE ZOOM DO MODAL ---
-                                                if (!document.getElementById('modal-video-zoom')) {
-                                                  var modalDiv = document.createElement('div');
-                                                  modalDiv.innerHTML = `
-                                                    <div id="modal-video-zoom" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; transition:background 0.3s;">
-                                                      <div id="modal-video-content" style="transform:scale(0.7); opacity:0; transition:transform 0.4s cubic-bezier(.4,1.5,.5,1), opacity 0.3s; max-width:90vw; max-height:90vh; display:flex; flex-direction:column; align-items:center;">
-                                                        <iframe id="modal-video-iframe" width="900" height="506" src="https://www.youtube.com/embed/pv-aymg97JM?si=b2WXS7qSYn4JCmou" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:18px; box-shadow:0 8px 32px rgba(37,99,235,0.18);"></iframe>
-                                                        <button id="fechar-modal-video" style="margin-top:24px; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; padding:0.7rem 2.2rem; cursor:pointer; box-shadow:0 2px 8px rgba(37,99,235,0.10); transition:background 0.2s;">Fechar</button>
-                                                      </div>
-                                                    </div>
-                                                  `;
-                                                  document.body.appendChild(modalDiv.firstElementChild);
-                                                }
-                                                function abrirModalVideoZoom() {
-                                                  var modal = document.getElementById('modal-video-zoom');
-                                                  var content = document.getElementById('modal-video-content');
-                                                  modal.style.display = 'flex';
-                                                  setTimeout(function() {
-                                                    content.style.transform = 'scale(1)';
-                                                    content.style.opacity = '1';
-                                                  }, 10);
-                                                  document.body.style.overflow = 'hidden';
-                                                }
-                                                function fecharModalVideoZoom() {
-                                                  var modal = document.getElementById('modal-video-zoom');
-                                                  var content = document.getElementById('modal-video-content');
-                                                  content.style.transform = 'scale(0.7)';
-                                                  content.style.opacity = '0';
-                                                  setTimeout(function() {
-                                                    modal.style.display = 'none';
-                                                    document.body.style.overflow = '';
-                                                  }, 300);
-                                                }
-                                                var overlay = document.getElementById('video-overlay');
-                                                if (overlay) {
-                                                  overlay.addEventListener('click', function(e) {
-                                                    e.preventDefault();
-                                                    abrirModalVideoZoom();
-                                                  });
-                                                }
-                                                var btnFechar = document.getElementById('fechar-modal-video');
-                                                if (btnFechar) {
-                                                  btnFechar.addEventListener('click', fecharModalVideoZoom);
-                                                }
-                                                var modal = document.getElementById('modal-video-zoom');
-                                                if (modal) {
-                                                  modal.addEventListener('click', function(e) {
-                                                    if (e.target === modal) fecharModalVideoZoom();
-                                                  });
-                                                }
-                                              }, 100);
-                                            });
-                                          }
-                                        }, 100);
-                                        // Adiciona o listener do botão finalizar-shaking
-                                        setTimeout(function() {
-                                          var btnFinalizarShaking = document.getElementById('btn-finalizar-shaking');
-                                          if (btnFinalizarShaking) {
-                                            btnFinalizarShaking.addEventListener('click', function() {
-                                              renderizarTelaAgradecimento();
-                                            });
-                                          }
-                                        }, 100);
-                                      });
-                                    }
-                                  }, 100);
-                                  // Adiciona o listener do botão finalizar-grounding
-                                  setTimeout(function() {
-                                    var btnFinalizarGrounding = document.getElementById('btn-finalizar-grounding');
-                                    if (btnFinalizarGrounding) {
-                                      btnFinalizarGrounding.addEventListener('click', function() {
-                                        renderizarTelaAgradecimento();
-                                      });
-                                    }
-                                  }, 100);
-                                });
-                              }
-                            }, 100);
-                          });
-                        }
-                      }, 100);
-                    });
-                  }
-                }, 100);
-              });
-            }
-          });
-        });
-      }
-
-      // Adicionar listener para o botão de boas-vindas do Durmazen
-      var btnIniciarDurmazen = document.getElementById('btn-iniciar-durmazen');
-      if (btnIniciarDurmazen) {
-        btnIniciarDurmazen.addEventListener('click', function() {
-          // Troca para a tela de preparação do ambiente
+    // Adicione a função para renderizar o checklist do ambiente
+    function renderizarChecklistAmbiente() {
           const detalhesCard = document.getElementById('detalhes-card');
           detalhesCard.innerHTML = `
             <div class=\"respira-detalhe\">
@@ -579,7 +640,6 @@
             checkboxes.forEach(cb => {
               cb.addEventListener('change', atualizarBotaoChecklist);
             });
-            // Atualizar também ao alternar modo noturno
             var btnModoNoturno = document.getElementById('btn-modo-noturno');
             if (btnModoNoturno) {
               btnModoNoturno.addEventListener('click', function() {
@@ -588,7 +648,6 @@
               });
             }
             atualizarBotaoChecklist();
-            // Seta e caixinha de luz fraca
             var btnSeta = document.getElementById('toggle-seta-luz');
             var caixaLuz = document.getElementById('caixa-luz-fraca');
             var iconeSeta = document.getElementById('icone-seta-luz');
@@ -603,835 +662,554 @@
                 }
               });
             }
-            // Adiciona a tela de música relaxante ao clicar em "Estou pronto(a)"
             if (btnPronto) {
               btnPronto.addEventListener('click', function() {
-                const detalhesCard = document.getElementById('detalhes-card');
-                detalhesCard.innerHTML = `
-                  <div class="respira-detalhe">
-                    <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Solta o som DJ!</h2>
-                    <p style="color:#6c757d; font-size:1.1rem; margin-bottom:2rem;">Escolha uma plataforma de música para te acompanhar nos exercícios.</p>
-                    <div id="plataforma-musica" style="display:flex; flex-direction:row; gap:1.5rem; justify-content:center; margin-bottom:2.2rem;">
-                      <button id="btn-spotify" type="button" class="btn-plataforma" style="display:flex; align-items:center; gap:0.7rem; background:#1DB954; color:#fff; border:none; border-radius:18px; font-size:1.13rem; font-weight:700; padding:1.1rem 2.2rem; cursor:pointer; box-shadow:0 4px 18px rgba(30,215,96,0.13); transition:transform 0.18s, box-shadow 0.3s, filter 0.3s;">
-                        <i class="fab fa-spotify" style="font-size:1.5rem;"></i> Spotify
-                      </button>
-                      <button id="btn-youtube" type="button" class="btn-plataforma" style="display:flex; align-items:center; gap:0.7rem; background:#FF0000; color:#fff; border:none; border-radius:18px; font-size:1.13rem; font-weight:700; padding:1.1rem 2.2rem; cursor:pointer; box-shadow:0 4px 18px rgba(255,0,0,0.13); transition:transform 0.18s, box-shadow 0.3s, filter 0.3s;">
-                        <i class="fab fa-youtube" style="font-size:1.5rem;"></i> YouTube
-                      </button>
-                    </div>
-                    <button id="btn-proximo-musica" style="display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; opacity:0.6; pointer-events:none; transition:background 0.2s;">Próximo exercício</button>
-                  </div>
-                `;
-                fadeInExercicio();
-                setTimeout(function() {
-                  let plataformaSelecionada = null;
-                  const btnSpotify = document.getElementById('btn-spotify');
-                  const btnYoutube = document.getElementById('btn-youtube');
-                  const btnProximoMusica = document.getElementById('btn-proximo-musica');
-
-                  function atualizarSelecao() {
-                    btnSpotify.style.filter = plataformaSelecionada === 'spotify' ? 'brightness(1.15) drop-shadow(0 0 8px #1DB95455)' : 'none';
-                    btnSpotify.style.outline = plataformaSelecionada === 'spotify' ? '3px solid #1DB954' : 'none';
-                    btnYoutube.style.filter = plataformaSelecionada === 'youtube' ? 'brightness(1.15) drop-shadow(0 0 8px #FF000055)' : 'none';
-                    btnYoutube.style.outline = plataformaSelecionada === 'youtube' ? '3px solid #FF0000' : 'none';
-                    if (plataformaSelecionada) {
-                      btnProximoMusica.style.opacity = '1';
-                      btnProximoMusica.style.pointerEvents = 'auto';
-                    } else {
-                      btnProximoMusica.style.opacity = '0.6';
-                      btnProximoMusica.style.pointerEvents = 'none';
-                    }
-                  }
-
-                  btnSpotify.addEventListener('click', function() {
-                    plataformaSelecionada = 'spotify';
-                    atualizarSelecao();
-                  });
-                  btnYoutube.addEventListener('click', function() {
-                    plataformaSelecionada = 'youtube';
-                    atualizarSelecao();
-                  });
-
-                  atualizarSelecao();
-
-                  btnProximoMusica.addEventListener('click', function() {
-                    if (plataformaSelecionada === 'spotify') {
-                      // Renderiza a tela de playlists do Spotify
-                      detalhesCard.innerHTML = `
-                        <div class=\"respira-detalhe\">
-                          <h2 style=\"color:#1DB954; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Escolha sua playlist no Spotify</h2>
-                          <p style=\"color:#6c757d; font-size:1.1rem; margin-bottom:2rem;\">Selecione uma playlist para relaxar durante os exercícios.</p>
-                          <div id=\"playlists-spotify\" style=\"display:grid; grid-template-columns:repeat(2, 1fr); gap:2rem; width:100%; max-width:900px; margin:0 auto 1.5rem auto;\">
-                            <div class=\"playlist-opcao\" data-playlist=\"relaxante\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                              <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Relaxante</div>
-                              <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DX63ofZH0W5TQ?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                            </div>
-                            <div class=\"playlist-opcao\" data-playlist=\"lofi\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                              <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Lofi</div>
-                              <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/6zCID88oNjNv9zx6puDHKj?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                            </div>
-                            <div class=\"playlist-opcao\" data-playlist=\"peace\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                              <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Peace</div>
-                              <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DXdCsscAsbRNz?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                            </div>
-                            <div class=\"playlist-opcao\" data-playlist=\"nature\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                              <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Nature Sounds</div>
-                              <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DX4PP3DA4J0N8?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                            </div>
-                            <div class=\"playlist-opcao\" data-playlist=\"rain\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                              <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Rain Sounds</div>
-                              <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DX8ymr6UES7vc?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                            </div>
-                            <div class=\"playlist-opcao\" data-playlist=\"sleep\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                              <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Sleep Sounds</div>
-                              <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/5K2xFlFvv5aDkXDI8hjUda?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                            </div>
-                          </div>
-                          <p style=\"color:#888; font-size:1rem; margin:0 0 1.5rem 0; text-align:center;\">(Se você não tiver conta no Spotify, tudo bem! Você pode voltar e escolher uma das nossas playlists no YouTube)</p>
-                          <button id=\"btn-voltar-spotify\" style=\"display:block; width:100%; max-width:320px; margin:0 auto 1.2rem auto; padding:0.9rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;\">Voltar</button>
-                          <button id=\"btn-proximo-musica-final\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; opacity:0.6; pointer-events:none; transition:background 0.2s;\">Próximo exercício</button>
-                        </div>
-                        <style>
-                          @media (max-width: 900px) {
-                            #playlists-spotify { grid-template-columns: 1fr; }
-                          }
-                          .playlist-opcao:hover {
-                            border:2.5px solid #8ecae6 !important;
-                            box-shadow:0 4px 24px #2563eb22;
-                            transform: translateY(-2px) scale(1.02);
-                          }
-                          .playlist-opcao.selecionada {
-                            border:2.5px solid #2563EB !important;
-                            box-shadow:0 0 0 3px #2563eb22;
-                            background: #20243a;
-                          }
-                        </style>
-                      `;
-                      fadeInExercicio();
-                      setTimeout(function() {
-                        let playlistSelecionada = null;
-                        const opcoes = document.querySelectorAll('.playlist-opcao');
-                        const btnFinal = document.getElementById('btn-proximo-musica-final');
-                        const btnVoltar = document.getElementById('btn-voltar-spotify');
-                        opcoes.forEach(opcao => {
-                          opcao.addEventListener('click', function() {
-                            playlistSelecionada = opcao.getAttribute('data-playlist');
-                            opcoes.forEach(o => {
-                              o.classList.remove('selecionada');
-                            });
-                            opcao.classList.add('selecionada');
-                            btnFinal.style.opacity = '1';
-                            btnFinal.style.pointerEvents = 'auto';
-                          });
-                        });
-                        btnFinal.addEventListener('click', function() {
-                          if (playlistSelecionada) {
-                            // Próxima etapa do seu fluxo para Spotify
-                          }
-                        });
-                        btnVoltar.addEventListener('click', function() {
-                          renderizarTelaEscolhaPlataforma();
-                        });
+            renderizarEscolhaPlataforma();
+          });
+        }
                       }, 100);
-                    } else if (plataformaSelecionada === 'youtube') {
-                      // Renderiza a tela do YouTube
-                      detalhesCard.innerHTML = `
-                        <div class=\"respira-detalhe\">
-                          <h2 style=\"color:#FF0000; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Músicas relaxantes diretamente do YouTube</h2>
-                          <p style=\"color:#6c757d; font-size:1.1rem; margin-bottom:2rem;\">Escolha uma playlist relaxante para ouvir.</p>
-                          <div id=\"youtube-playlists-list\" style=\"display: flex; flex-direction: column; gap: 2.2rem; align-items: center; margin-bottom:2.2rem;\">
-                            <div class=\"youtube-playlist-item\" data-index=\"0\" data-title=\"Descanse sua mente\" data-video=\"G55IO9IDhzg\" style=\"width:100%; max-width:700px;\">
-                              <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">Descanse sua mente</div>
-                              <iframe class=\"youtube-iframe\" width=\"100%\" height=\"400\" src=\"https://www.youtube.com/embed/G55IO9IDhzg?si=xBYvqvsHUQUz5KGe&amp;controls=1\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);\"></iframe>
-                            </div>
-                            <div class=\"youtube-playlist-item\" data-index=\"1\" data-title=\"2am.\" data-video=\"xDih5SwFs_c\" style=\"width:100%; max-width:700px;\">
-                              <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">2am.</div>
-                              <iframe class=\"youtube-iframe\" width=\"100%\" height=\"400\" src=\"https://www.youtube.com/embed/xDih5SwFs_c?si=tptzZzOwwIpaCeYK&amp;controls=1\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);\"></iframe>
-                            </div>
-                            <div class=\"youtube-playlist-item\" data-index=\"2\" data-title=\"Lofi\" data-video=\"n61ULEU7CO0\" style=\"width:100%; max-width:700px;\">
-                              <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">Lofi</div>
-                              <iframe class=\"youtube-iframe\" width=\"100%\" height=\"400\" src=\"https://www.youtube.com/embed/n61ULEU7CO0?si=dDPSv8CACvQpPOrI&amp;controls=1\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);\"></iframe>
-                            </div>
-                            <div class=\"youtube-playlist-item\" data-index=\"3\" data-title=\"Why the rush?\" data-video=\"BYTxPFj44uo\" style=\"width:100%; max-width:700px;\">
-                              <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">Why the rush?</div>
-                              <iframe class=\"youtube-iframe\" width=\"100%\" height=\"400\" src=\"https://www.youtube.com/embed/BYTxPFj44uo?si=FrC5qcX-6EWkKqRW&amp;controls=1\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);\"></iframe>
-                            </div>
-                          </div>
-                          <div style=\"display:flex; flex-direction:row; gap:1.2rem; justify-content:center;\">
-                            <button id=\"btn-voltar-youtube\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.95rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.13rem; font-weight:700; cursor:pointer; transition:background 0.2s; box-shadow:0 2px 8px rgba(37,99,235,0.08);\">Voltar</button>
-                            <button id=\"btn-proximo-musica-final\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.95rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.13rem; font-weight:700; cursor:pointer; transition:background 0.2s; box-shadow:0 4px 18px rgba(37,99,235,0.10);\">Próximo exercício</button>
-                          </div>
-                          <div id=\"yt-miniplayer-root\"></div>
-                        </div>
-                      `;
-                      fadeInExercicio();
-                      setTimeout(function() {
-                        var btnFinal = document.getElementById('btn-proximo-musica-final');
-                        var btnVoltar = document.getElementById('btn-voltar-youtube');
-                        if (btnFinal) {
-                          btnFinal.addEventListener('click', function() {
-                            // Próxima etapa do seu fluxo para YouTube
-                          });
-                        }
-                        if (btnVoltar) {
-                          btnVoltar.addEventListener('click', function() {
-                            renderizarTelaEscolhaPlataforma();
-                          });
-                        }
+    }
 
-                        // --- Miniplayer YouTube ---
-                        // Dados das playlists
-                        const ytPlaylists = [
-                          { title: 'Descanse sua mente', video: 'G55IO9IDhzg' },
-                          { title: '2am.', video: 'xDih5SwFs_c' },
-                          { title: 'Lofi', video: 'n61ULEU7CO0' },
-                          { title: 'Why the rush?', video: 'BYTxPFj44uo' }
-                        ];
-                        let ytCurrentIndex = 0;
-                        let ytPlayer = null;
-                        let ytMiniplayerVisible = false;
+    function renderizarExercicioEscaneamentoCorporal() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      const etapas = [
+        {
+          gif: 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDk0cDRtbmFsb2RpMnVlNHJjbnBvNDV1b2RvMDB5Y243M3hkbTAweSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RT3S8fkHUxECJJpwvT/giphy.gif',
+          instrucao: `<b>Respire Profundamente</b><br>Inspire lenta e profundamente pelo nariz...<br>Expire pela boca suavemente...<br>Repita 3 vezes.<br> Sinalize ao seu corpo que é hora de relaxar.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbpasyg" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDV3aG1nanc4d3N1bW04NGo3NHBuZXA4Nm01NmJxZW9kaHBqMDVqdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VdfFE6Wpw93fW/giphy.gif',
+          instrucao: `<b>Atenção aos Pés</b><br>Traga sua atenção para os dedos dos pés.<br>Sinta cada um deles... solte a tensão.<br>Relaxe os pés inteiros... como se derretessem.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbop3q4" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'assets/img/pernas.gif',
+          instrucao: `<b>Pernas e Coxas</b><br>Suba para os tornozelos, sinta-os leves...<br>Relaxe as panturrilhas, solte qualquer aperto.<br>Afrouxe os joelhos e solte as coxas.<br> Sinta o peso das pernas afundando na cama.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbpotfm" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'assets/img/quadris.gif',
+          instrucao: `<b>Quadris e Lombar</b><br>Relaxe os quadris, permita que qualquer tensão se dissolva com a sua respiração.<br>Sinta a lombar se acomodando com conforto. <br>Perceba seu peso apoiado com segurança.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbpx2cq" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'assets/img/chest.gif',
+          instrucao: `<b>Abdômen e Peito</b><br>Leve atenção ao abdômen. Solte a barriga.<br>Relaxe o diafragma e sinta a respiração fluir naturalmente.<br>Sinta o peito leve, como se uma nuvem o cobrisse.<br> Permita que o coração bata suavemente, sem esforço.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbq8uqp" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'assets/img/hands.gif',
+          instrucao: `<b>Mãos e Braços</b><br>Solte os dedos das mãos, depois as palmas...<br>Relaxe os antebraços e os cotovelos.<br>Sinta os ombros caírem, liberando o peso do dia.<br> Imagine que a tensão está escorrendo pelos braços até o chão.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbqdims" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'assets/img/neck.gif',
+          instrucao: `<b>Pescoço e Rosto</b><br>Relaxe a nuca e o pescoço, sem forçar.<br>Solte a mandíbula, afrouxe os lábios.<br>Suavize os olhos, as sobrancelhas e a testa.<br> Seu rosto agora está calmo, como o de alguém dormindo profundamente.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbqorg6" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        },
+        {
+          gif: 'assets/img/relax.gif',
+          instrucao: `<b>Corpo Inteiro em Paz</b><br>Sinta o corpo inteiro leve, solto e seguro.<br>Se algum ponto ainda tiver tensão, respire e solte.<br>Permita-se ficar nessa paz, sem pressa, sem pressão.<br><iframe class="murf-embed" width="100%" height="102" src="https://murf.ai/embeds/index.html?embedId=mcbqurkp" allowfullscreen title="Murf Embed Player" style="border: none; margin-top: 1rem;"></iframe>`
+        }
+      ];
+      let etapaAtual = 0;
+      let isAnimating = false;
 
-                        // Cria o miniplayer (só uma vez)
-                        let miniplayerRoot = document.getElementById('yt-miniplayer-root');
-                        miniplayerRoot.innerHTML = `
-                          <div id=\"yt-miniplayer\" style=\"display:none; position:fixed; bottom:24px; right:24px; z-index:9999; background:linear-gradient(135deg,#23273a 60%,#2563eb 100%); border-radius:22px; box-shadow:0 8px 32px #2563eb33,0 1.5px 8px #0002; padding:18px 22px 18px 18px; min-width:320px; max-width:98vw; max-height:220px; display:flex; align-items:center; gap:18px; transition:box-shadow 0.2s, transform 0.2s; user-select:none;\">
-                            <div id=\"yt-miniplayer-handle\" style=\"position:absolute; top:0; left:0; width:100%; height:18px; cursor:move; border-top-left-radius:22px; border-top-right-radius:22px; background:linear-gradient(90deg,#2563eb22 30%,#8ecae6 100%); display:flex; align-items:center; justify-content:center; z-index:2;\">
-                              <div style=\"width:38px; height:5px; background:#8ecae6cc; border-radius:3px; margin-top:6px;\"></div>
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="max-width:480px;margin:0 auto; opacity: 0; animation: fadeInDetalhe 0.5s forwards;">
+          <h2 style="font-family: 'Poppins', sans-serif; color:#2563EB; font-size:2.1rem; font-weight:800; margin-bottom:0.5rem; text-align:center; letter-spacing:0.5px;">Relaxando o corpo</h2>
+          <p style="font-family: 'Quicksand', sans-serif; color:#6c757d; font-size:1.18rem; margin-bottom:2.1rem; text-align:center; line-height:1.6;">Este exercício vai ajudar você a relaxar o corpo de forma gradual, começando pelos pés e subindo até a cabeça. Com a música relaxante que você escolheu como trilha, vamos te fazer dormir igual pedra!!</p>
+          
+          <div id="carrossel-container" style="position: relative; overflow: hidden; min-height: 440px;">
+            <div id="carrossel-slide-content">
+              <div id="gif-container" style="display:flex; align-items:center; justify-content:center; margin-bottom: 0.8rem;"></div>
+              <div id="instrucao-container" style="background:linear-gradient(120deg, #2a2f4c 0%, #1e233d 100%); border: 1px solid #4eaaff22; border-radius:18px; box-shadow:0 6px 32px #181c2555; padding:1.1rem; min-height:130px; max-width:420px; width:100%; display:flex; flex-direction:column; align-items:center; margin: 0 auto;"></div>
                             </div>
-                            <div style=\"display:flex; flex-direction:column; align-items:center; justify-content:center;\">
-                              <div id=\"yt-miniplayer-title\" style=\"color:#8ecae6; font-weight:700; font-size:1.08rem; margin-bottom:7px; text-align:center; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-shadow:0 1px 8px #0005;\"></div>
-                              <div id=\"yt-miniplayer-iframe\" style=\"border-radius:14px; overflow:hidden; box-shadow:0 2px 12px #2563eb22;\"></div>
                             </div>
-                            <div style=\"display:flex; flex-direction:column; align-items:center; gap:10px;\">
-                              <div style=\"display:flex; align-items:center; gap:10px;\">
-                                <button id=\"yt-btn-prev\" title=\"Anterior\" style=\"background:none; border:none; color:#8ecae6; font-size:1.7rem; cursor:pointer; border-radius:50%; transition:background 0.18s; padding:7px;\"><i class=\"fas fa-step-backward\"></i></button>
-                                <button id=\"yt-btn-playpause\" title=\"Play/Pause\" style=\"background:linear-gradient(135deg,#2563eb 60%,#8ecae6 100%); border:none; color:#fff; font-size:1.7rem; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px #2563eb22; transition:background 0.18s, box-shadow 0.18s;\"><i id=\"yt-icon-playpause\" class=\"fas fa-play\"></i></button>
-                                <button id=\"yt-btn-next\" title=\"Próximo\" style=\"background:none; border:none; color:#8ecae6; font-size:1.7rem; cursor:pointer; border-radius:50%; transition:background 0.18s; padding:7px;\"><i class=\"fas fa-step-forward\"></i></button>
-                                <button id=\"yt-btn-close\" title=\"Fechar\" style=\"background:none; border:none; color:#e57373; font-size:1.7rem; margin-left:8px; cursor:pointer; border-radius:50%; transition:background 0.18s; padding:7px;\"><i class=\"fas fa-times\"></i></button>
+
+          <div style='display:flex; flex-direction:row; gap:1.2rem; justify-content:center; align-items:center; margin-top:0.5rem;'>
+            <button id="btn-carrossel-prev" class="btn-carrossel-nav"><i class="fas fa-chevron-left"></i></button>
+            <span id="carrossel-counter"></span>
+            <button id="btn-carrossel-next" class="btn-carrossel-nav"><i class="fas fa-chevron-right"></i></button>
                               </div>
+
+          <div style='display:flex; flex-direction:row; gap:1.2rem; justify-content:center; margin-top:2.2rem;'>
+            <button id="btn-proximo-exercicio" class="btn-exercicio-action primary">Próximo exercício</button>
+            <button id="btn-finalizar-exercicio" class="btn-exercicio-action secondary">Finalizar</button>
                             </div>
                           </div>
-                        `;
+        <style>
+          
+          #carrossel-slide-content { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; }
+          
+          .instrucao-titulo { font-family: 'Pacifico', cursive; font-size: 1.6rem; color: #8ecae6; margin-bottom: 0.6rem; letter-spacing: 0.5px; }
+          #instrucao-container { font-family: 'Quicksand', sans-serif; font-size: 1.12rem; color: #e0e6f0; line-height: 1.6; text-align: center; }
+          #carrossel-counter { color:#8ecae6; font-size:1.1rem; font-weight:700; width: 40px; text-align: center; }
 
-                        // Após criar o miniplayer, adicionar lógica para mostrar controles ao passar o mouse
-                        setTimeout(function() {
-                          const videoContainer = document.getElementById('yt-miniplayer-iframe');
-                          if (videoContainer) {
-                            videoContainer.addEventListener('mouseenter', function() {
-                              document.getElementById('yt-miniplayer').style.boxShadow = '0 8px 32px #2563eb33';
-                            });
-                            videoContainer.addEventListener('mouseleave', function() {
-                              document.getElementById('yt-miniplayer').style.boxShadow = '0 2px 12px #2563eb22';
-                            });
-                          }
-                        }, 300);
+          .btn-carrossel-nav { background:#2563eb; border:none; color:#fff; font-size:1.5rem; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px #2563eb22; transition: transform 0.2s, background 0.2s; }
+          .btn-carrossel-nav:hover { transform: scale(1.1); background: #4eaaff; }
+          
+        </style>
+      `;
 
-                        // Carrega a API do YouTube se necessário
-                        if (!window.YT) {
-                          var tag = document.createElement('script');
-                          tag.src = 'https://www.youtube.com/iframe_api';
-                          document.body.appendChild(tag);
-                        }
+      const gifContainer = document.getElementById('gif-container');
+      const instrucaoContainer = document.getElementById('instrucao-container');
+      const slideContent = document.getElementById('carrossel-slide-content');
+      const counterEl = document.getElementById('carrossel-counter');
 
-                        // Função para mostrar o miniplayer
-                        window.showYTMiniplayer = function(index) {
-                          ytCurrentIndex = index;
-                          const miniplayer = document.getElementById('yt-miniplayer');
-                          const title = document.getElementById('yt-miniplayer-title');
-                          const iframeDiv = document.getElementById('yt-miniplayer-iframe');
-                          title.textContent = ytPlaylists[index].title;
-                          iframeDiv.innerHTML = `<div id='yt-miniplayer-iframe-player'></div>`;
-                          miniplayer.style.display = 'flex';
-                          ytMiniplayerVisible = true;
-                          // Cria o player YouTube
-                          function onPlayerReady(event) {
-                            event.target.playVideo();
-                            document.getElementById('yt-icon-playpause').className = 'fas fa-pause';
-                          }
-                          function onPlayerStateChange(event) {
-                            if (event.data === YT.PlayerState.PAUSED) {
-                              document.getElementById('yt-icon-playpause').className = 'fas fa-play';
-                            } else if (event.data === YT.PlayerState.PLAYING) {
-                              document.getElementById('yt-icon-playpause').className = 'fas fa-pause';
-                            }
-                          }
-                          ytPlayer = new YT.Player('yt-miniplayer-iframe-player', {
-                            height: '90',
-                            width: '160',
-                            videoId: ytPlaylists[index].video,
-                            playerVars: { 'autoplay': 1, 'controls': 1, 'rel': 0, 'showinfo': 0 },
-                            events: {
-                              'onReady': onPlayerReady,
-                              'onStateChange': onPlayerStateChange
-                            }
-                          });
-
-                          // Drag and drop do miniplayer (sempre que abrir)
-                          const handle = document.getElementById('yt-miniplayer-handle');
-                          let isDragging = false;
-                          let offsetX = 0, offsetY = 0;
-                          let startX = 0, startY = 0;
-                          if (handle) {
-                            let dragEventsActive = false;
-                            function onMouseMove(e) {
-                              if (!isDragging) return;
-                              let x = e.clientX - offsetX;
-                              let y = e.clientY - offsetY;
-                              x = Math.max(0, Math.min(window.innerWidth - miniplayer.offsetWidth, x));
-                              y = Math.max(0, Math.min(window.innerHeight - miniplayer.offsetHeight, y));
-                              miniplayer.style.left = x + 'px';
-                              miniplayer.style.top = y + 'px';
-                              miniplayer.style.right = 'auto';
-                              miniplayer.style.bottom = 'auto';
-                              miniplayer.style.position = 'fixed';
-                            }
-                            function onMouseUp() {
-                              isDragging = false;
-                              miniplayer.style.transition = '';
-                              document.body.style.userSelect = '';
-                              if (dragEventsActive) {
-                                document.removeEventListener('mousemove', onMouseMove);
-                                document.removeEventListener('mouseup', onMouseUp);
-                                dragEventsActive = false;
-                              }
-                            }
-                            handle.onmousedown = function(e) {
-                              isDragging = true;
-                              startX = e.clientX;
-                              startY = e.clientY;
-                              const rect = miniplayer.getBoundingClientRect();
-                              offsetX = startX - rect.left;
-                              offsetY = startY - rect.top;
-                              miniplayer.style.transition = 'none';
-                              document.body.style.userSelect = 'none';
-                              if (!dragEventsActive) {
-                                document.addEventListener('mousemove', onMouseMove);
-                                document.addEventListener('mouseup', onMouseUp);
-                                dragEventsActive = true;
-                              }
-                            };
-                            // Touch support
-                            function onTouchMove(e) {
-                              if (!isDragging) return;
-                              const touch = e.touches[0];
-                              let x = touch.clientX - offsetX;
-                              let y = touch.clientY - offsetY;
-                              x = Math.max(0, Math.min(window.innerWidth - miniplayer.offsetWidth, x));
-                              y = Math.max(0, Math.min(window.innerHeight - miniplayer.offsetHeight, y));
-                              miniplayer.style.left = x + 'px';
-                              miniplayer.style.top = y + 'px';
-                              miniplayer.style.right = 'auto';
-                              miniplayer.style.bottom = 'auto';
-                              miniplayer.style.position = 'fixed';
-                            }
-                            function onTouchEnd() {
-                              isDragging = false;
-                              miniplayer.style.transition = '';
-                              document.body.style.userSelect = '';
-                              if (dragEventsActive) {
-                                document.removeEventListener('touchmove', onTouchMove);
-                                document.removeEventListener('touchend', onTouchEnd);
-                                dragEventsActive = false;
-                              }
-                            }
-                            handle.ontouchstart = function(e) {
-                              isDragging = true;
-                              const touch = e.touches[0];
-                              startX = touch.clientX;
-                              startY = touch.clientY;
-                              const rect = miniplayer.getBoundingClientRect();
-                              offsetX = startX - rect.left;
-                              offsetY = startY - rect.top;
-                              miniplayer.style.transition = 'none';
-                              document.body.style.userSelect = 'none';
-                              if (!dragEventsActive) {
-                                document.addEventListener('touchmove', onTouchMove);
-                                document.addEventListener('touchend', onTouchEnd);
-                                dragEventsActive = true;
-                              }
-                            };
-                          }
-                        };
-
-                        // Adiciona listeners aos iframes para abrir o miniplayer ao dar play
-                        setTimeout(function() {
-                          const playlistItems = document.querySelectorAll('.youtube-playlist-item');
-                          playlistItems.forEach(function(item, idx) {
-                            const iframe = item.querySelector('iframe');
-                            // Overlay invisível para capturar o clique/play
-                            let overlay = document.createElement('div');
-                            overlay.style.position = 'absolute';
-                            overlay.style.top = '0';
-                            overlay.style.left = '0';
-                            overlay.style.width = '100%';
-                            overlay.style.height = '100%';
-                            overlay.style.cursor = 'pointer';
-                            overlay.style.background = 'rgba(0,0,0,0)';
-                            overlay.title = 'Assistir no miniplayer';
-                            overlay.onclick = function(e) {
-                              e.preventDefault();
-                              window.showYTMiniplayer(idx);
-                            };
-                            // Wrapper para posicionar overlay
-                            let wrapper = document.createElement('div');
-                            wrapper.style.position = 'relative';
-                            wrapper.appendChild(iframe.cloneNode(true));
-                            wrapper.appendChild(overlay);
-                            item.replaceChild(wrapper, iframe);
-                          });
-                        }, 200);
-
-                        // Controles do miniplayer
-                        setTimeout(function() {
-                          const btnPrev = document.getElementById('yt-btn-prev');
-                          const btnNext = document.getElementById('yt-btn-next');
-                          const btnPlayPause = document.getElementById('yt-btn-playpause');
-                          const btnClose = document.getElementById('yt-btn-close');
-                          btnPrev.onclick = function() {
-                            ytPlayer && ytPlayer.destroy();
-                            window.showYTMiniplayer((ytCurrentIndex - 1 + ytPlaylists.length) % ytPlaylists.length);
-                          };
-                          btnNext.onclick = function() {
-                            ytPlayer && ytPlayer.destroy();
-                            window.showYTMiniplayer((ytCurrentIndex + 1) % ytPlaylists.length);
-                          };
-                          btnPlayPause.onclick = function() {
-                            if (!ytPlayer) return;
-                            const state = ytPlayer.getPlayerState();
-                            if (state === YT.PlayerState.PLAYING) {
-                              ytPlayer.pauseVideo();
+      function updateContent(index) {
+        if (etapas[index].gif === 'lottie') {
+          gifContainer.innerHTML = `<dotlottie-player src="https://lottie.host/b9a20cbc-af22-4916-9868-5b1cd9fb67e2/AFGtrgEYOs.lottie" background="transparent" speed="1" style="width: 260px; height: 260px" loop autoplay></dotlottie-player>`;
                             } else {
-                              ytPlayer.playVideo();
-                            }
-                          };
-                          btnClose.onclick = function() {
-                            const miniplayer = document.getElementById('yt-miniplayer');
-                            miniplayer.style.display = 'none';
-                            ytMiniplayerVisible = false;
-                            if (ytPlayer) ytPlayer.destroy();
-                          };
-                        }, 500);
-                      }, 100);
-                    }
-                  });
-                }, 100);
-              });
-            }
-          }, 80);
-        });
+          gifContainer.innerHTML = `<img src="${etapas[index].gif}" alt="Exercício" style="width:240px; height:240px; object-fit:cover; border-radius:22px; background:transparent;" />`;
+        }
+        const instrucaoHtml = etapas[index].instrucao.replace(/<b>(.*?)<\/b>/, `<div class='instrucao-titulo'>$1</div>`);
+        instrucaoContainer.innerHTML = instrucaoHtml;
+        counterEl.textContent = `${index + 1} / ${etapas.length}`;
       }
-    });
 
-    // Função para renderizar a tela de escolha de plataforma de música
-    function renderizarTelaEscolhaPlataforma() {
+      function changeSlide(direction) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const slideOutTransform = direction === 'next' ? 'translateX(-50px)' : 'translateX(50px)';
+        slideContent.style.opacity = '0';
+        slideContent.style.transform = slideOutTransform;
+        
+        setTimeout(() => {
+          etapaAtual = (direction === 'next') 
+            ? (etapaAtual + 1) % etapas.length 
+            : (etapaAtual - 1 + etapas.length) % etapas.length;
+          
+          updateContent(etapaAtual);
+
+          const slideInTransform = direction === 'next' ? 'translateX(50px)' : 'translateX(-50px)';
+          slideContent.style.transition = 'none';
+          slideContent.style.transform = slideInTransform;
+          
+          setTimeout(() => {
+            slideContent.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease';
+            slideContent.style.opacity = '1';
+            slideContent.style.transform = 'translateX(0)';
+          }, 20); // Pequeno delay para o browser aplicar a transição
+
+          setTimeout(() => {
+            isAnimating = false;
+          }, 420);
+
+        }, 400);
+      }
+
+      updateContent(0);
+      
+      document.getElementById('btn-carrossel-next').addEventListener('click', () => changeSlide('next'));
+      document.getElementById('btn-carrossel-prev').addEventListener('click', () => changeSlide('prev'));
+      document.getElementById('btn-proximo-exercicio').onclick = () => renderizarTelaVideoFinal();
+      document.getElementById('btn-finalizar-exercicio').onclick = () => renderizarTelaFinal();
+    }
+
+    function renderizarTelaVideoFinal() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
-        <div class=\"respira-detalhe\">
-          <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Solta o som DJ!</h2>
-          <p style=\"color:#6c757d; font-size:1.1rem; margin-bottom:2rem;\">Escolha uma plataforma de música para te acompanhar nos exercícios.</p>
-          <div id=\"plataforma-musica\" style=\"display:flex; flex-direction:row; gap:1.5rem; justify-content:center; margin-bottom:2.2rem;\">
-            <button id=\"btn-spotify\" type=\"button\" class=\"btn-plataforma\" style=\"display:flex; align-items:center; gap:0.7rem; background:#1DB954; color:#fff; border:none; border-radius:18px; font-size:1.13rem; font-weight:700; padding:1.1rem 2.2rem; cursor:pointer; box-shadow:0 4px 18px rgba(30,215,96,0.13); transition:transform 0.18s, box-shadow 0.3s, filter 0.3s;\">
-              <i class=\"fab fa-spotify\" style=\"font-size:1.5rem;\"></i> Spotify
-            </button>
-            <button id=\"btn-youtube\" type=\"button\" class=\"btn-plataforma\" style=\"display:flex; align-items:center; gap:0.7rem; background:#FF0000; color:#fff; border:none; border-radius:18px; font-size:1.13rem; font-weight:700; padding:1.1rem 2.2rem; cursor:pointer; box-shadow:0 4px 18px rgba(255,0,0,0.13); transition:transform 0.18s, box-shadow 0.3s, filter 0.3s;\">
-              <i class=\"fab fa-youtube\" style=\"font-size:1.5rem;\"></i> YouTube
-            </button>
+        <div class="respira-detalhe" style="text-align: center; opacity: 0; animation: fadeInDetalhe 0.5s forwards;">
+          <h2 style="font-family: 'Poppins', sans-serif; color:#2563EB; font-size:2.1rem; font-weight:800; margin-bottom:0.5rem;">Desejamos uma boa noite de sono.</h2>
+          <p style="font-family: 'Quicksand', sans-serif; color:#6c757d; font-size:1.18rem; margin-bottom:2.1rem; line-height:1.6;">Fique agora com esse vídeo de guia para um escaneamento corporal com relaxamento completo.</p>
+          <div style="margin: 0 auto 2rem auto; max-width: 720px; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px #181c2555;">
+            <iframe width="100%" height="405" src="https://www.youtube.com/embed/KzBJAL36yIY?si=PwTmrVXJg24EE04f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="display: block;"></iframe>
           </div>
-          <button id=\"btn-proximo-musica\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; opacity:0.6; pointer-events:none; transition:background 0.2s;\">Próximo exercício</button>
+          <button id="btn-finalizar-video" class="btn-exercicio-action primary">Finalizar</button>
+        </div>
+      `;
+
+      setTimeout(() => {
+        const btnFinalizarVideo = document.getElementById('btn-finalizar-video');
+        if (btnFinalizarVideo) {
+          btnFinalizarVideo.addEventListener('click', () => {
+            renderizarTelaFinal();
+          });
+        }
+      }, 100);
+    }
+
+    function renderizarTelaFinal() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="text-align: center; opacity: 0; animation: fadeInDetalhe 0.5s forwards;">
+          <h2 style="font-family: 'Pacifico', cursive; color:#8ecae6; font-size:3.2rem; font-weight:400; margin-bottom:0.7rem; text-shadow: 0 2px 12px #2563eb33;">Bons sonhos!!</h2>
+          <p style="font-family: 'Quicksand', sans-serif; color:#c7d8fe; font-size:1.25rem; margin-bottom:2rem;">Equipe HelpStress desejando que você durma igual pedra.</p>
+          <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExanoyMmxqNHN3YTYwcmdzOTRzNGE2bTM4eTB3empoZndycXFmemwyeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jqNRMFBZwzjUmpZOcS/giphy.gif" alt="Bons sonhos" style="width:100%; max-width:380px; border-radius:22px; margin-bottom:2.5rem; box-shadow: 0 8px 32px #181c2577;" />
+          
+          <!-- Feedback Rápido -->
+          <div id="feedback-container" style="margin-top: 1rem; margin-bottom: 2.5rem; opacity: 0; animation: fadeInDetalhe 0.8s forwards 0.4s;">
+            <p style="font-family: 'Quicksand', sans-serif; color:#c7d8fe; font-size:1.1rem; margin-bottom:1.2rem; font-weight: 600;">Como você se sente agora?</p>
+            <div id="emoji-feedback" style="display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem;">
+              <button class="emoji-btn" title="Relaxado(a)">😌</button>
+              <button class="emoji-btn" title="Feliz">😊</button>
+              <button class="emoji-btn" title="Pensativo(a)">🤔</button>
+              <button class="emoji-btn" title="Com sono">😴</button>
+            </div>
+            <p id="feedback-agradecimento" style="color: #8ecae6; font-weight: 700; height: 20px; transition: opacity 0.4s; opacity: 0;">Obrigado pelo seu feedback!</p>
+          </div>
+
+          <a href="dicasTecnicas.html" id="btn-voltar-dicas" class="btn-exercicio-action primary">Voltar para Dicas e Técnicas</a>
+        </div>
+        <style>
+          .emoji-btn {
+            background: transparent;
+            border: 2px solid #4eaaff55;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(.4,1.5,.5,1);
+          }
+          .emoji-btn:hover {
+            transform: scale(1.15) translateY(-4px);
+            background: #4eaaff22;
+            border-color: #8ecae6;
+          }
+          .emoji-btn.selecionado {
+            transform: scale(1.2) !important;
+            background: #8ecae6 !important;
+            border-color: #fff !important;
+            color: #181c25 !important;
+          }
+          .emoji-btn:not(.selecionado).desativado {
+            opacity: 0.4;
+            pointer-events: none;
+            transform: scale(0.9);
+          }
+        </style>
+      `;
+
+      setTimeout(() => {
+        const emojiBtns = document.querySelectorAll('.emoji-btn');
+        const msgAgradecimento = document.getElementById('feedback-agradecimento');
+        let feedbackDado = false;
+
+        if (emojiBtns.length > 0 && msgAgradecimento) {
+          emojiBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              if (feedbackDado) return;
+              feedbackDado = true;
+
+              btn.classList.add('selecionado');
+              
+              emojiBtns.forEach(b => {
+                b.classList.add('desativado');
+              });
+
+              msgAgradecimento.style.opacity = '1';
+            });
+          });
+        }
+      }, 100);
+    }
+
+    // Substitua todos os window.location.reload() e renderizações manuais da tela de plataforma por renderizarEscolhaPlataforma();
+    // E, ao finalizar o checklist do ambiente, chame renderizarEscolhaPlataforma() ao invés de repetir o HTML da tela de plataforma.
+
+    // Função de agradecimento do Desacelera
+    function renderizarTelaAgradecimento() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="text-align:center; opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Nós da Helpstress ficamos contentes em ajudar</h2>
+          <p style="color:#6c757d; font-size:1.1rem; margin-bottom:2rem;">Desejamos um dia cheio de tranquilidade pra você!</p>
+          <div style="margin-bottom:1.5rem;">
+            <img src='https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2J6d2J6b2J2b2J6d2J6b2J6b2J6b2J6b2J6b2J6b2J6b2J6/g9582DNuQppxC/giphy.gif' alt='Gif relaxante' style='width:160px; height:160px; border-radius:18px; box-shadow:0 4px 18px rgba(37,99,235,0.10); object-fit:cover;'>
+          </div>
+          <div style="color:#2563EB; font-size:1.1rem; margin-bottom:2.2rem;">Lembre-se: você merece momentos de paz!<br><img src='/assets/img/feliz.gif' alt='Sorriso' style='width:32px; height:32px; vertical-align:middle; margin-right:6px;'>Volte sempre que precisar de uma pausa.</div>
+          <a href="dicasTecnicas.html" class="btn-exercicio-action primary">Voltar</a>
+        </div>
+      `;
+      fadeInExercicio();
+    }
+
+    // Segunda tela do Desacelera
+    function renderizarDesacelera2() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style="color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;">Não pare de respirar... a tranquilidade está logo ali!</h2>
+          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Este exercício ajuda a aterrar a mente ao momento presente, ótimo para quando a ansiedade dispara.</div>
+          <div class="card-svg-breath" style="background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;">
+            <div class="gif-container">
+              <lord-icon src='https://cdn.lordicon.com/etqbfrgp.json' trigger="hover" colors='primary:#2563eb' style='width:70px;height:70px'></lord-icon>
+              <lord-icon src="https://cdn.lordicon.com/yquwpfkc.json" trigger="hover" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
+              <lord-icon src="https://cdn.lordicon.com/cbtlerlm.json" trigger="hover" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
+              <lord-icon src="https://cdn.lordicon.com/mchvarrg.json" trigger="morph" state="morph-open" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
+              <lord-icon src="https://cdn.lordicon.com/wahyhize.json" trigger="morph" state="morph-sea" colors="primary:#2563eb" style="width:70px;height:70px"></lord-icon>
+            </div>
+          </div>
+          <div class="grounding-steps" style="margin-bottom:2.2rem;">
+            <div class="step" style="opacity:0; display:flex; flex-direction:column; align-items:center; gap:0.7rem;">
+              <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+                <img src="assets/img/olho.gif" width="30" height="30" style="vertical-align:middle;">
+                <span>Liste 5 coisas que você pode ver</span>
+              </div>
+              <div style="color:#6c757d; font-size:1rem; margin-top:0.3rem;">(Caso consiga fale em voz alta)</div>
+            </div>
+          </div>
+          <button id="btn-proximo-grounding" class="btn-exercicio-action primary">Próximo exercício</button>
         </div>
       `;
       fadeInExercicio();
       setTimeout(function() {
-        let plataformaSelecionada = null;
-        const btnSpotify = document.getElementById('btn-spotify');
-        const btnYoutube = document.getElementById('btn-youtube');
-        const btnProximoMusica = document.getElementById('btn-proximo-musica');
-
-        function atualizarSelecao() {
-          btnSpotify.style.filter = plataformaSelecionada === 'spotify' ? 'brightness(1.15) drop-shadow(0 0 8px #1DB95455)' : 'none';
-          btnSpotify.style.outline = plataformaSelecionada === 'spotify' ? '3px solid #1DB954' : 'none';
-          btnYoutube.style.filter = plataformaSelecionada === 'youtube' ? 'brightness(1.15) drop-shadow(0 0 8px #FF000055)' : 'none';
-          btnYoutube.style.outline = plataformaSelecionada === 'youtube' ? '3px solid #FF0000' : 'none';
-          if (plataformaSelecionada) {
-            btnProximoMusica.style.opacity = '1';
-            btnProximoMusica.style.pointerEvents = 'auto';
-          } else {
-            btnProximoMusica.style.opacity = '0.6';
-            btnProximoMusica.style.pointerEvents = 'none';
-          }
+        // Animação sequencial dos passos
+        const steps = document.querySelectorAll('.grounding-steps .step');
+        steps.forEach((step, i) => {
+          setTimeout(() => {
+            step.style.opacity = 1;
+            step.style.transition = 'opacity 1s';
+          }, i * 2000);
+        });
+        const btnProximoGrounding = document.getElementById('btn-proximo-grounding');
+        if (btnProximoGrounding) {
+          btnProximoGrounding.addEventListener('click', function() {
+            renderizarDesacelera3();
+          });
         }
-
-        btnSpotify.addEventListener('click', function() {
-          plataformaSelecionada = 'spotify';
-          atualizarSelecao();
-        });
-        btnYoutube.addEventListener('click', function() {
-          plataformaSelecionada = 'youtube';
-          atualizarSelecao();
-        });
-
-        atualizarSelecao();
-
-        btnProximoMusica.addEventListener('click', function() {
-          if (plataformaSelecionada === 'spotify') {
-            // Renderiza a tela de playlists do Spotify
-            detalhesCard.innerHTML = `
-              <div class=\"respira-detalhe\">
-                <h2 style=\"color:#1DB954; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Escolha sua playlist no Spotify</h2>
-                <p style=\"color:#6c757d; font-size:1.1rem; margin-bottom:2rem;\">Selecione uma playlist para relaxar durante os exercícios.</p>
-                <div id=\"playlists-spotify\" style=\"display:grid; grid-template-columns:repeat(2, 1fr); gap:2rem; width:100%; max-width:900px; margin:0 auto 1.5rem auto;\">
-                  <div class=\"playlist-opcao\" data-playlist=\"relaxante\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                    <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Relaxante</div>
-                    <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DX63ofZH0W5TQ?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                  </div>
-                  <div class=\"playlist-opcao\" data-playlist=\"lofi\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                    <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Lofi</div>
-                    <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/6zCID88oNjNv9zx6puDHKj?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                  </div>
-                  <div class=\"playlist-opcao\" data-playlist=\"peace\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                    <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Peace</div>
-                    <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DXdCsscAsbRNz?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                  </div>
-                  <div class=\"playlist-opcao\" data-playlist=\"nature\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                    <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Nature Sounds</div>
-                    <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DX4PP3DA4J0N8?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                  </div>
-                  <div class=\"playlist-opcao\" data-playlist=\"rain\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                    <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Rain Sounds</div>
-                    <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/37i9dQZF1DX8ymr6UES7vc?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                  </div>
-                  <div class=\"playlist-opcao\" data-playlist=\"sleep\" style=\"background:#23273a; border:2px solid #23273a; border-radius:18px; padding:1.2rem 1rem 1.5rem 1rem; cursor:pointer; transition:border 0.2s, box-shadow 0.2s;\">
-                    <div style=\"font-weight:700; color:#8ecae6; margin-bottom:0.7rem; font-size:1.13rem; text-align:left;\">Sleep Sounds</div>
-                    <iframe style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/playlist/5K2xFlFvv5aDkXDI8hjUda?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>
-                  </div>
-                </div>
-                <p style=\"color:#888; font-size:1rem; margin:0 0 1.5rem 0; text-align:center;\">(Se você não tiver conta no Spotify, tudo bem! Você pode voltar e escolher uma das nossas playlists no YouTube)</p>
-                <button id=\"btn-voltar-spotify\" style=\"display:block; width:100%; max-width:320px; margin:0 auto 1.2rem auto; padding:0.9rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; transition:background 0.2s;\">Voltar</button>
-                <button id=\"btn-proximo-musica-final\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.9rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.1rem; font-weight:600; cursor:pointer; opacity:0.6; pointer-events:none; transition:background 0.2s;\">Próximo exercício</button>
-              </div>
-              <style>
-                @media (max-width: 900px) {
-                  #playlists-spotify { grid-template-columns: 1fr; }
-                }
-                .playlist-opcao:hover {
-                  border:2.5px solid #8ecae6 !important;
-                  box-shadow:0 4px 24px #2563eb22;
-                  transform: translateY(-2px) scale(1.02);
-                }
-                .playlist-opcao.selecionada {
-                  border:2.5px solid #2563EB !important;
-                  box-shadow:0 0 0 3px #2563eb22;
-                  background: #20243a;
-                }
-              </style>
-            `;
-            fadeInExercicio();
-            setTimeout(function() {
-              let playlistSelecionada = null;
-              const opcoes = document.querySelectorAll('.playlist-opcao');
-              const btnFinal = document.getElementById('btn-proximo-musica-final');
-              const btnVoltar = document.getElementById('btn-voltar-spotify');
-              opcoes.forEach(opcao => {
-                opcao.addEventListener('click', function() {
-                  playlistSelecionada = opcao.getAttribute('data-playlist');
-                  opcoes.forEach(o => {
-                    o.classList.remove('selecionada');
-                  });
-                  opcao.classList.add('selecionada');
-                  btnFinal.style.opacity = '1';
-                  btnFinal.style.pointerEvents = 'auto';
-                });
-              });
-              btnFinal.addEventListener('click', function() {
-                if (playlistSelecionada) {
-                  // Próxima etapa do seu fluxo para Spotify
-                }
-              });
-              btnVoltar.addEventListener('click', function() {
-                renderizarTelaEscolhaPlataforma();
-              });
-            }, 100);
-          } else if (plataformaSelecionada === 'youtube') {
-            // Renderiza a tela do YouTube
-            detalhesCard.innerHTML = `
-              <div class=\"respira-detalhe\">
-                <h2 style=\"color:#FF0000; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Músicas relaxantes diretamente do YouTube</h2>
-                <p style=\"color:#6c757d; font-size:1.1rem; margin-bottom:2rem;\">Escolha uma playlist relaxante para ouvir.</p>
-                <div id=\"youtube-playlists-list\" style=\"display: flex; flex-direction: column; gap: 2.2rem; align-items: center; margin-bottom:2.2rem;\">
-                  <div class=\"youtube-playlist-item\" data-index=\"0\" data-title=\"Descanse sua mente\" data-video=\"G55IO9IDhzg\" style=\"width:100%; max-width:700px;\">
-                    <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">Descanse sua mente</div>
-                    <iframe class=\"youtube-iframe\" width=\"100%\" height=\"400\" src=\"https://www.youtube.com/embed/G55IO9IDhzg?si=xBYvqvsHUQUz5KGe&amp;controls=1\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);\"></iframe>
-                  </div>
-                  <div class=\"youtube-playlist-item\" data-index=\"1\" data-title=\"2am.\" data-video=\"xDih5SwFs_c\" style=\"width:100%; max-width:700px;\">
-                    <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">2am.</div>
-                    <iframe class=\"youtube-iframe\" width=\"100%\" height=\"400\" src=\"https://www.youtube.com/embed/xDih5SwFs_c?si=tptzZzOwwIpaCeYK&amp;controls=1\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);\"></iframe>
-                  </div>
-                  <div class=\"youtube-playlist-item\" data-index=\"2\" data-title=\"Lofi\" data-video=\"n61ULEU7CO0\" style=\"width:100%; max-width:700px;\">
-                    <div style=\"font-weight:700; color:#2563EB; margin-bottom:0.5rem; font-size:1.13rem; text-align:left;\">Lofi</div>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/BYTxPFj44uo?si=JHFlsf-OCiU7F_4C&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                  </div>
-                  <div class=\"youtube-playlist-item\" data-index=\"3\" data-title=\"Why the rush?\" data-video=\"BYTxPFj44uo\" style=\"width:100%; max-width:700px;\">
-
-                </div>
-                <div style=\"display:flex; flex-direction:row; gap:1.2rem; justify-content:center;\">
-                  <button id=\"btn-voltar-youtube\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.95rem 0; background:#f7faff; color:#2563EB; border:2px solid #2563EB; border-radius:24px; font-size:1.13rem; font-weight:700; cursor:pointer; transition:background 0.2s; box-shadow:0 2px 8px rgba(37,99,235,0.08);\">Voltar</button>
-                  <button id=\"btn-proximo-musica-final\" style=\"display:block; width:100%; max-width:320px; margin:0 auto; padding:0.95rem 0; background:#2563EB; color:#fff; border:none; border-radius:24px; font-size:1.13rem; font-weight:700; cursor:pointer; transition:background 0.2s; box-shadow:0 4px 18px rgba(37,99,235,0.10);\">Próximo exercício</button>
-                </div>
-                <div id=\"yt-miniplayer-root\"></div>
-              </div>
-            `;
-            fadeInExercicio();
-            setTimeout(function() {
-              var btnFinal = document.getElementById('btn-proximo-musica-final');
-              var btnVoltar = document.getElementById('btn-voltar-youtube');
-              if (btnFinal) {
-                btnFinal.addEventListener('click', function() {
-                  // Próxima etapa do seu fluxo para YouTube
-                });
-              }
-              if (btnVoltar) {
-                btnVoltar.addEventListener('click', function() {
-                  renderizarTelaEscolhaPlataforma();
-                });
-              }
-
-              // --- Miniplayer YouTube ---
-              // Dados das playlists
-              const ytPlaylists = [
-                { title: 'Descanse sua mente', video: 'G55IO9IDhzg' },
-                { title: '2am.', video: 'xDih5SwFs_c' },
-                { title: 'Lofi', video: 'n61ULEU7CO0' },
-                { title: 'Why the rush?', video: 'BYTxPFj44uo' }
-              ];
-              let ytCurrentIndex = 0;
-              let ytPlayer = null;
-              let ytMiniplayerVisible = false;
-
-              // Cria o miniplayer (só uma vez)
-              let miniplayerRoot = document.getElementById('yt-miniplayer-root');
-              miniplayerRoot.innerHTML = `
-                <div id=\"yt-miniplayer\" style=\"display:none; position:fixed; bottom:24px; right:24px; z-index:9999; background:linear-gradient(135deg,#23273a 60%,#2563eb 100%); border-radius:22px; box-shadow:0 8px 32px #2563eb33,0 1.5px 8px #0002; padding:18px 22px 18px 18px; min-width:320px; max-width:98vw; max-height:220px; display:flex; align-items:center; gap:18px; transition:box-shadow 0.2s, transform 0.2s; user-select:none;\">
-                  <div id=\"yt-miniplayer-handle\" style=\"position:absolute; top:0; left:0; width:100%; height:18px; cursor:move; border-top-left-radius:22px; border-top-right-radius:22px; background:linear-gradient(90deg,#2563eb22 30%,#8ecae6 100%); display:flex; align-items:center; justify-content:center; z-index:2;\">
-                    <div style=\"width:38px; height:5px; background:#8ecae6cc; border-radius:3px; margin-top:6px;\"></div>
-                  </div>
-                  <div style=\"display:flex; flex-direction:column; align-items:center; justify-content:center;\">
-                    <div id=\"yt-miniplayer-title\" style=\"color:#8ecae6; font-weight:700; font-size:1.08rem; margin-bottom:7px; text-align:center; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-shadow:0 1px 8px #0005;\"></div>
-                    <div id=\"yt-miniplayer-iframe\" style=\"border-radius:14px; overflow:hidden; box-shadow:0 2px 12px #2563eb22;\"></div>
-                  </div>
-                  <div style=\"display:flex; flex-direction:column; align-items:center; gap:10px;\">
-                    <div style=\"display:flex; align-items:center; gap:10px;\">
-                      <button id=\"yt-btn-prev\" title=\"Anterior\" style=\"background:none; border:none; color:#8ecae6; font-size:1.7rem; cursor:pointer; border-radius:50%; transition:background 0.18s; padding:7px;\"><i class=\"fas fa-step-backward\"></i></button>
-                      <button id=\"yt-btn-playpause\" title=\"Play/Pause\" style=\"background:linear-gradient(135deg,#2563eb 60%,#8ecae6 100%); border:none; color:#fff; font-size:1.7rem; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px #2563eb22; transition:background 0.18s, box-shadow 0.18s;\"><i id=\"yt-icon-playpause\" class=\"fas fa-play\"></i></button>
-                      <button id=\"yt-btn-next\" title=\"Próximo\" style=\"background:none; border:none; color:#8ecae6; font-size:1.7rem; cursor:pointer; border-radius:50%; transition:background 0.18s; padding:7px;\"><i class=\"fas fa-step-forward\"></i></button>
-                      <button id=\"yt-btn-close\" title=\"Fechar\" style=\"background:none; border:none; color:#e57373; font-size:1.7rem; margin-left:8px; cursor:pointer; border-radius:50%; transition:background 0.18s; padding:7px;\"><i class=\"fas fa-times\"></i></button>
-                    </div>
-                  </div>
-                </div>
-              `;
-
-              // Após criar o miniplayer, adicionar lógica para mostrar controles ao passar o mouse
-              setTimeout(function() {
-                const videoContainer = document.getElementById('yt-miniplayer-iframe');
-                if (videoContainer) {
-                  videoContainer.addEventListener('mouseenter', function() {
-                    document.getElementById('yt-miniplayer').style.boxShadow = '0 8px 32px #2563eb33';
-                  });
-                  videoContainer.addEventListener('mouseleave', function() {
-                    document.getElementById('yt-miniplayer').style.boxShadow = '0 2px 12px #2563eb22';
-                  });
-                }
-              }, 300);
-
-              // Carrega a API do YouTube se necessário
-              if (!window.YT) {
-                var tag = document.createElement('script');
-                tag.src = 'https://www.youtube.com/iframe_api';
-                document.body.appendChild(tag);
-              }
-
-              // Função para mostrar o miniplayer
-              window.showYTMiniplayer = function(index) {
-                ytCurrentIndex = index;
-                const miniplayer = document.getElementById('yt-miniplayer');
-                const title = document.getElementById('yt-miniplayer-title');
-                const iframeDiv = document.getElementById('yt-miniplayer-iframe');
-                title.textContent = ytPlaylists[index].title;
-                iframeDiv.innerHTML = `<div id='yt-miniplayer-iframe-player'></div>`;
-                miniplayer.style.display = 'flex';
-                ytMiniplayerVisible = true;
-                // Cria o player YouTube
-                function onPlayerReady(event) {
-                  event.target.playVideo();
-                  document.getElementById('yt-icon-playpause').className = 'fas fa-pause';
-                }
-                function onPlayerStateChange(event) {
-                  if (event.data === YT.PlayerState.PAUSED) {
-                    document.getElementById('yt-icon-playpause').className = 'fas fa-play';
-                  } else if (event.data === YT.PlayerState.PLAYING) {
-                    document.getElementById('yt-icon-playpause').className = 'fas fa-pause';
-                  }
-                }
-                ytPlayer = new YT.Player('yt-miniplayer-iframe-player', {
-                  height: '90',
-                  width: '160',
-                  videoId: ytPlaylists[index].video,
-                  playerVars: { 'autoplay': 1, 'controls': 1, 'rel': 0, 'showinfo': 0 },
-                  events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                  }
-                });
-
-                // Drag and drop do miniplayer (sempre que abrir)
-                const handle = document.getElementById('yt-miniplayer-handle');
-                let isDragging = false;
-                let offsetX = 0, offsetY = 0;
-                let startX = 0, startY = 0;
-                if (handle) {
-                  let dragEventsActive = false;
-                  function onMouseMove(e) {
-                    if (!isDragging) return;
-                    let x = e.clientX - offsetX;
-                    let y = e.clientY - offsetY;
-                    x = Math.max(0, Math.min(window.innerWidth - miniplayer.offsetWidth, x));
-                    y = Math.max(0, Math.min(window.innerHeight - miniplayer.offsetHeight, y));
-                    miniplayer.style.left = x + 'px';
-                    miniplayer.style.top = y + 'px';
-                    miniplayer.style.right = 'auto';
-                    miniplayer.style.bottom = 'auto';
-                    miniplayer.style.position = 'fixed';
-                  }
-                  function onMouseUp() {
-                    isDragging = false;
-                    miniplayer.style.transition = '';
-                    document.body.style.userSelect = '';
-                    if (dragEventsActive) {
-                      document.removeEventListener('mousemove', onMouseMove);
-                      document.removeEventListener('mouseup', onMouseUp);
-                      dragEventsActive = false;
-                    }
-                  }
-                  handle.onmousedown = function(e) {
-                    isDragging = true;
-                    startX = e.clientX;
-                    startY = e.clientY;
-                    const rect = miniplayer.getBoundingClientRect();
-                    offsetX = startX - rect.left;
-                    offsetY = startY - rect.top;
-                    miniplayer.style.transition = 'none';
-                    document.body.style.userSelect = 'none';
-                    if (!dragEventsActive) {
-                      document.addEventListener('mousemove', onMouseMove);
-                      document.addEventListener('mouseup', onMouseUp);
-                      dragEventsActive = true;
-                    }
-                  };
-                  // Touch support
-                  function onTouchMove(e) {
-                    if (!isDragging) return;
-                    const touch = e.touches[0];
-                    let x = touch.clientX - offsetX;
-                    let y = touch.clientY - offsetY;
-                    x = Math.max(0, Math.min(window.innerWidth - miniplayer.offsetWidth, x));
-                    y = Math.max(0, Math.min(window.innerHeight - miniplayer.offsetHeight, y));
-                    miniplayer.style.left = x + 'px';
-                    miniplayer.style.top = y + 'px';
-                    miniplayer.style.right = 'auto';
-                    miniplayer.style.bottom = 'auto';
-                    miniplayer.style.position = 'fixed';
-                  }
-                  function onTouchEnd() {
-                    isDragging = false;
-                    miniplayer.style.transition = '';
-                    document.body.style.userSelect = '';
-                    if (dragEventsActive) {
-                      document.removeEventListener('touchmove', onTouchMove);
-                      document.removeEventListener('touchend', onTouchEnd);
-                      dragEventsActive = false;
-                    }
-                  }
-                  handle.ontouchstart = function(e) {
-                    isDragging = true;
-                    const touch = e.touches[0];
-                    startX = touch.clientX;
-                    startY = touch.clientY;
-                    const rect = miniplayer.getBoundingClientRect();
-                    offsetX = startX - rect.left;
-                    offsetY = startY - rect.top;
-                    miniplayer.style.transition = 'none';
-                    document.body.style.userSelect = 'none';
-                    if (!dragEventsActive) {
-                      document.addEventListener('touchmove', onTouchMove);
-                      document.addEventListener('touchend', onTouchEnd);
-                      dragEventsActive = true;
-                    }
-                  };
-                }
-              };
-
-              // Adiciona listeners aos iframes para abrir o miniplayer ao dar play
-              setTimeout(function() {
-                const playlistItems = document.querySelectorAll('.youtube-playlist-item');
-                playlistItems.forEach(function(item, idx) {
-                  const iframe = item.querySelector('iframe');
-                  // Overlay invisível para capturar o clique/play
-                  let overlay = document.createElement('div');
-                  overlay.style.position = 'absolute';
-                  overlay.style.top = '0';
-                  overlay.style.left = '0';
-                  overlay.style.width = '100%';
-                  overlay.style.height = '100%';
-                  overlay.style.cursor = 'pointer';
-                  overlay.style.background = 'rgba(0,0,0,0)';
-                  overlay.title = 'Assistir no miniplayer';
-                  overlay.onclick = function(e) {
-                    e.preventDefault();
-                    window.showYTMiniplayer(idx);
-                  };
-                  // Wrapper para posicionar overlay
-                  let wrapper = document.createElement('div');
-                  wrapper.style.position = 'relative';
-                  wrapper.appendChild(iframe.cloneNode(true));
-                  wrapper.appendChild(overlay);
-                  item.replaceChild(wrapper, iframe);
-                });
-              }, 200);
-
-              // Controles do miniplayer
-              setTimeout(function() {
-                const btnPrev = document.getElementById('yt-btn-prev');
-                const btnNext = document.getElementById('yt-btn-next');
-                const btnPlayPause = document.getElementById('yt-btn-playpause');
-                const btnClose = document.getElementById('yt-btn-close');
-                btnPrev.onclick = function() {
-                  ytPlayer && ytPlayer.destroy();
-                  window.showYTMiniplayer((ytCurrentIndex - 1 + ytPlaylists.length) % ytPlaylists.length);
-                };
-                btnNext.onclick = function() {
-                  ytPlayer && ytPlayer.destroy();
-                  window.showYTMiniplayer((ytCurrentIndex + 1) % ytPlaylists.length);
-                };
-                btnPlayPause.onclick = function() {
-                  if (!ytPlayer) return;
-                  const state = ytPlayer.getPlayerState();
-                  if (state === YT.PlayerState.PLAYING) {
-                    ytPlayer.pauseVideo();
-                  } else {
-                    ytPlayer.playVideo();
-                  }
-                };
-                btnClose.onclick = function() {
-                  const miniplayer = document.getElementById('yt-miniplayer');
-                  miniplayer.style.display = 'none';
-                  ytMiniplayerVisible = false;
-                  if (ytPlayer) ytPlayer.destroy();
-                };
-              }, 500);
-            }, 100);
-          }
-        });
       }, 100);
     }
+
+    // Nova etapa do grounding
+    function renderizarDesacelera3() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Estamos fazendo um ótimo trabalho!!</h2>
+          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, foque em 4 coisas que você pode tocar ao seu redor.</div>
+          <div class=\"card-svg-breath\" style=\"background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;\">
+            <div style=\"display:flex; justify-content:center; margin-bottom:0.5rem;\">
+              <dotlottie-player
+                src=\"https://lottie.host/82cb5a5b-862d-49fc-9505-59dcb253bc28/NmJFKbGmGS.lottie\"
+                background=\"transparent\"
+                speed=\"1\"
+                style=\"width: 300px; height: 300px\"
+                loop
+                autoplay
+              ></dotlottie-player>
+            </div>
+          </div>
+          <div class=\"grounding-steps\" style=\"margin-bottom:2.2rem;\">
+            <div class=\"step\" style=\"opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;\">
+              <div style=\"display:flex; align-items:center; justify-content:center;\">
+                <lord-icon src=\"https://cdn.lordicon.com/wyupmbaf.json\" trigger=\"hover\" colors=\"primary:#2563eb\" style=\"width:44px;height:44px; margin-right:-6px;\"></lord-icon>
+                <span>Enquanto faz a lista tente imaginar a sensação de tocar esses objetos.</span>
+              </div>
+            </div>
+          </div>
+          <button id=\"btn-proximo-grounding2\" class=\"btn-exercicio-action primary\">Próximo exercício</button>
+        </div>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnProximoGrounding2 = document.getElementById('btn-proximo-grounding2');
+        if (btnProximoGrounding2) {
+          btnProximoGrounding2.addEventListener('click', function() {
+            renderizarDesacelera4();
+          });
+        }
+      }, 100);
+    }
+
+    // Nova etapa do grounding: 3 sons
+    function renderizarDesacelera4() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Estamos indo muito bem — continue assim!</h2>
+          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, foque em 3 coisas que você pode ouvir ao seu redor.</div>
+          <div class=\"card-svg-breath\" style=\"background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;\">
+            <div class=\"gif-container\" style=\"display:flex; gap:18px; justify-content:center; margin-bottom:0.5rem;\">
+              <lord-icon src=\"https://cdn.lordicon.com/wdskumse.json\" trigger=\"loop\" style=\"width:70px;height:70px\"></lord-icon>
+              <lord-icon src=\"https://cdn.lordicon.com/pkqesxyl.json\" trigger=\"loop\" colors=\"primary:#121331,secondary:#fad1e6,tertiary:#ebe6ef,quaternary:#9cc2f4,quinary:#ee66aa\" style=\"width:70px;height:70px\"></lord-icon>
+              <lord-icon src=\"https://cdn.lordicon.com/ampqqopm.json\" trigger=\"loop\" state=\"hover-draw\" style=\"width:70px;height:70px\"></lord-icon>
+            </div>
+          </div>
+          <div class=\"grounding-steps\" style=\"margin-bottom:2.2rem;\">
+            <div class=\"step\" style=\"opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;\">
+              <div style=\"display:flex; align-items:center; justify-content:center; gap:10px;\">
+                <lord-icon src=\"https://cdn.lordicon.com/btnnftrg.json\" trigger=\"loop\" style=\"width:24px;height:24px\"></lord-icon>
+                <span>Faça a lista desses 3 sons</span>
+              </div>
+              <div style=\"color:#6c757d; font-size:1rem; margin-top:0.3rem;\">(Tente focar em 1 por vez)</div>
+            </div>
+          </div>
+          <button id=\"btn-proximo-grounding3\" class=\"btn-exercicio-action primary\">Próximo exercício</button>
+        </div>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnProximoGrounding3 = document.getElementById('btn-proximo-grounding3');
+        if (btnProximoGrounding3) {
+          btnProximoGrounding3.addEventListener('click', function() {
+            renderizarDesacelera5();
+          });
+        }
+      }, 100);
+    }
+
+    // Nova etapa do grounding: 2 cheiros
+    function renderizarDesacelera5() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Você está quase lá!</h2>
+          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, foque em 2 coisas que você pode cheirar ao seu redor.</div>
+          <div class=\"card-svg-breath\" style=\"background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;\">
+            <div class=\"gif-container\" style=\"display:flex; gap:18px; justify-content:center; margin-bottom:0.5rem;\">
+              <lord-icon src=\"https://cdn.lordicon.com/elcmkycs.json\" trigger=\"loop\" colors=\"primary:#121331,secondary:#e5d1fa,tertiary:#eeaa66\" style=\"width:70px;height:70px\"></lord-icon>
+              <lord-icon src=\"https://cdn.lordicon.com/gxazedvy.json\" trigger=\"loop\" style=\"width:70px;height:70px\"></lord-icon>
+            </div>
+          </div>
+          <div class=\"grounding-steps\" style=\"margin-bottom:2.2rem;\">
+            <div class=\"step\" style=\"opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;\">
+              <div style=\"display:flex; align-items:center; justify-content:center; gap:10px;\">
+                <span>Se preferir, pode fechar os olhos e se lembrar de um cheiro nostálgico e calmante para você.</span>
+              </div>
+              <lord-icon src=\"https://cdn.lordicon.com/gtqfjljk.json\" trigger=\"loop\" delay=\"500\" colors=\"primary:#121331,secondary:#2ca58d,tertiary:#e83a30\" style=\"width:44px;height:44px\"></lord-icon>
+              <div style=\"color:#6c757d; font-size:1rem; margin-top:0.3rem;\">(Pode ser perfume, comida, natureza...)</div>
+            </div>
+          </div>
+          <button id=\"btn-proximo-grounding4\" class=\"btn-exercicio-action primary\">Próximo exercício</button>
+        </div>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnProximoGrounding4 = document.getElementById('btn-proximo-grounding4');
+        if (btnProximoGrounding4) {
+          btnProximoGrounding4.addEventListener('click', function() {
+            renderizarDesacelera6();
+          });
+        }
+      }, 100);
+    }
+
+    // Última etapa do grounding: 1 sabor
+    function renderizarDesacelera6() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Parabéns, você chegou ao último passo!</h2>
+          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Agora, que tal encontrar algo por perto que tenha um gostinho bom? </div>
+          <div class=\"card-svg-breath\" style=\"background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;\">
+            <div class=\"gif-container\" style=\"display:flex; justify-content:center; margin-bottom:0.5rem;\">
+              <dotlottie-player src=\"https://lottie.host/ef30fcca-dbbd-4f54-857a-a752b33e6043/OrWaG9EOqb.lottie\" background=\"transparent\" speed=\"1\" style=\"width: 350px; height: 350px\" loop autoplay></dotlottie-player>
+            </div>
+          </div>
+          <div class=\"grounding-steps\" style=\"margin-bottom:2.2rem;\">
+            <div class=\"step\" style=\"opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;\">
+              <div style=\"display:flex; align-items:center; justify-content:center; gap:10px;\">
+                <span>Se não estiver com nada para saborear, apenas imagine o gosto de algo que você gosta.</span>
+              </div>
+              <div style=\"color:#6c757d; font-size:1rem; margin-top:0.3rem;\">(Pode ser uma fruta, doce, café... o que preferir!)</div>
+            </div>
+          </div>
+          <button id=\"btn-proximo-exercicio3\" class=\"btn-exercicio-action secondary\">Próximo exercício</button>
+          <button id=\"btn-finalizar-grounding\" class=\"btn-exercicio-action primary\" style=\"margin-top:1rem;\">Finalizar</button>
+        </div>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnFinalizarGrounding = document.getElementById('btn-finalizar-grounding');
+        if (btnFinalizarGrounding) {
+          btnFinalizarGrounding.addEventListener('click', function() {
+            renderizarTelaAgradecimento();
+          });
+        }
+        const btnProximoExercicio3 = document.getElementById('btn-proximo-exercicio3');
+        if (btnProximoExercicio3) {
+          btnProximoExercicio3.addEventListener('click', function() {
+            renderizarShaking();
+          });
+        }
+      }, 100);
+    }
+
+    // Etapa de chacoalhar
+    function renderizarShaking() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class=\"respira-detalhe\">
+          <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">Vamos se chacoalhar!!</h2>
+          <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Libere as tensões do corpo</div>
+          <div class=\"card-svg-breath\" style=\"background:none; box-shadow:none; padding:0; margin-bottom:1.5rem;\">
+            <div class=\"gif-container\" style=\"display:flex; justify-content:center; margin-bottom:0.5rem;\"> 
+              <img src=\"https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3o5aTlsd2lpb2ZqYnpyYXptYzlpZDh6ODJjNWs2Nmc4Y2EzaGl0dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qe3gu0bH7Shj2/giphy.gif\" alt=\"Gif de chacoalhar\" style=\"width: 220px; height: 220px; border-radius: 18px; object-fit: cover;\">
+            </div>
+            <div class=\"grounding-steps\" style=\"margin-bottom:2.2rem;\">
+              <div class=\"step\" style=\"opacity:1; display:flex; flex-direction:column; align-items:center; gap:0.7rem;\">
+                <div style=\"display:flex; align-items:center; justify-content:center; gap:10px;\">
+                  <span>
+                    Talvez, em um primeiro momento, isso pareça algo simples ou até sem importância...<br>
+                  </span>
+                  <button id=\"toggle-dica\" style=\"background:none; border:none; cursor:pointer; margin-left:8px; vertical-align:middle;\">
+                    <i id=\"seta-dica\" class=\"fas fa-chevron-down\" style=\"transition: transform 0.3s; font-size:1.2rem; color:#2563EB;\"></i>
+                  </button>
+                </div>
+                <div id=\"caixa-dica\" style=\"display:none; background:#f7faff; border:1px solid #c7d8fe; border-radius:12px; margin-top:12px; padding:1rem; color:#2563EB; font-size:1rem;\">
+                  <strong>Por que isso funciona?</strong><br>
+                  Esse tipo de soltura, ensina seu cérebro a relaxar as escápulas e andar com menos contrações descnecessárias, melhorando sua postura e te deixando mais relaxado. Não precisa ser bonito, faça do seu jeito!
+                </div>
+              </div>
+            </div>
+            <div style=\"color:#2563EB; font-size:1rem; margin-top:0.7rem;\">Se quiser, coloque uma música animada para ajudar.</div>
+          </div>
+          <button id=\"btn-proximo-exercicio2\" class=\"btn-exercicio-action secondary\">Próximo exercício</button>
+          <button id=\"btn-finalizar-shaking\" class=\"btn-exercicio-action primary\" style=\"margin-top:1rem;\">Finalizar</button>
+        </div>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnFinalizarShaking = document.getElementById('btn-finalizar-shaking');
+        if (btnFinalizarShaking) {
+          btnFinalizarShaking.addEventListener('click', function() {
+            renderizarTelaAgradecimento();
+          });
+        }
+        // Próxima etapa se desejar expandir
+        const btnProximoExercicio2 = document.getElementById('btn-proximo-exercicio2');
+        if (btnProximoExercicio2) {
+          btnProximoExercicio2.addEventListener('click', function() {
+            renderizarTelaVideoFinalDesacelera();
+          });
+        }
+        // Toggle da dica
+        const btnToggleDica = document.getElementById('toggle-dica');
+        const caixaDica = document.getElementById('caixa-dica');
+        const setaDica = document.getElementById('seta-dica');
+        if (btnToggleDica && caixaDica && setaDica) {
+          btnToggleDica.addEventListener('click', function() {
+            if (caixaDica.style.display === 'none') {
+              caixaDica.style.display = 'block';
+              setaDica.style.transform = 'rotate(180deg)';
+            } else {
+              caixaDica.style.display = 'none';
+              setaDica.style.transform = 'rotate(0deg)';
+            }
+          });
+        }
+      }, 100);
+    }
+
+    // Etapa final: vídeo e modal de zoom
+    function renderizarTelaVideoFinalDesacelera() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class=\"respira-detalhe\">\n      <h2 style=\"color:#2563EB; font-size:2rem; font-weight:800; margin-bottom:0.7rem;\">E agora, para concluirmos com leveza nossa jornada de hoje...</h2>\n      <div style='color:#6c757d; font-size:1.1rem; margin-bottom:2rem;'>Assista a esse vídeo curtinho — ele pode te ajudar a se sentir melhor agora.</div>\n      <div style=\"display:flex; justify-content:center; margin-bottom:1.5rem;\">\n        <div style=\"position:relative; display:inline-block; width:100%; max-width:900px;\">\n          <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/pv-aymg97JM?si=N7456ZQ8mQocxy66\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen style=\"border-radius:16px;\"></iframe>\n        </div>\n      </div>\n      <div style=\"color:#2563EB; font-size:1.1rem; margin-bottom:2.2rem; text-align:center;\">Para uma experiência mais imersiva, recomendamos o uso de fones de ouvido.<br>Equipe Helpstress te parabeniza por chegar até aqui.</div>\n      <button id=\"btn-voltar-video\" class=\"btn-exercicio-action primary\">Voltar</button>\n    </div>
+  `;
+  fadeInExercicio();
+  setTimeout(function() {
+    var btnVoltarVideo = document.getElementById('btn-voltar-video');
+    if (btnVoltarVideo) {
+      btnVoltarVideo.addEventListener('click', function() {
+        renderizarTelaAgradecimento();
+      });
+    }
+  }, 100);
+}
+
   </script>
 </body>
 </html>
