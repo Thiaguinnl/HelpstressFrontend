@@ -1,5 +1,3 @@
-export const baseUrl = "https://helpstress-backend.onrender.com";
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log('auth.js carregado!');
     const userNotLoggedInDesktopDiv = document.getElementById('user-not-logged-in-desktop');

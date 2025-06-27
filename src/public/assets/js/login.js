@@ -1,5 +1,3 @@
-import { baseUrl } from './auth.js';
-
 console.log('Script de login carregado!');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -51,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            const resposta = await fetch(`${baseUrl}/login`, {
+            const resposta = await fetch('/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

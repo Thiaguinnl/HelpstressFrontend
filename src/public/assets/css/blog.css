@@ -1,0 +1,240 @@
+/* Barra de progresso do teste de ansiedade */
+.progress-bar-teste {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.progress-step {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e0e7ef;
+  border: 2.5px solid #bfc9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #bfc9d9;
+  position: relative;
+  z-index: 2;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.progress-step.active {
+  background: #2563EB;
+  border-color: #2563EB;
+  color: #fff;
+}
+.progress-bar-line {
+  flex: 1;
+  height: 4px;
+  background: #e0e7ef;
+  margin: 0 -2px;
+  z-index: 1;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.progress-bar-line.active {
+  background: #2563EB;
+}
+.progress-step-text {
+  text-align: center;
+  font-size: 0.98rem;
+  margin-top: 0.5rem;
+  color: #888;
+  font-weight: 500;
+  min-width: 80px;
+}
+.progress-step-text.active {
+  color: #2563EB;
+  font-weight: 600;
+}
+@media (max-width: 500px) {
+  .progress-bar-teste {
+    max-width: 99vw;
+  }
+  .progress-step-text {
+    min-width: 60px;
+    font-size: 0.92rem;
+  }
+  .progress-step {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+}
+
+/* Opções do teste de ansiedade */
+.teste-opcoes {
+  display: flex;
+  gap: 1.1rem;
+  margin: 1.3rem 0 2.2rem 0;
+  flex-wrap: wrap;
+}
+.teste-opcao {
+  background: #e9eef2;
+  color: #205080;
+  border: 1px solid #bfc9d9;
+  border-radius: 2rem;
+  padding: 0.85rem 1.7rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s, border 0.18s;
+  outline: none;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.04);
+  letter-spacing: 0.01em;
+}
+.teste-opcao.ativa, .teste-opcao:focus {
+  background: #2563EB;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+}
+.teste-opcao:hover:not(.ativa) {
+  background: #dbeafe;
+  color: #2563EB;
+}
+@media (max-width: 500px) {
+  .teste-opcoes {
+    gap: 0.5rem;
+  }
+  .teste-opcao {
+    padding: 0.7rem 1.1rem;
+    font-size: 0.98rem;
+  }
+}
+
+.teste-perguntas-lado-a-lado {
+  display: flex;
+  gap: 2.2rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+@media (max-width: 800px) {
+  .teste-perguntas-lado-a-lado {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+}
+
+.btn-proximo-teste {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: linear-gradient(90deg, #2196f3 0%, #047dac 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.03rem;
+  border: none;
+  border-radius: 2rem 2.5rem 2.5rem 2rem;
+  padding: 0.7rem 1.7rem 0.7rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  box-shadow: 0 4px 18px rgba(33,150,243,0.10);
+  margin-top: 2.5rem;
+  margin-left: auto;
+  margin-right: 0;
+  letter-spacing: 0.03em;
+  outline: none;
+}
+.btn-proximo-teste:hover, .btn-proximo-teste:focus {
+  background: linear-gradient(90deg, #047dac 0%, #2196f3 100%);
+  box-shadow: 0 8px 28px rgba(33,150,243,0.16);
+  transform: translateY(-2px) scale(1.03);
+}
+.btn-proximo-teste .seta {
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-right: 2.2px solid #fff;
+  border-bottom: 2.2px solid #fff;
+  transform: rotate(-45deg);
+  margin-left: 0.2rem;
+  margin-top: 1px;
+}
+@media (max-width: 600px) {
+  .btn-proximo-teste {
+    display: flex;
+    margin: 2.5rem auto 0 auto;
+    width: 90%;
+    justify-content: center;
+    font-size: 0.97rem;
+    padding: 0.7rem 0;
+  }
+}
+
+.mensagem-erro-teste {
+  background: #fff6f6;
+  color: #d32f2f;
+  border: 2px solid #ef9a9a;
+  border-radius: 2rem;
+  padding: 1.1rem 1.5rem 1.1rem 2rem;
+  margin-top: 0.7rem;
+  font-size: 1.04rem;
+  font-weight: 500;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.mensagem-erro-teste strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.respostas-teste-card {
+  background: #f8f9fa;
+  border: 2px solid #bfc9d9;
+  border-radius: 2.5rem 2.5rem 0.3rem 2.5rem;
+  max-width: 600px;
+  margin: 2.2rem auto 2.5rem auto;
+  padding: 2.2rem 2.2rem 2rem 2.2rem;
+  box-shadow: 0 2px 12px rgba(33,150,243,0.06);
+}
+.respostas-teste-titulo {
+  color: #205080;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 1.3rem;
+  text-align: left;
+}
+.respostas-teste-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.resposta-teste-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.08rem;
+  color: #205080;
+  padding: 0.2rem 0;
+}
+.resposta-teste-label {
+  flex: 1 1 60%;
+  text-align: left;
+}
+.resposta-teste-valor {
+  flex: 1 1 40%;
+  text-align: right;
+  font-weight: 700;
+  color: #047dac;
+}
+@media (max-width: 700px) {
+  .respostas-teste-card {
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+  }
+  .respostas-teste-titulo {
+    font-size: 1.13rem;
+  }
+  .resposta-teste-item {
+    font-size: 0.98rem;
+  }
+}

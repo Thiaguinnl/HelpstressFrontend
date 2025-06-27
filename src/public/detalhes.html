@@ -187,6 +187,24 @@
           </div>
         `
       },
+      aquieagora: {
+        titulo: 'Aqui e Agora',
+        imagem: 'assets/img/meditação.jpg',
+        descricao: '4 meditações para formar uma âncora de bem-estar no momento presente.',
+        conteudo: `
+          <div class="respira-detalhe" style="max-width:480px;margin:0 auto;">
+            <h2 style="color:#2563EB; font-size:2.1rem; font-weight:800; margin-bottom:0.5rem; text-align:center; letter-spacing:0.5px;">Vamos iniciar nossas meditações</h2>
+            <p style="color:#6c757d; font-size:1.18rem; margin-bottom:2.1rem; text-align:center; line-height:1.6;">Siga nossos passos e tudo vai dar certo.</p>
+            <div style="display:flex; justify-content:center; margin-bottom:1.5rem;">
+              <dotlottie-player src="https://lottie.host/42d7b2de-af78-4412-a276-0ead20e8f658/s8dG68kYd7.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:1.2rem; align-items:center;">
+              <button id="btn-comecar-aquieagora" class="btn-exercicio-action primary" style="width:100%; max-width:320px;">Começar</button>
+              <button id="btn-mindfulness-info" class="btn-exercicio-action secondary" style="width:100%; max-width:320px;">O que é Mindfulness?</button>
+            </div>
+          </div>
+        `
+      },
       // Futuramente: aquieagora...
     };
 
@@ -218,6 +236,20 @@
             } else {
               renderizarTelaFinal();
             }
+          });
+        }
+        // Listener para o botão "O que é Mindfulness?" na tela Aqui e Agora
+        var btnMindfulnessInfo = document.getElementById('btn-mindfulness-info');
+        if (btnMindfulnessInfo) {
+          btnMindfulnessInfo.addEventListener('click', function() {
+            renderizarMindfulnessInfo();
+          });
+        }
+        // Listener para o botão "Começar" (a ser implementado)
+        var btnComecarAquiAgora = document.getElementById('btn-comecar-aquieagora');
+        if (btnComecarAquiAgora) {
+          btnComecarAquiAgora.addEventListener('click', function() {
+            renderizarTelaMeditacaoAquiAgora();
           });
         }
       }, 100);
@@ -1209,6 +1241,143 @@
     }
   }, 100);
 }
+
+    // Tela de explicação do Mindfulness
+    function renderizarMindfulnessInfo() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="max-width:480px;margin:0 auto; opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style="color:#2563EB; font-size:2.1rem; font-weight:800; margin-bottom:0.7rem; text-align:center;">O que é a técnica mindfulness?</h2>
+          <p style="color:#6c757d; font-size:1.18rem; margin-bottom:2.1rem; text-align:center; line-height:1.6;">Na prática, o mindfulness compreende diversos exercícios de meditação que têm como objetivo levar o indivíduo à atenção plena.<br><br>Com a experiência de atenção plena desenvolvida com esses exercícios, torna-se cada vez mais fácil aplicar a técnica no dia a dia para além dos momentos de meditação, ajudando em episódios de estresse e ansiedade, por exemplo.</p>
+          <div style="display:flex; justify-content:center; margin-bottom:1.5rem;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/qkTGEkYdZug?si=0V4R6Q9jZ1iN8NoC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:18px;"></iframe>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1.2rem; align-items:center;">
+            <button id="btn-prosseguir-mindfulness" class="btn-exercicio-action primary" style="width:100%; max-width:320px;">Prosseguir</button>
+          </div>
+        </div>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnProsseguir = document.getElementById('btn-prosseguir-mindfulness');
+        if (btnProsseguir) {
+          btnProsseguir.addEventListener('click', function() {
+            renderizarTelaMeditacaoAquiAgora();
+          });
+        }
+      }, 100);
+    }
+
+    // Tela de meditações do Aqui e Agora
+    function renderizarTelaMeditacaoAquiAgora() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="max-width:720px;margin:0 auto; opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style="color:#2563EB; font-size:2.1rem; font-weight:800; margin-bottom:2rem; text-align:center;">Vamos praticar seu mindfulness hoje</h2>
+          
+          <div style="display:flex; flex-direction:column; gap:2.5rem; margin-bottom:2.5rem;">
+            <div class="meditacao-item">
+              <h3 style="color:#8ecae6; font-size:1.4rem; font-weight:700; margin-bottom:1rem; text-align:center;">Amando a si mesmo</h3>
+              <div style="display:flex; justify-content:center;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/XrhyFLrc9tU?si=SVaPZSV-aHWQ2Ifo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:18px; box-shadow:0 8px 32px #181c2555;"></iframe>
+              </div>
+            </div>
+            
+            <div class="meditacao-item">
+              <h3 style="color:#8ecae6; font-size:1.4rem; font-weight:700; margin-bottom:1rem; text-align:center;">Libertando da procrastinação</h3>
+              <div style="display:flex; justify-content:center;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/DWhImhoSAQE?si=w5LfafAeIaZEEKy9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:18px; box-shadow:0 8px 32px #181c2555;"></iframe>
+              </div>
+            </div>
+            
+            <div class="meditacao-item">
+              <h3 style="color:#8ecae6; font-size:1.4rem; font-weight:700; margin-bottom:1rem; text-align:center;">Limpeza mental</h3>
+              <div style="display:flex; justify-content:center;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/gnc2r0lvVOQ?si=VXaB0qjD-RGBdCbu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:18px; box-shadow:0 8px 32px #181c2555;"></iframe>
+              </div>
+            </div>
+            
+            <div class="meditacao-item">
+              <h3 style="color:#8ecae6; font-size:1.4rem; font-weight:700; margin-bottom:1rem; text-align:center;">Relaxamento corporal</h3>
+              <div style="display:flex; justify-content:center;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/knijaCFzQxw?si=xDx59iwzGbMdD7W5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius:18px; box-shadow:0 8px 32px #181c2555;"></iframe>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display:flex; justify-content:center;">
+            <button id="btn-finalizar-meditacoes" class="btn-exercicio-action primary" style="width:100%; max-width:320px;">Finalizar meditações</button>
+          </div>
+        </div>
+        <style>
+          @media (max-width: 768px) {
+            iframe {
+              width: 100% !important;
+              height: 200px !important;
+            }
+          }
+          .meditacao-item {
+            transition: transform 0.3s ease;
+          }
+          .meditacao-item:hover {
+            transform: translateY(-5px);
+          }
+        </style>
+      `;
+      fadeInExercicio();
+      setTimeout(function() {
+        const btnFinalizarMeditacoes = document.getElementById('btn-finalizar-meditacoes');
+        if (btnFinalizarMeditacoes) {
+          btnFinalizarMeditacoes.addEventListener('click', function() {
+            renderizarTelaAgradecimentoAquiAgora();
+          });
+        }
+      }, 100);
+    }
+
+    // Função auxiliar para voltar à tela inicial do Aqui e Agora
+    function renderizarTelaAquiAgora() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = cardsContent.aquieagora.conteudo;
+      fadeInExercicio();
+      setTimeout(function() {
+        // Re-adiciona os listeners
+        var btnMindfulnessInfo = document.getElementById('btn-mindfulness-info');
+        if (btnMindfulnessInfo) {
+          btnMindfulnessInfo.addEventListener('click', function() {
+            renderizarMindfulnessInfo();
+          });
+        }
+        var btnComecarAquiAgora = document.getElementById('btn-comecar-aquieagora');
+        if (btnComecarAquiAgora) {
+          btnComecarAquiAgora.addEventListener('click', function() {
+            renderizarTelaMeditacaoAquiAgora();
+          });
+        }
+      }, 100);
+    }
+
+    // Tela de agradecimento do Aqui e Agora
+    function renderizarTelaAgradecimentoAquiAgora() {
+      const detalhesCard = document.getElementById('detalhes-card');
+      detalhesCard.innerHTML = `
+        <div class="respira-detalhe" style="text-align:center; opacity:0; animation:fadeInDetalhe 0.5s forwards;">
+          <h2 style="color:#2563EB; font-size:2.1rem; font-weight:800; margin-bottom:0.7rem;">Parabéns por completar suas meditações!</h2>
+          <p style="color:#6c757d; font-size:1.18rem; margin-bottom:2rem; line-height:1.6;">Continue praticando mindfulness regularmente para fortalecer sua conexão com o momento presente e reduzir o estresse do dia a dia.</p>
+          
+          <div style="margin-bottom:2.5rem;">
+            <img src="assets/img/cat.gif" alt="Meditação completa" style="width:280px; height:280px; border-radius:22px; object-fit:cover;">
+          </div>
+          
+          <div style="color:#8ecae6; font-size:1.1rem; margin-bottom:2.2rem; font-weight:600;">
+            Lembre-se: a prática constante é o caminho para o bem-estar! 🌟
+          </div>
+          
+          <a href="dicasTecnicas.html" class="btn-exercicio-action primary">Voltar para Dicas e Técnicas</a>
+        </div>
+      `;
+      fadeInExercicio();
+    }
 
   </script>
 </body>

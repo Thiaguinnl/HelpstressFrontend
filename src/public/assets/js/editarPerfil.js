@@ -1,5 +1,3 @@
-import { baseUrl } from './auth.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const editarPerfilNomeUsuario = document.querySelector('.editar-perfil-nome');
     const editarPerfilCategoriaAtiva = document.querySelector('.editar-perfil-categoria');
@@ -74,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para carregar e exibir os posts do usuário
     async function loadUserPosts(userId) {
         try {
-            const response = await fetch(`${baseUrl}/posts?userId=${userId}&_sort=id&_order=desc&_limit=4`); 
+            const response = await fetch(`/posts?userId=${userId}&_sort=id&_order=desc&_limit=4`); 
             const userPosts = await response.json();
 
             recentPostsContainer.innerHTML = ''; 
@@ -155,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const response = await fetch(`${baseUrl}/usuarios/${user.id}`, {
+            const response = await fetch(`/usuarios/${user.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -193,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const response = await fetch(`${baseUrl}/usuarios/${user.id}`, {
+            const response = await fetch(`/usuarios/${user.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

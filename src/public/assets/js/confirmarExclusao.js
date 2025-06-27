@@ -1,5 +1,3 @@
-import { baseUrl } from './auth.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.getElementById('backFromDeleteBtn');
     const confirmDeleteButton = document.getElementById('confirmDeleteAccountBtn');
@@ -35,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Requisição DELETE para o JSON Server
-                const response = await fetch(`${baseUrl}/usuarios/${userId}`, {
+                const response = await fetch(`/usuarios/${userId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

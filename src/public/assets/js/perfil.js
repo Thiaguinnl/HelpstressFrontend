@@ -1,5 +1,3 @@
-import { baseUrl } from './auth.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const perfilNomeUsuario = document.getElementById('perfil-nome-usuario');
     const perfilDescricaoUsuario = document.getElementById('perfil-descricao-usuario');
@@ -28,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`${baseUrl}/usuarios/${userId}`);
+            const response = await fetch(`http://localhost:3000/usuarios/${userId}`);
             if (response.ok) return await response.json();
             
             console.warn(`Endpoint /usuarios/${userId} não encontrado. Buscando dados alternativos.`);
-            const postResponse = await fetch(`${baseUrl}/posts?userId=${userId}&_limit=1`);
+            const postResponse = await fetch(`http://localhost:3000/posts?userId=${userId}&_limit=1`);
             if (postResponse.ok) {
                 const posts = await postResponse.json();
                 if (posts.length > 0) {
@@ -48,9 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchContent(tab, userId) {
         let endpoint = '';
-        if (tab === postsTab) endpoint = `${baseUrl}/posts?userId=${userId}&_sort=id&_order=desc`;
-        else if (tab === likesTab) endpoint = `${baseUrl}/posts?likedBy_like=${userId}&_sort=id&_order=desc`;
-        else if (tab === savedTab) endpoint = `${baseUrl}/posts?savedBy_like=${userId}&_sort=id&_order=desc`;
+        if (tab === postsTab) endpoint = `http://localhost:3000/posts?userId=${userId}&_sort=id&_order=desc`;
+        else if (tab === likesTab) endpoint = `http://localhost:3000/posts?likedBy_like=${userId}&_sort=id&_order=desc`;
+        else if (tab === savedTab) endpoint = `http://localhost:3000/posts?savedBy_like=${userId}&_sort=id&_order=desc`;
         
         if (!endpoint) return [];
 
@@ -215,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const userId = profileData.id;
             const token = getLoggedInUser()?.token;
             try {
-                await fetch(`${baseUrl}/usuarios/${userId}`, {
+                await fetch(`http://localhost:3000/usuarios/${userId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json', ...(token ? { 'Authorization': 'Bearer ' + token } : {}) },
                     body: JSON.stringify({ tags: newTags })
@@ -292,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function atualizarPostBackend(postId, data) {
         const token = getLoggedInUser()?.token;
         try {
-            const response = await fetch(`${baseUrl}/posts/${postId}`, {
+            const response = await fetch(`http://localhost:3000/posts/${postId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

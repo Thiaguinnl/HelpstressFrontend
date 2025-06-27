@@ -52,4 +52,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Scroll suave para info-cards-container ao clicar no botão "Explorar"
+  const scrollBtn = document.getElementById('scroll-to-info-cards');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const infoCards = document.querySelector('.info-cards-container');
+      if (infoCards) {
+        infoCards.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  }
+
+  // Parallax animado nos info-cards
+  const infoCards = document.querySelectorAll('.info-card-parallax');
+  infoCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const moveX = (x - centerX) / centerX * 14; // até 14deg (moderado)
+      const moveY = (y - centerY) / centerY * 14;
+      card.style.transform = `rotateY(${moveX}deg) rotateX(${-moveY}deg) scale(1.05)`;
+      card.style.boxShadow = `${-moveX*2.5}px ${moveY*2.5}px 32px 0 rgba(37,99,235,0.15)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.boxShadow = '';
+    });
+  });
+
 });
