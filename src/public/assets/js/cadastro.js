@@ -90,9 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(dados.mensagem || 'Erro ao realizar cadastro');
             }
 
-            showMessage('Cadastro realizado com sucesso!', 'success');
+            showMessage('Cadastro realizado com sucesso! Redirecionando...', 'success');
             formCadastro.reset();
             clearInputErrors();
+
+            // Salva os dados do usuário no localStorage para simular login automático
+            localStorage.setItem('userData', JSON.stringify(dados.usuario || dados));
+
+            // Redireciona para a página principal após um pequeno delay
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1200);
             
         } catch (erro) {
             console.error('Erro ao cadastrar:', erro);

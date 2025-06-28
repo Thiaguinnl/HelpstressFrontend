@@ -1451,81 +1451,87 @@ main {
 }
 
 /* === Estilo dos cards de post estilo Twitter === */
-.twitter-post-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  margin: 24px 0;
-  padding: 18px 20px 10px 20px;
-  max-width: 540px;
-  width: 100%;
-  transition: box-shadow 0.2s;
-  border: 1px solid #e9ecef;
+#todos-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+.twitter-post-card {
+    width: 100%;
+    max-width: 540px;
+    margin: 24px 0;
+    box-sizing: border-box;
+}
+
 .twitter-post-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
 }
 .post-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
 }
 .post-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 12px;
-  border: 2px solid #e6ecf0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    border: 2px solid #e6ecf0;
 }
 .post-user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .post-author {
-  font-weight: 600;
-  color: #222;
+    font-weight: 600;
+    color: #222;
 }
 .post-time {
-  color: #8899a6;
-  font-size: 0.95em;
+    color: #8899a6;
+    font-size: 0.95em;
 }
 .post-content p {
-  margin: 0 0 10px 0;
-  color: #222;
-  font-size: 1.08em;
-  line-height: 1.5;
+    margin: 0 0 10px 0;
+    color: #222;
+    font-size: 1.08em;
+    line-height: 1.5;
 }
 .post-img {
-  width: 100%;
-  max-height: 340px;
-  object-fit: contain;
-  border-radius: 14px;
-  margin: 10px auto;
-  background: #fff;
-  display: block;
+    width: 100%;
+    max-height: 340px;
+    object-fit: contain;
+    border-radius: 14px;
+    margin: 10px auto;
+    background: #fff;
+    display: block;
 }
 .post-actions {
-  display: flex;
-  gap: 32px;
-  margin-top: 8px;
+    display: flex;
+    gap: 32px;
+    margin-top: 8px;
 }
 .action-btn {
-  font-family: 'Inter', sans-serif;
-  background: none;
-  border: none;
-  color: #8899a6;
-  font-size: 1.1em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: color 0.2s, all 0.3s ease;
-  border: 1px solid #e9ecef;
+    font-family: 'Inter', sans-serif;
+    background: none;
+    border: none;
+    color: #8899a6;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: color 0.2s, all 0.3s ease;
+    border: 1px solid #e9ecef;
 }
 .action-btn:hover {
-  color: #1da1f2;
+    color: #1da1f2;
 }
 
 .action-btn.like-btn.liked i,

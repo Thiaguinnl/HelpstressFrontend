@@ -1027,7 +1027,10 @@ async function atualizarFeed() {
                 const ok = await deletarPostBackend(postId);
                 if (ok) {
                     mostrarMensagemSucesso('Post excluído com sucesso!');
-                    atualizarFeed();
+                    // Remove do array local
+                    todosPostsUltimaBusca = todosPostsUltimaBusca.filter(p => p.id != postId);
+                    // Remove do DOM
+                    this.closest('.twitter-post-card').remove();
                 } else {
                     alert('Erro ao excluir post.');
                 }

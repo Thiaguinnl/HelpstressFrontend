@@ -1,5 +1,42 @@
 import { baseUrl } from './auth.js';
 
+// --- INÍCIO: Variáveis de cache e skeleton ---
+let perfilCache = {
+    userId: null,
+    posts: null,
+    likes: null,
+    saved: null
+};
+
+function showSkeletonLoader(container) {
+    container.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'twitter-post-card skeleton-card';
+        skeleton.innerHTML = `
+            <div class="post-header">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-user-info">
+                    <div class="skeleton-line" style="width: 80px;"></div>
+                    <div class="skeleton-line" style="width: 40px;"></div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="skeleton-line" style="width: 100%; height: 18px;"></div>
+                <div class="skeleton-line" style="width: 90%; height: 18px;"></div>
+                <div class="skeleton-line" style="width: 60%; height: 18px;"></div>
+            </div>
+            <div class="post-actions">
+                <div class="skeleton-action"></div>
+                <div class="skeleton-action"></div>
+                <div class="skeleton-action"></div>
+            </div>
+        `;
+        container.appendChild(skeleton);
+    }
+}
+// --- FIM: Variáveis de cache e skeleton ---
+
 document.addEventListener('DOMContentLoaded', () => {
     const perfilNomeUsuario = document.getElementById('perfil-nome-usuario');
     const perfilDescricaoUsuario = document.getElementById('perfil-descricao-usuario');
@@ -47,17 +84,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchContent(tab, userId) {
+        // --- INÍCIO: Lógica de cache ---
+        if (perfilCache.userId === userId) {
+            if (tab === postsTab && perfilCache.posts) return perfilCache.posts;
+            if (tab === likesTab && perfilCache.likes) return perfilCache.likes;
+            if (tab === savedTab && perfilCache.saved) return perfilCache.saved;
+        }
+        // --- FIM: Lógica de cache ---
         let endpoint = '';
         if (tab === postsTab) endpoint = `${baseUrl}/posts?userId=${userId}&_sort=id&_order=desc`;
         else if (tab === likesTab) endpoint = `${baseUrl}/posts?likedBy_like=${userId}&_sort=id&_order=desc`;
         else if (tab === savedTab) endpoint = `${baseUrl}/posts?savedBy_like=${userId}&_sort=id&_order=desc`;
-        
         if (!endpoint) return [];
-
         try {
             const response = await fetch(endpoint);
             if (!response.ok) throw new Error('Falha ao carregar conteúdo.');
-            return await response.json();
+            const data = await response.json();
+            // --- INÍCIO: Salva no cache ---
+            if (perfilCache.userId !== userId) {
+                perfilCache = { userId, posts: null, likes: null, saved: null };
+            }
+            if (tab === postsTab) perfilCache.posts = data;
+            if (tab === likesTab) perfilCache.likes = data;
+            if (tab === savedTab) perfilCache.saved = data;
+            // --- FIM: Salva no cache ---
+            return data;
         } catch (error) {
             console.error('Erro ao carregar conteúdo:', error);
             return [];
@@ -84,45 +135,63 @@ document.addEventListener('DOMContentLoaded', () => {
     async function showContentForTab(tab, userId) {
         [postsTab, likesTab, savedTab].forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
         noPostsMessage.classList.add('hidden');
         perfilPostsGrid.classList.remove('hidden');
-        perfilPostsGrid.innerHTML = 'Carregando...';
+        showSkeletonLoader(perfilPostsGrid);
         perfilPostsGrid.style.alignItems = 'start';
-
-        const content = await fetchContent(tab, userId);
-        currentContent = content;
-
-        if (content.length > 0) {
-            renderContent(content, perfilPostsGrid);
-            perfilPostsGrid.classList.remove('hidden');
-        } else {
-            let messageTitle = 'Nenhum conteúdo aqui!';
-            let messageText = 'Parece que ainda não há nada para mostrar nesta seção.';
-            let buttonText = 'Explorar Comunidade';
-            let buttonAction = () => window.location.href = '/comunidade.html';
-
-            if (tab === postsTab) {
-                messageTitle = 'Nenhuma postagem encontrada';
-                messageText = 'Que tal compartilhar suas histórias com a comunidade?';
-                buttonText = 'FAZER UMA POSTAGEM';
-                buttonAction = () => window.location.href = '/comunidade.html#postagem';
-            } else if (tab === likesTab) {
-                messageTitle = 'Nenhuma curtida ainda!';
-                messageText = 'Curta posts na comunidade para vê-los aqui.';
-            } else if (tab === savedTab) {
-                messageTitle = 'Nenhum item salvo!';
-                messageText = 'Salve posts e artigos para vê-los aqui.';
-            }
-
-            noPostsMessage.querySelector('h2').textContent = messageTitle;
-            noPostsMessage.querySelector('p').textContent = messageText;
-            const btn = noPostsMessage.querySelector('.share-post-button');
-            btn.textContent = buttonText;
-            btn.onclick = buttonAction;
-            btn.style.display = 'inline-block';
-            noPostsMessage.classList.remove('hidden');
+        // Aguarda o preload se ainda não foi feito
+        if (!perfilCache.userId || perfilCache.userId !== userId || !perfilCache.posts || !perfilCache.likes || !perfilCache.saved) {
+            await preloadAllTabs(userId);
         }
+        let content = [];
+        if (tab === postsTab) content = perfilCache.posts || [];
+        if (tab === likesTab) content = perfilCache.likes || [];
+        if (tab === savedTab) content = perfilCache.saved || [];
+        currentContent = content;
+        setTimeout(() => {
+            if (content.length > 0) {
+                renderContent(content, perfilPostsGrid);
+                perfilPostsGrid.classList.remove('hidden');
+            } else {
+                let messageTitle = 'Nenhum conteúdo aqui!';
+                let messageText = 'Parece que ainda não há nada para mostrar nesta seção.';
+                let buttonText = 'Explorar Comunidade';
+                let buttonAction = () => window.location.href = '/comunidade.html';
+                if (tab === postsTab) {
+                    messageTitle = 'Nenhuma postagem encontrada';
+                    messageText = 'Que tal compartilhar suas histórias com a comunidade?';
+                    buttonText = 'FAZER UMA POSTAGEM';
+                    buttonAction = () => window.location.href = '/comunidade.html#postagem';
+                } else if (tab === likesTab) {
+                    messageTitle = 'Nenhuma curtida ainda!';
+                    messageText = 'Curta posts na comunidade para vê-los aqui.';
+                } else if (tab === savedTab) {
+                    messageTitle = 'Nenhum item salvo!';
+                    messageText = 'Salve posts e artigos para vê-los aqui.';
+                }
+                noPostsMessage.querySelector('h2').textContent = messageTitle;
+                noPostsMessage.querySelector('p').textContent = messageText;
+                const btn = noPostsMessage.querySelector('.share-post-button');
+                btn.textContent = buttonText;
+                btn.onclick = buttonAction;
+                btn.style.display = 'inline-block';
+                noPostsMessage.classList.remove('hidden');
+                perfilPostsGrid.innerHTML = '';
+            }
+        }, 400); // Pequeno delay para o skeleton aparecer
+    }
+
+    async function preloadAllTabs(userId) {
+        // Carrega todos os dados das três abas em paralelo e salva no cache
+        perfilCache = { userId, posts: null, likes: null, saved: null };
+        const [posts, likes, saved] = await Promise.all([
+            fetchContent(postsTab, userId),
+            fetchContent(likesTab, userId),
+            fetchContent(savedTab, userId)
+        ]);
+        perfilCache.posts = posts;
+        perfilCache.likes = likes;
+        perfilCache.saved = saved;
     }
 
     async function main() {
@@ -139,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         viewedUserId = targetUserId;
+        perfilCache = { userId: targetUserId, posts: null, likes: null, saved: null }; // Limpa cache ao trocar de usuário
         const profileData = await fetchProfileData(targetUserId);
 
         if (!profileData) {
@@ -151,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isOwner = loggedInUser && loggedInUser.id == targetUserId;
         setupEventListeners(targetUserId);
         initializeTagSystem(profileData, isOwner);
+        await preloadAllTabs(targetUserId); // Pré-carrega todas as abas
         showContentForTab(postsTab, targetUserId); // Carrega a aba de posts por padrão
     }
 
@@ -363,4 +434,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     main();
-}); 
+});
+
+// --- INÍCIO: CSS do skeleton loader ---
+const style = document.createElement('style');
+style.innerHTML = `
+.skeleton-card {
+    background: #f3f3f3 !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: none !important;
+    animation: skeletonPulse 1.2s infinite ease-in-out;
+}
+.skeleton-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    margin-right: 12px;
+}
+.skeleton-user-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.skeleton-line {
+    height: 14px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+.skeleton-action {
+    width: 32px;
+    height: 32px;
+    background: #e0e0e0;
+    border-radius: 50%;
+    margin-right: 16px;
+    display: inline-block;
+}
+@keyframes skeletonPulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+`;
+document.head.appendChild(style);
+// --- FIM: CSS do skeleton loader --- 
