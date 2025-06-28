@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função para carregar e exibir os posts do usuário
     async function loadUserPosts(userId) {
+        if (!recentPostsContainer) {
+            console.warn('Elemento recentPostsContainer não encontrado.');
+            return;
+        }
         try {
             const response = await fetch(`${baseUrl}/posts?userId=${userId}&_sort=id&_order=desc&_limit=4`); 
             const userPosts = await response.json();
@@ -96,8 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Erro ao carregar posts do usuário:', error);
-            noPostsMessage.style.display = 'block';
-            noPostsMessage.textContent = 'Não foi possível carregar as postagens.';
+            if (noPostsMessage) {
+                noPostsMessage.style.display = 'block';
+                noPostsMessage.textContent = 'Não foi possível carregar as postagens.';
+            }
         }
     }
 
