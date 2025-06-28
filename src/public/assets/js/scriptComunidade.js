@@ -255,8 +255,9 @@ document.querySelector('.blog-grid').addEventListener('scroll', () => {
     updateNavigationButtons();
 });
 
-updateCarousel('todos');
-document.querySelector('.tab').classList.add('active');
+// Inicialização do carrossel movida para dentro do DOMContentLoaded
+// updateCarousel('todos');
+// document.querySelector('.tab').classList.add('active');
 
 // animação no scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1115,7 +1116,27 @@ async function renderTodosPostsSection(reset = false) {
         `;
         todosPostsSection.appendChild(postEl);
     });
-    // Modal expandido
+}
+
+// === FIM DE POSTAGENS COM BACKEND === 
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar carrossel
+    updateCarousel('todos');
+    document.querySelector('.tab').classList.add('active');
+    
+    renderTodosPostsSection(true);
+    setupPostInteractions();
+    setupCommenting();
+    setupCardClickListeners();
+    setupNewPostsNotifier();
+    setupSortSelector();
+}); 
+
+// Função para abrir o modal de um post pelo ID e adaptar a UI
+function abrirModalPostPorId(postId) {
+    const post = todosPostsUltimaBusca.find(p => p.id == postId);
+    if (!post) return;
+    const user = getUserData();
     const modal = document.getElementById('modal-imagem-post');
     const modalImg = document.getElementById('imagem-modal-ampliada');
     const modalAvatar = modal.querySelector('.modal-avatar');
@@ -1171,6 +1192,111 @@ async function renderTodosPostsSection(reset = false) {
 
     renderizarComentariosNoModal(post, modalComentariosContainer, user, modal, modalAcoes, modalIsLiked, modalIsSaved);
     modal.style.display = 'flex';
+}
+
+function setupNewPostsNotifier() {
+    const notifier = document.getElementById('new-posts-notifier');
+    const postsContainer = document.getElementById('todos-posts-container');
+    if (!notifier || !postsContainer) return;
+
+    let isVisible = false;
+
+    // Função para verificar e popular os avatares
+    const populateNotifierAvatars = async () => {
+        const avatarStack = notifier.querySelector('.user-avatars-stack');
+        if (!avatarStack || avatarStack.children.length > 0) return; // Não busca se já tiver avatares
+
+        try {
+            const response = await fetch(`${baseUrl}/posts?_sort=id&_order=desc&_limit=5`);
+            const recentPosts = await response.json();
+            
+            const uniqueUsers = [];
+            const userIds = new Set();
+
+            for (const post of recentPosts) {
+                if (!userIds.has(post.userId) && uniqueUsers.length < 3) {
+                    uniqueUsers.push({ avatar: post.avatar, autor: post.autor });
+                    userIds.add(post.userId);
+                }
+            }
+            
+            avatarStack.innerHTML = '';
+            uniqueUsers.reverse().forEach(user => { // Inverte para o mais recente ficar por cima
+                const img = document.createElement('img');
+                img.src = user.avatar || '/assets/img/user.png';
+                img.alt = user.autor;
+                img.title = user.autor;
+                avatarStack.appendChild(img);
+            });
+        } catch (error) {
+            console.error('Falha ao popular avatares do notificador:', error);
+        }
+    };
+
+    window.addEventListener('scroll', () => {
+        const postsContainerTop = postsContainer.offsetTop;
+        const scrollY = window.scrollY;
+
+        if (scrollY > postsContainerTop && !isVisible) {
+            isVisible = true;
+            populateNotifierAvatars();
+            notifier.classList.add('visible');
+        } else if (scrollY <= postsContainerTop && isVisible) {
+            isVisible = false;
+            notifier.classList.remove('visible');
+        }
+    });
+
+    notifier.addEventListener('click', () => {
+        const firstPost = document.querySelector('#todos-posts .twitter-post-card');
+        if (firstPost) {
+            firstPost.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        } else {
+             postsContainer.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+}
+
+function setupSortSelector() {
+    const filtroBtn = document.getElementById('filtro-btn');
+    const filtroOpcoes = document.getElementById('filtro-opcoes');
+
+    if (!filtroBtn || !filtroOpcoes) return;
+
+    filtroBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        filtroOpcoes.classList.toggle('visible');
+        filtroBtn.classList.toggle('open');
+    });
+
+    filtroOpcoes.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = e.target.closest('a');
+        if (target) {
+            ordenacaoAtual = target.dataset.value;
+
+            // Atualiza o estado 'active'
+            filtroOpcoes.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            target.classList.add('active');
+
+            filtroOpcoes.classList.remove('visible');
+            filtroBtn.classList.remove('open');
+            renderTodosPostsSection(true); // Reseta e renderiza com a nova ordenação
+        }
+    });
+    
+    // Fecha o dropdown se clicar fora
+    document.addEventListener('click', () => {
+        if (filtroOpcoes.classList.contains('visible')) {
+            filtroOpcoes.classList.remove('visible');
+            filtroBtn.classList.remove('open');
+        }
+    });
 }
 
 // Evento para fechar o modal de imagem
@@ -1455,200 +1581,5 @@ function setupCardClickListeners() {
 
         // Caso 3: Clicou no card em geral (fora dos botões de ação)
         abrirModalPostPorId(postId);
-    });
-}
-
-// === FIM DE POSTAGENS COM BACKEND === 
-document.addEventListener('DOMContentLoaded', () => {
-    renderTodosPostsSection(true);
-    setupPostInteractions();
-    setupCommenting();
-    setupCardClickListeners();
-    setupNewPostsNotifier();
-    setupSortSelector();
-}); 
-
-// Função para abrir o modal de um post pelo ID e adaptar a UI
-function abrirModalPostPorId(postId) {
-    const post = todosPostsUltimaBusca.find(p => p.id == postId);
-    if (!post) return;
-    const user = getUserData();
-    const modal = document.getElementById('modal-imagem-post');
-    const modalImg = document.getElementById('imagem-modal-ampliada');
-    const modalAvatar = modal.querySelector('.modal-avatar');
-    const modalAutor = modal.querySelector('.modal-autor');
-    const modalData = modal.querySelector('.modal-data');
-    const modalConteudo = modal.querySelector('.modal-conteudo-post');
-    const modalAcoes = modal.querySelector('.modal-acoes');
-    const modalInfo = modal.querySelector('.modal-info-direita');
-    const modalComentariosContainer = modal.querySelector('.modal-comentarios');
-    const modalImagemEsquerda = modal.querySelector('.modal-imagem-esquerda');
-    const commentUserAvatar = document.getElementById('comment-user-avatar');
-    const modalAvatarLink = modal.querySelector('.modal-avatar-link');
-    const modalAutorLink = modal.querySelector('.modal-autor-link');
-
-    if (!modal || !modalInfo || !modalComentariosContainer) return;
-    
-    modalInfo.dataset.postId = post.id;
-    if(modalAvatar) modalAvatar.src = post.avatar || '/assets/img/user.png';
-    if(modalAutor) modalAutor.textContent = post.autor || 'Usuário';
-    if(modalData) modalData.textContent = post.data || '';
-    if(modalConteudo) modalConteudo.textContent = post.content || '';
-
-    // Adiciona os links para o perfil no modal
-    if (modalAvatarLink) modalAvatarLink.href = `perfil.html?userId=${post.userId}`;
-    if (modalAutorLink) modalAutorLink.href = `perfil.html?userId=${post.userId}`;
-
-    // Ajusta o avatar no formulário de comentário
-    if (user && commentUserAvatar) {
-        commentUserAvatar.src = user.avatar || '/assets/img/user.png';
-    } else if (commentUserAvatar) {
-        commentUserAvatar.src = '/assets/img/user.png';
-    }
-
-    // Adapta o layout do modal com ou sem imagem
-    if (post.img) {
-        modalImagemEsquerda.style.display = 'flex';
-        modalInfo.style.margin = '32px 32px 32px 0';
-        if(modalImg) modalImg.src = post.img;
-    } else {
-        modalImagemEsquerda.style.display = 'none';
-        modalInfo.style.margin = 'auto';
-        if(modalImg) modalImg.src = '';
-    }
-
-    const modalIsLiked = user && post.likedBy && post.likedBy.includes(user.id);
-    const modalIsSaved = user && post.savedBy && post.savedBy.includes(user.id);
-    
-    if(modalAcoes) modalAcoes.innerHTML = `
-        <button class="action-btn comment-btn"><i class="far fa-comment"></i> <span>${(post.comentarios ? post.comentarios.length : 0)}</span></button>
-        <button class="action-btn like-btn ${modalIsLiked ? 'liked' : ''}"><i class="${modalIsLiked ? 'fas' : 'far'} fa-heart"></i> <span>${post.likes || 0}</span></button>
-        <button class="action-btn save-btn ${modalIsSaved ? 'saved' : ''}"><i class="${modalIsSaved ? 'fas' : 'far'} fa-bookmark"></i> <span>${post.salvos || 0}</span></button>
-    `;
-
-    renderizarComentariosNoModal(post, modalComentariosContainer, user, modal, modalAcoes, modalIsLiked, modalIsSaved);
-    modal.style.display = 'flex';
-}
-
-// Função para atualizar o contador de comentários no feed e no modal
-function atualizarContadorComentarios(postId, novoTotal) {
-    document.querySelectorAll(`.twitter-post-card[data-post-id="${postId}"] .comment-btn span`).forEach(span => {
-        span.textContent = novoTotal;
-    });
-    const modal = document.getElementById('modal-imagem-post');
-    if (modal && modal.style.display === 'flex') {
-        const modalInfo = modal.querySelector('.modal-info-direita');
-        if (modalInfo && modalInfo.dataset.postId == postId) {
-            const modalAcoes = modal.querySelector('.modal-acoes');
-            if (modalAcoes) {
-                const commentBtn = modalAcoes.querySelector('.comment-btn span');
-                if (commentBtn) commentBtn.textContent = novoTotal;
-            }
-        }
-    }
-}
-
-function setupNewPostsNotifier() {
-    const notifier = document.getElementById('new-posts-notifier');
-    const postsContainer = document.getElementById('todos-posts-container');
-    if (!notifier || !postsContainer) return;
-
-    let isVisible = false;
-
-    // Função para verificar e popular os avatares
-    const populateNotifierAvatars = async () => {
-        const avatarStack = notifier.querySelector('.user-avatars-stack');
-        if (!avatarStack || avatarStack.children.length > 0) return; // Não busca se já tiver avatares
-
-        try {
-            const response = await fetch(`${baseUrl}/posts?_sort=id&_order=desc&_limit=5`);
-            const recentPosts = await response.json();
-            
-            const uniqueUsers = [];
-            const userIds = new Set();
-
-            for (const post of recentPosts) {
-                if (!userIds.has(post.userId) && uniqueUsers.length < 3) {
-                    uniqueUsers.push({ avatar: post.avatar, autor: post.autor });
-                    userIds.add(post.userId);
-                }
-            }
-            
-            avatarStack.innerHTML = '';
-            uniqueUsers.reverse().forEach(user => { // Inverte para o mais recente ficar por cima
-                const img = document.createElement('img');
-                img.src = user.avatar || '/assets/img/user.png';
-                img.alt = user.autor;
-                img.title = user.autor;
-                avatarStack.appendChild(img);
-            });
-        } catch (error) {
-            console.error('Falha ao popular avatares do notificador:', error);
-        }
-    };
-
-    window.addEventListener('scroll', () => {
-        const postsContainerTop = postsContainer.offsetTop;
-        const scrollY = window.scrollY;
-
-        if (scrollY > postsContainerTop && !isVisible) {
-            isVisible = true;
-            populateNotifierAvatars();
-            notifier.classList.add('visible');
-        } else if (scrollY <= postsContainerTop && isVisible) {
-            isVisible = false;
-            notifier.classList.remove('visible');
-        }
-    });
-
-    notifier.addEventListener('click', () => {
-        const firstPost = document.querySelector('#todos-posts .twitter-post-card');
-        if (firstPost) {
-            firstPost.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        } else {
-             postsContainer.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
-}
-
-function setupSortSelector() {
-    const filtroBtn = document.getElementById('filtro-btn');
-    const filtroOpcoes = document.getElementById('filtro-opcoes');
-
-    if (!filtroBtn || !filtroOpcoes) return;
-
-    filtroBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        filtroOpcoes.classList.toggle('visible');
-        filtroBtn.classList.toggle('open');
-    });
-
-    filtroOpcoes.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = e.target.closest('a');
-        if (target) {
-            ordenacaoAtual = target.dataset.value;
-
-            // Atualiza o estado 'active'
-            filtroOpcoes.querySelectorAll('a').forEach(a => a.classList.remove('active'));
-            target.classList.add('active');
-
-            filtroOpcoes.classList.remove('visible');
-            filtroBtn.classList.remove('open');
-            renderTodosPostsSection(true); // Reseta e renderiza com a nova ordenação
-        }
-    });
-    
-    // Fecha o dropdown se clicar fora
-    document.addEventListener('click', () => {
-        if (filtroOpcoes.classList.contains('visible')) {
-            filtroOpcoes.classList.remove('visible');
-            filtroBtn.classList.remove('open');
-        }
     });
 }
