@@ -72,30 +72,68 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para carregar e exibir os posts do usuário
     async function loadUserPosts(userId) {
         try {
-            const response = await fetch(`/posts?userId=${userId}&_sort=id&_order=desc&_limit=4`); 
+            const response = await fetch(`/posts?userId=${userId}&_sort=id&_order=desc`); 
             const userPosts = await response.json();
+            const postsPorPagina = 3;
+            let indiceAtual = 0;
+            const track = document.getElementById('carouselTrack');
+            const noPostsMessage = document.getElementById('noPostsMessage');
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
 
-            recentPostsContainer.innerHTML = ''; 
+            function renderizarCarrossel() {
+                track.innerHTML = '';
+                const postsVisiveis = userPosts.slice(indiceAtual, indiceAtual + postsPorPagina);
+                postsVisiveis.forEach(post => {
+                    const div = document.createElement('div');
+                    div.className = 'carousel-post';
+                    let resumo = post.content.substring(0, 60);
+                    // Só mostra o resumo se for diferente do título
+                    let resumoHtml = '';
+                    if (resumo && resumo.trim() !== post.title.trim()) {
+                        resumoHtml = `<div class="post-desc">${resumo}...</div>`;
+                    }
+                    div.innerHTML = `
+                        <img src="${post.img || '/assets/img/user.png'}" alt="${post.title}">
+                        <div class="post-title">${post.title}</div>
+                        ${resumoHtml}
+                    `;
+                    track.appendChild(div);
+                });
+                // Ajusta o deslocamento do carrossel
+                track.style.transform = `translateX(-${indiceAtual * 190}px)`;
+                // Exibe ou oculta botões
+                prevBtn.style.visibility = indiceAtual === 0 ? 'hidden' : 'visible';
+                nextBtn.style.visibility = (indiceAtual + postsPorPagina >= userPosts.length) ? 'hidden' : 'visible';
+            }
 
             if (userPosts.length > 0) {
                 noPostsMessage.style.display = 'none';
-                userPosts.forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.classList.add('post-item');
-                    postElement.innerHTML = `
-                        <img src="${post.img || '/assets/img/user.png'}" alt="${post.title}">
-                        <h4>${post.title}</h4>
-                        <p>${post.content.substring(0, 50)}...</p>
-                    `;
-                    recentPostsContainer.appendChild(postElement);
-                });
+                renderizarCarrossel();
+                prevBtn.onclick = function() {
+                    if (indiceAtual > 0) {
+                        indiceAtual -= postsPorPagina;
+                        if (indiceAtual < 0) indiceAtual = 0;
+                        renderizarCarrossel();
+                    }
+                };
+                nextBtn.onclick = function() {
+                    if (indiceAtual + postsPorPagina < userPosts.length) {
+                        indiceAtual += postsPorPagina;
+                        renderizarCarrossel();
+                    }
+                };
             } else {
+                track.innerHTML = '';
                 noPostsMessage.style.display = 'block';
             }
         } catch (error) {
             console.error('Erro ao carregar posts do usuário:', error);
-            noPostsMessage.style.display = 'block';
-            noPostsMessage.textContent = 'Não foi possível carregar as postagens.';
+            const noPostsMessage = document.getElementById('noPostsMessage');
+            if (noPostsMessage) {
+                noPostsMessage.style.display = 'block';
+                noPostsMessage.textContent = 'Não foi possível carregar as postagens.';
+            }
         }
     }
 
