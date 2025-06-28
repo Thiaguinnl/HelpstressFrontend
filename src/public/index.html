@@ -26,25 +26,27 @@
             <div class="logo">
                 <img src="/assets/img/LOGO.png" alt="Help Stress" width="120px">
             </div>
-            <button class="menu-hamburguer">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links">
-                <li class="mobile-menu-logo"><img src="/assets/img/LOGO.png" alt="Help Stress" width="100px"></li>
-                <li><a href="#oferecemos">Início</a></li>
-                <li><a href="#entendendo-ansiedade">Sobre ansiedade</a></li>
-                <li><a href="#dicas-tecnicas">Dicas & Técnicas</a></li>
-                <li><a href="#comunidade">Comunidade</a></li>
-                <li class="mobile-user-icon">
+            <div class="mobile-controls">
+                <div class="mobile-user-buttons">
                     <div id="user-not-logged-in-mobile">
                         <button class="btn-criar-conta"><img src="/assets/img/user.png" alt="Usuário" height="20"> Fazer Login</button>
                     </div>
                     <div id="user-logged-in-mobile" class="hidden">
                         <button class="btn-criar-conta logged-in"><img src="/assets/img/user.png" alt="Usuário" height="58" width="58" id="mobile-user-profile-img"></button>
                     </div>
-                </li>
+                </div>
+                <button class="menu-hamburguer">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-links">
+                <li class="mobile-menu-logo"><img src="/assets/img/LOGO.png" alt="Help Stress" width="100px"></li>
+                <li><a href="#oferecemos">Início</a></li>
+                <li><a href="#entendendo-ansiedade">Sobre ansiedade</a></li>
+                <li><a href="#dicas-tecnicas">Dicas & Técnicas</a></li>
+                <li><a href="#comunidade">Comunidade</a></li>
             </ul>
             <div class="icone-usuario">
                 <div id="user-not-logged-in-desktop">
@@ -117,11 +119,9 @@
             <iframe src='https://my.spline.design/glasscirclescopy-dX64N16zcENx2HTjw1WZhIqK/' frameborder='0' width='120%' height='120%' style='display:block; width:100%; height:100%; min-height:520px; border-radius:32px;'></iframe>
         </div>
         <div class="dicas-tecnicas-content" style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: flex-end; gap: 48px; height: 100%; min-height: 480px;">
-            <div style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 50%; display: flex; justify-content: center; align-items: center; z-index: 4; pointer-events: none;">
-                <div style="position: relative; display: flex; align-items: center; justify-content: center; width: max-content; min-width: 320px; min-height: 180px;">
-                    <div style="position: absolute; left: 50%; top: 70%; transform: translate(-50%, -50%); width: 340px; height: 400px; border-radius: 270px / 100px; filter: blur(36px); background: radial-gradient(ellipse at 55% 45%, #8ecae6 0%, #2563eb 55%, #a259f7 85%, #ff7eb3 100%); opacity: 0.28; z-index: 1;"></div>
-                    <h2 style="position: relative; z-index: 2; color: #252432; font-size: 3.2rem; font-weight: 700; text-align: center; font-family: 'Poppins', 'Inter', sans-serif; text-shadow: 0 2px 16px #fff9; width: 100%; margin: 0;">Dicas<br>&<br>Técnicas</h2>
-                </div>
+            <div class="dicas-tecnicas-title-gradient">
+              <span class="gradient-bg"></span>
+              <h2>Dicas<br>&<br>Técnicas</h2>
             </div>
             <div class="dicas-card" style="position: relative; z-index: 2; flex: 1 1 420px; max-width: 540px; margin-left: auto; align-self: center;">
                 <h3>Descubra os melhores exercicios</h3>

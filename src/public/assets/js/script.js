@@ -61,8 +61,16 @@ function criarCards() {
                 <img src="${card.icone}" alt="${card.titulo}" class="card-icon">
             </div>
             <h3>${card.titulo}</h3>
-            <p>${card.descricao}</p>
+            <p class="card-desc" style="display: none;">${card.descricao}</p>
         `;
+        
+        // Toggle para mobile: mostrar/ocultar descrição ao clicar
+        cardElement.addEventListener('click', function() {
+            const desc = cardElement.querySelector('.card-desc');
+            if (window.innerWidth <= 900) {
+                desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
+            }
+        });
         
         cardsContainer.appendChild(cardElement);
     });
