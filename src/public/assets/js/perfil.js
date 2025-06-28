@@ -358,6 +358,23 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             containerElement.appendChild(card);
         });
+
+        // Adiciona event listener para exclusão
+        containerElement.querySelectorAll('.delete-post-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                if (confirm('Deseja realmente excluir este post?')) {
+                    const postId = this.getAttribute('data-id');
+                    const ok = await deletarPostBackend(postId);
+                    if (ok) {
+                        this.closest('.twitter-post-card').remove();
+                        // Opcional: mostrar mensagem de sucesso
+                        alert('Post excluído com sucesso!');
+                    } else {
+                        alert('Erro ao excluir post.');
+                    }
+                }
+            });
+        });
     }
 
     async function atualizarPostBackend(postId, data) {
@@ -431,6 +448,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const activeTab = document.querySelector('.perfil-nav-tabs .active');
             showContentForTab(activeTab, viewedUserId); 
         });
+    }
+
+    // Função para deletar post (copiada do scriptComunidade.js)
+    async function deletarPostBackend(postId) {
+        const token = getLoggedInUser()?.token;
+        try {
+            const response = await fetch(`${baseUrl}/posts/${postId}`, {
+                method: 'DELETE',
+                headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+            });
+            if (!response.ok) throw new Error('Erro ao deletar post');
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 
     main();
