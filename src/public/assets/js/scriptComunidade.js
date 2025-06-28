@@ -1,3 +1,5 @@
+import { baseUrl } from './auth.js';
+
 console.log('scriptComunidade.js carregado');
 
 // elementos
@@ -908,7 +910,7 @@ function getUserData() {
 async function publicarPostBackend(post) {
     const token = getAuthToken();
     try {
-        const response = await fetch('/posts', {
+        const response = await fetch(`${baseUrl}/posts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -926,7 +928,7 @@ async function publicarPostBackend(post) {
 // Função para buscar posts do backend
 async function buscarPostsBackend() {
     try {
-        const response = await fetch('/posts?_sort=id&_order=desc');
+        const response = await fetch(`${baseUrl}/posts?_sort=id&_order=desc`);
         if (!response.ok) throw new Error('Erro ao buscar posts');
         return await response.json();
     } catch (e) {
@@ -938,7 +940,7 @@ async function buscarPostsBackend() {
 async function deletarPostBackend(postId) {
     const token = getAuthToken();
     try {
-        const response = await fetch(`/posts/${postId}`, {
+        const response = await fetch(`${baseUrl}/posts/${postId}`, {
             method: 'DELETE',
             headers: token ? { 'Authorization': 'Bearer ' + token } : {}
         });
@@ -952,7 +954,7 @@ async function deletarPostBackend(postId) {
 async function atualizarPostBackend(postId, data) {
     const token = getAuthToken();
     try {
-        const response = await fetch(`/posts/${postId}`, {
+        const response = await fetch(`${baseUrl}/posts/${postId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -1056,7 +1058,7 @@ async function renderTodosPostsSection(reset = false) {
     }
 
     // Define o endpoint com base na ordenação
-    let endpoint = `/posts?_page=${todosPostsPagina}&_limit=${TODOS_POSTS_POR_PAGINA}`;
+    let endpoint = `${baseUrl}/posts?_page=${todosPostsPagina}&_limit=${TODOS_POSTS_POR_PAGINA}`;
     if (ordenacaoAtual === 'recentes') {
         endpoint += '&_sort=id&_order=desc';
     } else if (ordenacaoAtual === 'curtidos') {
@@ -1559,7 +1561,7 @@ function setupNewPostsNotifier() {
         if (!avatarStack || avatarStack.children.length > 0) return; // Não busca se já tiver avatares
 
         try {
-            const response = await fetch('/posts?_sort=id&_order=desc&_limit=5');
+            const response = await fetch(`${baseUrl}/posts?_sort=id&_order=desc&_limit=5`);
             const recentPosts = await response.json();
             
             const uniqueUsers = [];
