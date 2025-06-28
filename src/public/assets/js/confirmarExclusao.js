@@ -1,10 +1,12 @@
+import { baseUrl } from './auth.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.getElementById('backFromDeleteBtn');
     const confirmDeleteButton = document.getElementById('confirmDeleteAccountBtn');
 
     if (backButton) {
         backButton.addEventListener('click', () => {
-            window.location.href = 'editarPerfil.html';
+            window.location.href = '/editarPerfil.html';
         });
     }
 
@@ -14,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!userDataString) {
                 alert('Usuário não logado. Redirecionando para a página inicial.');
-                window.location.href = 'index.html';
+                window.location.href = '/index.html';
                 return;
             }
 
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Requisição DELETE para o JSON Server
-                const response = await fetch(`/usuarios/${userId}`, {
+                const response = await fetch(`${baseUrl}/usuarios/${userId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('authToken');
                     localStorage.removeItem('userData');
                     alert('Conta excluída com sucesso! Sentiremos sua falta.');
-                    window.location.href = 'index.html'; 
+                    window.location.href = '/index.html'; 
                 } else {
                     alert('Erro ao excluir a conta. Verifique o console para mais detalhes.');
                     console.error('Erro na resposta da API ao tentar excluir conta:', response.status, response.statusText);

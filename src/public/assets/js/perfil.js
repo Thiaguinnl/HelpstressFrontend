@@ -1,3 +1,5 @@
+import { baseUrl } from './auth.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const perfilNomeUsuario = document.getElementById('perfil-nome-usuario');
     const perfilDescricaoUsuario = document.getElementById('perfil-descricao-usuario');
@@ -26,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/usuarios/${userId}`);
+            const response = await fetch(`${baseUrl}/usuarios/${userId}`);
             if (response.ok) return await response.json();
             
             console.warn(`Endpoint /usuarios/${userId} não encontrado. Buscando dados alternativos.`);
-            const postResponse = await fetch(`http://localhost:3000/posts?userId=${userId}&_limit=1`);
+            const postResponse = await fetch(`${baseUrl}/posts?userId=${userId}&_limit=1`);
             if (postResponse.ok) {
                 const posts = await postResponse.json();
                 if (posts.length > 0) {
@@ -46,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchContent(tab, userId) {
         let endpoint = '';
-        if (tab === postsTab) endpoint = `http://localhost:3000/posts?userId=${userId}&_sort=id&_order=desc`;
-        else if (tab === likesTab) endpoint = `http://localhost:3000/posts?likedBy_like=${userId}&_sort=id&_order=desc`;
-        else if (tab === savedTab) endpoint = `http://localhost:3000/posts?savedBy_like=${userId}&_sort=id&_order=desc`;
+        if (tab === postsTab) endpoint = `${baseUrl}/posts?userId=${userId}&_sort=id&_order=desc`;
+        else if (tab === likesTab) endpoint = `${baseUrl}/posts?likedBy_like=${userId}&_sort=id&_order=desc`;
+        else if (tab === savedTab) endpoint = `${baseUrl}/posts?savedBy_like=${userId}&_sort=id&_order=desc`;
         
         if (!endpoint) return [];
 
@@ -98,13 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let messageTitle = 'Nenhum conteúdo aqui!';
             let messageText = 'Parece que ainda não há nada para mostrar nesta seção.';
             let buttonText = 'Explorar Comunidade';
-            let buttonAction = () => window.location.href = 'comunidade.html';
+            let buttonAction = () => window.location.href = '/comunidade.html';
 
             if (tab === postsTab) {
                 messageTitle = 'Nenhuma postagem encontrada';
                 messageText = 'Que tal compartilhar suas histórias com a comunidade?';
                 buttonText = 'FAZER UMA POSTAGEM';
-                buttonAction = () => window.location.href = 'comunidade.html#postagem';
+                buttonAction = () => window.location.href = '/comunidade.html#postagem';
             } else if (tab === likesTab) {
                 messageTitle = 'Nenhuma curtida ainda!';
                 messageText = 'Curta posts na comunidade para vê-los aqui.';
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             targetUserId = loggedInUser.id;
         } else if (!targetUserId && !loggedInUser) {
             alert('Você precisa estar logado para acessar esta página.');
-            window.location.href = 'login.html';
+            window.location.href = '/login.html';
             return;
         }
         
@@ -141,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!profileData) {
             alert('Não foi possível encontrar este usuário.');
-            window.location.href = 'comunidade.html';
+            window.location.href = '/comunidade.html';
             return;
         }
 
@@ -154,14 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupEventListeners(userId) {
         if (editarPerfilButton) {
-            editarPerfilButton.addEventListener('click', () => window.location.href = 'editarPerfil.html');
+            editarPerfilButton.addEventListener('click', () => window.location.href = '/editarPerfil.html');
         }
         if (logoutButtonPerfil) {
             logoutButtonPerfil.addEventListener('click', () => {
                 localStorage.removeItem('authToken');
                 localStorage.removeItem('userData');
                 alert('Você foi desconectado!');
-                window.location.href = 'index.html';
+                window.location.href = '/index.html';
             });
         }
         [postsTab, likesTab, savedTab].forEach(tab => {
@@ -213,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const userId = profileData.id;
             const token = getLoggedInUser()?.token;
             try {
-                await fetch(`http://localhost:3000/usuarios/${userId}`, {
+                await fetch(`${baseUrl}/usuarios/${userId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json', ...(token ? { 'Authorization': 'Bearer ' + token } : {}) },
                     body: JSON.stringify({ tags: newTags })
@@ -290,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function atualizarPostBackend(postId, data) {
         const token = getLoggedInUser()?.token;
         try {
-            const response = await fetch(`http://localhost:3000/posts/${postId}`, {
+            const response = await fetch(`${baseUrl}/posts/${postId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

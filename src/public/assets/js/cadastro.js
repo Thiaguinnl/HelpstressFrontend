@@ -1,3 +1,5 @@
+import { baseUrl } from './auth.js';
+
 console.log('Script de cadastro carregado!');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -70,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            const resposta = await fetch('/register', {
+            const resposta = await fetch(`${baseUrl}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

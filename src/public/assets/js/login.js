@@ -1,3 +1,5 @@
+import { baseUrl } from './auth.js';
+
 console.log('Script de login carregado!');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            const resposta = await fetch('/login', {
+            const resposta = await fetch(`${baseUrl}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -76,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('User data from server (login.js):', dados.usuario); 
 
             showMessage('Login realizado com sucesso! Redirecionando...', 'success');
-            window.location.href = 'index.html'; 
+            window.location.href = '/index.html'; 
             
         } catch (erro) {
             console.error('Erro ao fazer login:', erro);
