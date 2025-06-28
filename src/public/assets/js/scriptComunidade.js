@@ -1045,7 +1045,10 @@ let ordenacaoAtual = 'recentes'; // Padrão
 
 async function renderTodosPostsSection(reset = false) {
     const todosPostsSection = document.getElementById('todos-posts');
-    if (!todosPostsSection) return;
+    if (!todosPostsSection) {
+        console.log('Seção de posts não encontrada - página sem funcionalidade de posts');
+        return;
+    }
     const user = getUserData();
 
     if (reset) {
@@ -1197,7 +1200,10 @@ function abrirModalPostPorId(postId) {
 function setupNewPostsNotifier() {
     const notifier = document.getElementById('new-posts-notifier');
     const postsContainer = document.getElementById('todos-posts-container');
-    if (!notifier || !postsContainer) return;
+    if (!notifier || !postsContainer) {
+        console.log('Elementos do notificador não encontrados - página sem funcionalidade de posts');
+        return;
+    }
 
     let isVisible = false;
 
@@ -1266,7 +1272,10 @@ function setupSortSelector() {
     const filtroBtn = document.getElementById('filtro-btn');
     const filtroOpcoes = document.getElementById('filtro-opcoes');
 
-    if (!filtroBtn || !filtroOpcoes) return;
+    if (!filtroBtn || !filtroOpcoes) {
+        console.log('Elementos do seletor de ordenação não encontrados - página sem funcionalidade de posts');
+        return;
+    }
 
     filtroBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1497,7 +1506,10 @@ function setupCommenting() {
     const form = document.getElementById('form-comentario');
     const input = document.getElementById('input-comentario');
     const modal = document.getElementById('modal-imagem-post');
-    if (!form || !input || !modal) return;
+    if (!form || !input || !modal) {
+        console.log('Elementos de comentários não encontrados - página sem funcionalidade de posts');
+        return;
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1554,7 +1566,10 @@ function setupCommenting() {
 
 // Adicionar event listeners para cliques nos cards
 function setupCardClickListeners() {
-    document.getElementById('todos-posts').addEventListener('click', function(e) {
+    const todosPostsElement = document.getElementById('todos-posts');
+    if (!todosPostsElement) return; // Se o elemento não existe, não faz nada
+    
+    todosPostsElement.addEventListener('click', function(e) {
         const postCard = e.target.closest('.twitter-post-card');
         if (!postCard) return;
 
