@@ -94,6 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
             formCadastro.reset();
             clearInputErrors();
 
+            // Salva o token JUNTO com os dados do usuário
+            localStorage.setItem('userData', JSON.stringify({
+                ...dados.usuario,
+                token: dados.token
+            }));
+
             // Redireciona para a página de login após um pequeno delay
             setTimeout(() => {
                 window.location.href = 'login.html';

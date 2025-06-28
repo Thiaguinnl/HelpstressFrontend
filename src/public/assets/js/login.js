@@ -72,8 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(dados.mensagem || 'Erro ao realizar login');
             }
 
-            localStorage.setItem('authToken', dados.token);
-            localStorage.setItem('userData', JSON.stringify(dados.usuario));
+            localStorage.setItem('userData', JSON.stringify({
+                ...dados.usuario,
+                token: dados.token
+            }));
 
             console.log('User data from server (login.js):', dados.usuario); 
 

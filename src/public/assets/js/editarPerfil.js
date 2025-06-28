@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             let user = JSON.parse(userData);
+            const token = user.token;
             const newName = profileNameInput.value;
             const newBio = profileBioTextarea.value;
             const newPhone = profilePhoneInput.value;
@@ -165,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': 'Bearer ' + token } : {})
                 },
                 body: JSON.stringify(updatedFields)
             });
@@ -192,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const user = JSON.parse(userData);
+            const token = user.token;
             const newEmail = accountEmailInput.value;
 
             if (newEmail === user.email) {
@@ -203,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': 'Bearer ' + token } : {})
                 },
                 body: JSON.stringify({ email: newEmail })
             });
