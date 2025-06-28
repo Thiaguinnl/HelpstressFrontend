@@ -61,7 +61,7 @@ function criarCards() {
                 <img src="${card.icone}" alt="${card.titulo}" class="card-icon">
             </div>
             <h3>${card.titulo}</h3>
-            <p class="card-desc" style="display: none;">${card.descricao}</p>
+            <p class="card-desc">${card.descricao}</p>
         `;
         
         // Toggle para mobile: mostrar/ocultar descrição ao clicar
@@ -71,6 +71,14 @@ function criarCards() {
                 desc.style.display = desc.style.display === 'block' ? 'none' : 'block';
             }
         });
+        
+        // Exibe por padrão no desktop, esconde no mobile
+        const desc = cardElement.querySelector('.card-desc');
+        if (window.innerWidth > 900) {
+            desc.style.display = 'block';
+        } else {
+            desc.style.display = 'none';
+        }
         
         cardsContainer.appendChild(cardElement);
     });
@@ -160,116 +168,100 @@ document.addEventListener('DOMContentLoaded', () => {
     criarCards();
     renderCard(currentIndex);
 
-    // Menu Mobile
-    const menuHamburguer = document.querySelector('.menu-hamburguer');
-    const navLinks = document.querySelector('.nav-links');
+    // Scroll
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
 
-    menuHamburguer.addEventListener('click', () => {
-        menuHamburguer.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            menuHamburguer.classList.remove('active');
-            navLinks.classList.remove('active');
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId !== '#') {
+                gsap.to(window, {
+                    scrollTo: {
+                        y: targetId,
+                        offsetY: 70 
+                    },
+                    duration: 1,
+                    ease: 'power2.inOut'
+                });
+            }
         });
     });
-});
 
-// Scroll
-document.querySelectorAll('.nav-links a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        const targetId = this.getAttribute('href');
-        if (targetId && targetId !== '#') {
-            gsap.to(window, {
-                scrollTo: {
-                    y: targetId,
-                    offsetY: 70 
-                },
-                duration: 1,
-                ease: 'power2.inOut'
-            });
-        }
+    //  ScrollReveal
+    const sr = ScrollReveal({
+        origin: 'bottom',
+        distance: '60px',
+        duration: 1000,
+        delay: 200,
+        easing: 'cubic-bezier(0.5, 0, 0, 1)',
+        reset: false
     });
-});
 
-//  ScrollReveal
-const sr = ScrollReveal({
-    origin: 'bottom',
-    distance: '60px',
-    duration: 1000,
-    delay: 200,
-    easing: 'cubic-bezier(0.5, 0, 0, 1)',
-    reset: false
-});
+    gsap.registerPlugin(ScrollTrigger);
 
-gsap.registerPlugin(ScrollTrigger);
+    // Animação dos cards de "Entendendo a Ansiedade"
+    gsap.from('.entendendo-ansiedade-section .card', {
+        scrollTrigger: {
+            trigger: '.entendendo-ansiedade-section',
+            start: 'top center+=100',
+            toggleActions: 'play none none reverse'
+        },
+        y: 100,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out'
+    });
 
-// Animação dos cards de "Entendendo a Ansiedade"
-gsap.from('.entendendo-ansiedade-section .card', {
-    scrollTrigger: {
-        trigger: '.entendendo-ansiedade-section',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-    },
-    y: 100,
-    opacity: 0,
-    duration: 1,
-    stagger: 0.2,
-    ease: 'power3.out'
-});
+    // Animação da seção "Comunidade"
+    gsap.from('.comunidade-content', {
+        scrollTrigger: {
+            trigger: '.comunidade',
+            start: 'top center+=100',
+            toggleActions: 'play none none reverse'
+        },
+        y: 100,
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power3.out'
+    });
 
-// Animação da seção "Comunidade"
-gsap.from('.comunidade-content', {
-    scrollTrigger: {
-        trigger: '.comunidade',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-    },
-    y: 100,
-    opacity: 0,
-    duration: 1.5,
-    ease: 'power3.out'
-});
+    // Animação dos elementos decorativos da comunidade
+    gsap.from('.linha-esquerda', {
+        scrollTrigger: {
+            trigger: '.comunidade',
+            start: 'top center+=100',
+            toggleActions: 'play none none reverse'
+        },
+        x: -200,
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power3.out'
+    });
 
-// Animação dos elementos decorativos da comunidade
-gsap.from('.linha-esquerda', {
-    scrollTrigger: {
-        trigger: '.comunidade',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-    },
-    x: -200,
-    opacity: 0,
-    duration: 1.5,
-    ease: 'power3.out'
-});
+    gsap.from('.linha-direita', {
+        scrollTrigger: {
+            trigger: '.comunidade',
+            start: 'top center+=100',
+            toggleActions: 'play none none reverse'
+        },
+        x: 200,
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power3.out'
+    });
 
-gsap.from('.linha-direita', {
-    scrollTrigger: {
-        trigger: '.comunidade',
-        start: 'top center+=100',
-        toggleActions: 'play none none reverse'
-    },
-    x: 200,
-    opacity: 0,
-    duration: 1.5,
-    ease: 'power3.out'
-});
-
-// Animação do footer
-gsap.from('.footer-section', {
-    scrollTrigger: {
-        trigger: 'footer',
-        start: 'top bottom-=100',
-        toggleActions: 'play none none reverse'
-    },
-    y: 50,
-    opacity: 0,
-    duration: 1,
-    stagger: 0.2,
-    ease: 'power3.out'
+    // Animação do footer
+    gsap.from('.footer-section', {
+        scrollTrigger: {
+            trigger: 'footer',
+            start: 'top bottom-=100',
+            toggleActions: 'play none none reverse'
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out'
+    });
 });
