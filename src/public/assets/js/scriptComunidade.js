@@ -817,7 +817,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 verificarTexto();
                 atualizarContador();
                 mostrarMensagemSucesso('Post publicado com sucesso!');
-                atualizarFeed();
+                renderTodosPostsSection(true);
             } catch (e) {
                 alert('Erro ao publicar post.');
             }
