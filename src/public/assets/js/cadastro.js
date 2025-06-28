@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInputErrors();
 
             // Salva o token JUNTO com os dados do usuário
+            localStorage.setItem('authToken', dados.token);
             localStorage.setItem('userData', JSON.stringify({
                 ...dados.usuario,
                 token: dados.token

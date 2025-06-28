@@ -101,8 +101,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 userData && userData !== 'null' && userData !== 'undefined' && userData.trim() !== ''
             );
         }
+
+        // NÃO redireciona se estiver em login ou cadastro
+        const currentPage = window.location.pathname.split('/').pop();
+        if (['login.html', 'cadastro.html'].includes(currentPage)) {
+            console.log('Página de login/cadastro detectada, não redirecionar.');
+            return;
+        }
         
-        if (window.location.pathname.split('/').pop() === 'comunidadeOFF.html') {
+        if (currentPage === 'comunidadeOFF.html') {
             console.log('Estou na página comunidadeOFF.html');
             if (isUsuarioLogado()) {
                 console.log('Usuário está logado, redirecionando para comunidade.html');
@@ -113,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (window.location.pathname.split('/').pop() === 'comunidade.html') {
+        if (currentPage === 'comunidade.html') {
             console.log('Estou na página comunidade.html');
             if (!isUsuarioLogado()) {
                 console.log('Usuário não está logado, redirecionando para comunidadeOFF.html');

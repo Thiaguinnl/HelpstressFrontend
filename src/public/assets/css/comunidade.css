@@ -969,8 +969,13 @@ main {
 }
 .profile-icon img {
     border-radius: 50%;
-    width: 40px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 2px solid #e6ecf0;
+    background: #fff;
+    transition: box-shadow 0.2s, border 0.2s;
 }
 .profile-icon:hover {
     border : 1px solid #dbdbdb;
@@ -1821,6 +1826,7 @@ main {
     justify-content: center;
     margin-bottom: 1.5rem;
     margin-top: 1rem;
+    position: relative;
 }
 
 .filtro-btn {
@@ -1837,6 +1843,8 @@ main {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.05);
+    position: relative;
+    z-index: 101;
 }
 
 .filtro-btn:hover {
@@ -1871,7 +1879,8 @@ main {
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     position: absolute;
     top: 100%;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
     margin-top: 8px;
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
@@ -1885,7 +1894,7 @@ main {
 .filtro-opcoes.visible {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .filtro-opcoes a {

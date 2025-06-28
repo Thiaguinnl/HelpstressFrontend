@@ -1275,38 +1275,53 @@ function setupSortSelector() {
     const filtroBtn = document.getElementById('filtro-btn');
     const filtroOpcoes = document.getElementById('filtro-opcoes');
 
+    console.log('setupSortSelector - filtroBtn:', filtroBtn);
+    console.log('setupSortSelector - filtroOpcoes:', filtroOpcoes);
+
     if (!filtroBtn || !filtroOpcoes) {
         console.log('Elementos do seletor de ordenação não encontrados - página sem funcionalidade de posts');
         return;
     }
 
-    filtroBtn.addEventListener('click', (e) => {
+    // Remove event listeners anteriores para evitar duplicação
+    const newFiltroBtn = filtroBtn.cloneNode(true);
+    filtroBtn.parentNode.replaceChild(newFiltroBtn, filtroBtn);
+    
+    const newFiltroOpcoes = filtroOpcoes.cloneNode(true);
+    filtroOpcoes.parentNode.replaceChild(newFiltroOpcoes, filtroOpcoes);
+
+    newFiltroBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        filtroOpcoes.classList.toggle('visible');
-        filtroBtn.classList.toggle('open');
+        console.log('Botão filtro clicado');
+        newFiltroOpcoes.classList.toggle('visible');
+        newFiltroBtn.classList.toggle('open');
+        console.log('Classes do filtro:', newFiltroOpcoes.classList.toString());
     });
 
-    filtroOpcoes.addEventListener('click', (e) => {
+    newFiltroOpcoes.addEventListener('click', (e) => {
         e.preventDefault();
         const target = e.target.closest('a');
         if (target) {
+            console.log('Opção selecionada:', target.dataset.value);
             ordenacaoAtual = target.dataset.value;
 
             // Atualiza o estado 'active'
-            filtroOpcoes.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            newFiltroOpcoes.querySelectorAll('a').forEach(a => a.classList.remove('active'));
             target.classList.add('active');
 
-            filtroOpcoes.classList.remove('visible');
-            filtroBtn.classList.remove('open');
+            newFiltroOpcoes.classList.remove('visible');
+            newFiltroBtn.classList.remove('open');
             renderTodosPostsSection(true); // Reseta e renderiza com a nova ordenação
         }
     });
     
     // Fecha o dropdown se clicar fora
-    document.addEventListener('click', () => {
-        if (filtroOpcoes.classList.contains('visible')) {
-            filtroOpcoes.classList.remove('visible');
-            filtroBtn.classList.remove('open');
+    document.addEventListener('click', (e) => {
+        if (!newFiltroBtn.contains(e.target) && !newFiltroOpcoes.contains(e.target)) {
+            if (newFiltroOpcoes.classList.contains('visible')) {
+                newFiltroOpcoes.classList.remove('visible');
+                newFiltroBtn.classList.remove('open');
+            }
         }
     });
 }

@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileBioTextarea = document.getElementById('profileBio');
     const profilePhoneInput = document.getElementById('profilePhone');
     const saveProfileChangesBtn = document.getElementById('saveProfileChangesBtn'); 
+    const passwordInput = document.getElementById('newPassword');
+    const oldPasswordInput = document.getElementById('oldPassword');
+    const savePasswordBtn = document.getElementById('savePasswordChangesBtn');
 
     function loadUserEditProfile() {
         const userData = localStorage.getItem('userData');
@@ -85,16 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (userPosts.length > 0) {
                 noPostsMessage.style.display = 'none';
+                // Usar grid para exibir os posts
+                const grid = document.createElement('div');
+                grid.className = 'posts-grid';
                 userPosts.forEach(post => {
                     const postElement = document.createElement('div');
-                    postElement.classList.add('post-item');
                     postElement.innerHTML = `
                         <img src="${post.img || '/assets/img/user.png'}" alt="${post.title}">
-                        <h4>${post.title}</h4>
+                        <div class="post-title">${post.title}</div>
                         <p>${post.content.substring(0, 50)}...</p>
                     `;
-                    recentPostsContainer.appendChild(postElement);
+                    grid.appendChild(postElement);
                 });
+                recentPostsContainer.appendChild(grid);
             } else {
                 noPostsMessage.style.display = 'block';
             }
@@ -224,6 +230,59 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Ocorreu um erro ao salvar as mudanças.');
         }
     });
+
+    // --- ALTERAÇÃO DE SENHA ---
+    console.log('savePasswordBtn encontrado:', savePasswordBtn);
+    if (savePasswordBtn) {
+        console.log('Adicionando event listener ao botão de senha');
+        savePasswordBtn.addEventListener('click', async () => {
+            console.log('Botão de senha clicado');
+            const userData = localStorage.getItem('userData');
+            if (!userData) {
+                alert('Usuário não logado.');
+                return;
+            }
+            const user = JSON.parse(userData);
+            const token = user.token;
+            const newPassword = passwordInput.value;
+            const oldPassword = oldPasswordInput.value;
+            console.log('Dados da senha:', { newPassword: newPassword ? 'preenchida' : 'vazia', oldPassword: oldPassword ? 'preenchida' : 'vazia' });
+            
+            if (!oldPassword || !newPassword) {
+                alert('Preencha todos os campos de senha.');
+                return;
+            }
+            if (newPassword.length < 6) {
+                alert('A nova senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+            try {
+                console.log('Enviando requisição para alterar senha...');
+                const response = await fetch(`${baseUrl}/usuarios/${user.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+                    },
+                    body: JSON.stringify({ senha: newPassword, oldPassword })
+                });
+                console.log('Resposta da API:', response.status, response.statusText);
+                if (response.ok) {
+                    alert('Senha alterada com sucesso!');
+                    passwordInput.value = '';
+                    oldPasswordInput.value = '';
+                } else {
+                    const erro = await response.json();
+                    alert(erro.mensagem || 'Erro ao alterar a senha.');
+                }
+            } catch (error) {
+                console.error('Erro ao alterar senha:', error);
+                alert('Erro ao alterar a senha.');
+            }
+        });
+    } else {
+        console.error('Botão savePasswordChangesBtn não encontrado no DOM');
+    }
 
     categoriasMenu.forEach(item => {
         item.addEventListener('click', () => {
