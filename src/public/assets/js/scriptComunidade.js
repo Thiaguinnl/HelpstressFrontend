@@ -124,7 +124,7 @@ function createBlogCard(item) {
                 <h3>${item.title}</h3>
                 <p>${item.description}</p>
                 <div class="author-info">
-                    <img src="${item.avatar}" alt="${item.author}" class="author-avatar" loading="lazy">
+                    <!--<img src="${item.avatar}" alt="${item.author}" class="author-avatar" loading="lazy">-->
                     <div class="author-details">
                         <h4>${item.author}</h4>
                         <span>${item.date}</span>
@@ -907,6 +907,9 @@ function getUserData() {
     }
 }
 
+// Tornar função global para uso no modal mobile
+window.getUserData = getUserData;
+
 // Função para criar um post no backend
 async function publicarPostBackend(post) {
     const token = getAuthToken();
@@ -970,6 +973,9 @@ async function atualizarPostBackend(postId, data) {
         throw e;
     }
 }
+
+// Tornar função global para uso no modal mobile
+window.atualizarPostBackend = atualizarPostBackend;
 
 // Função para renderizar o feed de posts
 async function atualizarFeed() {
@@ -1046,6 +1052,9 @@ let todosPostsUltimaBusca = [];
 let todosPostsAcabou = false;
 let ordenacaoAtual = 'recentes'; // Padrão
 
+// Tornar array global para uso no modal mobile
+window.todosPostsUltimaBusca = todosPostsUltimaBusca;
+
 async function renderTodosPostsSection(reset = false) {
     const todosPostsSection = document.getElementById('todos-posts');
     if (!todosPostsSection) {
@@ -1088,6 +1097,8 @@ async function renderTodosPostsSection(reset = false) {
         return;
     }
     todosPostsUltimaBusca = todosPostsUltimaBusca.concat(posts);
+    // Atualizar referência global
+    window.todosPostsUltimaBusca = todosPostsUltimaBusca;
     posts.forEach((post, idx) => {
         const postEl = document.createElement('div');
         postEl.className = 'twitter-post-card';
@@ -1142,6 +1153,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function abrirModalPostPorId(postId) {
     const post = todosPostsUltimaBusca.find(p => p.id == postId);
     if (!post) return;
+    if (window.innerWidth <= 600) {
+        import('./scriptComunidadeMobile.js').then(mod => {
+            mod.abrirModalPostMobile(post);
+        });
+        return;
+    }
     const user = getUserData();
     const modal = document.getElementById('modal-imagem-post');
     const modalImg = document.getElementById('imagem-modal-ampliada');

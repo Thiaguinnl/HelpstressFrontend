@@ -1,0 +1,129 @@
+/* Modal mobile para comunidade */
+#modal-imagem-post-mobile {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+#modal-imagem-post-mobile.aberto {
+  display: flex !important;
+}
+
+@media (max-width: 600px) {
+  .modal-mobile-content {
+    background: #fff;
+    border-radius: 18px;
+    margin: 1.5rem 0.5rem 0.5rem 0.5rem;
+    width: 100vw;
+    max-width: 480px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+  }
+  .modal-header-mobile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  .modal-conteudo-post-mobile {
+    padding: 1rem;
+    font-size: 1.1em;
+    color: #222;
+  }
+  .modal-acoes-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 0 1rem 0.5rem 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  .modal-acoes-mobile .action-btn {
+    flex: 1 1 30%;
+    min-width: 90px;
+    max-width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+  .modal-imagem-esquerda-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  .modal-imagem-esquerda-mobile img {
+    max-width: 96vw;
+    max-height: 32vh;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  }
+  .modal-comentarios-mobile {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background: #f9f9f9;
+    padding: 1rem;
+    min-height: 60px;
+    max-height: 180px;
+  }
+  .modal-novo-comentario-mobile {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 10;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 0;
+    padding: 1rem;
+  }
+  #comment-user-avatar-mobile {
+    object-fit: cover;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    background: #fff;
+  }
+  .comment-submit-btn-mobile {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .comment-submit-btn-mobile:active,
+  .comment-submit-btn-mobile:focus {
+    background: none;
+    outline: none;
+    box-shadow: none;
+  }
+} 

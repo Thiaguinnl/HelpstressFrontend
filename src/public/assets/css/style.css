@@ -32,7 +32,8 @@ body {
 }
 
 .icone-usuario {
-    display: block;
+    display: flex;
+    align-items: center;
 }
 
 .hero-section {
@@ -152,8 +153,7 @@ body {
         font-size: 2.5rem;
     }
     .navbar {
-        padding: 14px 8px 0 8px;
-        max-width: 100%;
+        padding: 14px 12px 0 12px;
     }
     .search-bar {
         width: 180px;
@@ -209,11 +209,11 @@ body {
     
     /* Estilos responsivos para os botões de login/avatar */
     .icone-usuario {
-        display: block !important;
-        position: absolute;
-        right: 16px;
-        top: 16px;
-        z-index: 10;
+        position: static !important;
+        right: auto !important;
+        top: auto !important;
+        display: flex !important;
+        align-items: center !important;
     }
     
     .btn-criar-conta {
@@ -2065,11 +2065,8 @@ span.\&class {
         display: none !important;
     }
     .icone-usuario {
-        display: block !important;
-        position: absolute;
-        right: 16px;
-        top: 16px;
-        z-index: 10;
+        display: flex !important;
+        align-items: center !important;
     }
     .btn-criar-conta {
         background: rgba(255, 255, 255, 0.15);
