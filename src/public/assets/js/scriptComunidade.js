@@ -117,9 +117,11 @@ const blogData = {
 
 // card de blog
 function createBlogCard(item) {
+    // Usa formato webp se possível
+    const imgSrc = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
     return `
         <article class="blog-card">
-            <img src="${item.image}" alt="${item.title}" class="blog-image" loading="lazy">
+            <img src="${imgSrc}" alt="${item.title}" class="blog-image" loading="lazy" onerror="this.onerror=null;this.src='${item.image}';">
             <div class="blog-content">
                 <h3>${item.title}</h3>
                 <p>${item.description}</p>
@@ -153,9 +155,14 @@ function updateNavigationButtons() {
 function waitForImagesToLoad(container, callback) {
     const images = container.querySelectorAll('img');
     let loaded = 0;
+    let timeout = null;
     if (images.length === 0) {
         callback();
         return;
+    }
+    function finish() {
+        if (timeout) clearTimeout(timeout);
+        callback();
     }
     images.forEach(img => {
         if (img.complete) {
@@ -163,26 +170,34 @@ function waitForImagesToLoad(container, callback) {
         } else {
             img.addEventListener('load', () => {
                 loaded++;
-                if (loaded === images.length) callback();
+                if (loaded === images.length) finish();
             });
             img.addEventListener('error', () => {
                 loaded++;
-                if (loaded === images.length) callback();
+                if (loaded === images.length) finish();
             });
         }
     });
-    if (loaded === images.length) callback();
+    // Fallback: mostra o carrossel mesmo se as imagens demorarem mais de 2.5s
+    timeout = setTimeout(finish, 2500);
+    if (loaded === images.length) finish();
 }
 
 function updateCarousel(category) {
     const blogGrid = document.querySelector('.blog-grid');
-    const items = blogData[category] || blogData['todos'];
+    let items = blogData[category] || blogData['todos'];
+    // Carregar menos cards no mobile
+    if (window.innerWidth <= 768) {
+        items = items.slice(0, 2); // Mostra só 2 cards no mobile
+    }
     scrollPosition = 0;
     blogGrid.classList.remove('show-category');
     blogGrid.classList.add('fade-category');
     blogGrid.classList.add('loading');
     prevButton.disabled = true;
     nextButton.disabled = true;
+    // Loader visual melhorado
+    blogGrid.innerHTML = '<div style="width:100%;text-align:center;padding:2rem 0;color:#2563eb;font-size:1.2rem;">Carregando blog e depoimentos...</div>';
     setTimeout(() => {
         blogGrid.innerHTML = items.map(createBlogCard).join('');
         waitForImagesToLoad(blogGrid, () => {
