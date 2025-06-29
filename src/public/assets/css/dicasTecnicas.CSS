@@ -603,6 +603,16 @@ footer {
     text-align: center !important;
     box-sizing: border-box;
   }
+  .lottie-parallax {
+    width: 95vw !important;
+    min-width: 0 !important;
+    max-width: 350px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    left: 0 !important;
+    right: 0 !important;
+    position: relative !important;
+  }
 }
 
 .hero-blur-img {
