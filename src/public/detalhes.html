@@ -476,12 +476,21 @@
       const miniplayer = document.getElementById('miniplayer-youtube');
       const dragIcon = document.getElementById('drag-miniplayer');
       let offsetX = 0, offsetY = 0, isDragging = false;
+      function fixMiniplayerSize() {
+        miniplayer.style.width = miniplayer.offsetWidth + 'px';
+        miniplayer.style.height = miniplayer.offsetHeight + 'px';
+      }
+      function unfixMiniplayerSize() {
+        miniplayer.style.width = '';
+        miniplayer.style.height = '';
+      }
       dragIcon.addEventListener('mousedown', function(e) {
         isDragging = true;
         dragIcon.style.cursor = 'grabbing';
         offsetX = e.clientX - miniplayer.getBoundingClientRect().left;
         offsetY = e.clientY - miniplayer.getBoundingClientRect().top;
         document.body.style.userSelect = 'none';
+        fixMiniplayerSize();
       });
       document.addEventListener('mousemove', function(e) {
         if (isDragging) {
@@ -492,6 +501,28 @@
         }
       });
       document.addEventListener('mouseup', function() {
+        isDragging = false;
+        dragIcon.style.cursor = 'grab';
+        document.body.style.userSelect = '';
+        unfixMiniplayerSize();
+      });
+      // Suporte a touch para mobile
+      dragIcon.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        dragIcon.style.cursor = 'grabbing';
+        offsetX = e.touches[0].clientX - miniplayer.getBoundingClientRect().left;
+        offsetY = e.touches[0].clientY - miniplayer.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+      document.addEventListener('touchmove', function(e) {
+        if (isDragging) {
+          miniplayer.style.left = (e.touches[0].clientX - offsetX) + 'px';
+          miniplayer.style.top = (e.touches[0].clientY - offsetY) + 'px';
+          miniplayer.style.right = 'auto';
+          miniplayer.style.bottom = 'auto';
+        }
+      });
+      document.addEventListener('touchend', function() {
         isDragging = false;
         dragIcon.style.cursor = 'grab';
         document.body.style.userSelect = '';
@@ -506,6 +537,81 @@
         document.getElementById('miniplayer-video-container').innerHTML = '';
       });
     }
+
+    // --- NOVO: esconder/mostrar miniplayer no mobile ---
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+    function criarBotaoMostrarMiniplayer() {
+      if (document.getElementById('btn-show-miniplayer')) return;
+      const btn = document.createElement('button');
+      btn.id = 'btn-show-miniplayer';
+      btn.innerHTML = `<img src="assets/img/music.png" alt="Mostrar miniplayer" style="width:22px;height:22px;display:block;margin:auto;">`;
+      btn.style.position = 'fixed';
+      btn.style.bottom = '20px';
+      btn.style.right = '14px';
+      btn.style.zIndex = '99999';
+      btn.style.background = '#2563EB';
+      btn.style.color = '#fff';
+      btn.style.border = 'none';
+      btn.style.borderRadius = '50%';
+      btn.style.width = '38px';
+      btn.style.height = '38px';
+      btn.style.boxShadow = '0 4px 18px #2563eb44';
+      btn.style.fontSize = '1.2rem';
+      btn.style.display = 'flex';
+      btn.style.alignItems = 'center';
+      btn.style.justifyContent = 'center';
+      btn.style.cursor = 'pointer';
+      btn.style.transition = 'opacity 0.2s';
+      btn.title = 'Mostrar miniplayer';
+      btn.onclick = function() {
+        document.getElementById('miniplayer-youtube').style.display = 'block';
+        btn.remove();
+      };
+      document.body.appendChild(btn);
+    }
+    function adicionarBotaoEsconderMiniplayer() {
+      if (!isMobile()) return;
+      const btnNext = document.getElementById('btn-next-video');
+      if (!btnNext || document.getElementById('btn-hide-miniplayer')) return;
+      const btnHide = document.createElement('button');
+      btnHide.id = 'btn-hide-miniplayer';
+      btnHide.innerHTML = '<i class="fas fa-chevron-down"></i>';
+      btnHide.style.background = '#2563EB';
+      btnHide.style.color = '#fff';
+      btnHide.style.border = 'none';
+      btnHide.style.borderRadius = '50%';
+      btnHide.style.width = '32px';
+      btnHide.style.height = '32px';
+      btnHide.style.marginLeft = '8px';
+      btnHide.style.fontSize = '1.2rem';
+      btnHide.style.display = 'flex';
+      btnHide.style.alignItems = 'center';
+      btnHide.style.justifyContent = 'center';
+      btnHide.style.cursor = 'pointer';
+      btnHide.title = 'Esconder miniplayer';
+      btnHide.onclick = function() {
+        document.getElementById('miniplayer-youtube').style.display = 'none';
+        criarBotaoMostrarMiniplayer();
+      };
+      btnNext.parentNode.insertBefore(btnHide, btnNext.nextSibling);
+    }
+    // Executar ao abrir miniplayer
+    if (isMobile()) {
+      setTimeout(adicionarBotaoEsconderMiniplayer, 300);
+    }
+    // Re-adicionar ao redimensionar
+    window.addEventListener('resize', function() {
+      if (isMobile()) {
+        setTimeout(adicionarBotaoEsconderMiniplayer, 300);
+      } else {
+        const btn = document.getElementById('btn-hide-miniplayer');
+        if (btn) btn.remove();
+        const btnShow = document.getElementById('btn-show-miniplayer');
+        if (btnShow) btnShow.remove();
+      }
+    });
 
     function renderizarTelaYoutube() {
       const detalhesCard = document.getElementById('detalhes-card');
