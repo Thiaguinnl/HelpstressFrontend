@@ -64,7 +64,6 @@ function criarCards() {
             <p class="card-desc">${card.descricao}</p>
         `;
         
-        // Toggle para mobile: mostrar/ocultar descrição ao clicar
         cardElement.addEventListener('click', function() {
             const desc = cardElement.querySelector('.card-desc');
             if (window.innerWidth <= 900) {
@@ -72,7 +71,6 @@ function criarCards() {
             }
         });
         
-        // Exibe por padrão no desktop, esconde no mobile
         const desc = cardElement.querySelector('.card-desc');
         if (window.innerWidth > 900) {
             desc.style.display = 'block';

@@ -1,0 +1,9 @@
+/* Esconde o botão das 3 barras no desktop */
+.mobile-menu-btn {
+  display: none;
+}
+@media (max-width: 900px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+} 

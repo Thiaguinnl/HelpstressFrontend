@@ -117,7 +117,6 @@ const blogData = {
 
 // card de blog
 function createBlogCard(item) {
-    // Usa formato webp se possível
     const imgSrc = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
     return `
         <article class="blog-card">
@@ -178,7 +177,6 @@ function waitForImagesToLoad(container, callback) {
             });
         }
     });
-    // Fallback: mostra o carrossel mesmo se as imagens demorarem mais de 2.5s
     timeout = setTimeout(finish, 2500);
     if (loaded === images.length) finish();
 }
@@ -188,7 +186,7 @@ function updateCarousel(category) {
     let items = blogData[category] || blogData['todos'];
     // Carregar menos cards no mobile
     if (window.innerWidth <= 768) {
-        items = items.slice(0, 2); // Mostra só 2 cards no mobile
+        items = items.slice(0, 2); 
     }
     scrollPosition = 0;
     blogGrid.classList.remove('show-category');
@@ -196,7 +194,6 @@ function updateCarousel(category) {
     blogGrid.classList.add('loading');
     prevButton.disabled = true;
     nextButton.disabled = true;
-    // Loader visual melhorado
     blogGrid.innerHTML = '<div style="width:100%;text-align:center;padding:2rem 0;color:#2563eb;font-size:1.2rem;">Carregando blog e depoimentos...</div>';
     setTimeout(() => {
         blogGrid.innerHTML = items.map(createBlogCard).join('');
@@ -269,10 +266,6 @@ document.querySelector('.blog-grid').addEventListener('scroll', () => {
     scrollPosition = document.querySelector('.blog-grid').scrollLeft;
     updateNavigationButtons();
 });
-
-// Inicialização do carrossel movida para dentro do DOMContentLoaded
-// updateCarousel('todos');
-// document.querySelector('.tab').classList.add('active');
 
 // animação no scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -529,7 +522,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Substituir a função setupImageUpload para usar barra de progresso
     function setupImageUpload() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -547,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (window.validateImageFile && !window.validateImageFile(file)) {
                     return;
                 }
-                // Mostra preview local enquanto faz upload
+
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     previewImage.src = e.target.result;
@@ -567,7 +559,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 postarBtn.disabled = true;
                 showUploadProgressBar();
                 try {
-                    // Usar XMLHttpRequest para progresso
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('upload_preset', window.CLOUDINARY_CONFIG.UPLOAD_PRESET);
@@ -635,7 +626,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const emojis = ['😊', '😢', '😡', '😴', '😌', '😰', '😤', '😍', '🤗', '🙏', '💪', '🧘', '🌱', '☀️', '🌙', '💙'];
         
         emojiBtn.addEventListener('click', () => {
-            // popup de emojis
+
             let emojiPopup = document.querySelector('.emoji-popup');
             if (emojiPopup) {
                 emojiPopup.remove();
@@ -798,7 +789,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupPublishPost() {
         postarBtn.addEventListener('click', async () => {
             const texto = postarTextarea.value.trim();
-            // Pega a URL do Cloudinary se houver
             const imagem = previewImage.dataset.cloudinaryUrl || '';
             if (texto.length === 0 && !imagem) return;
             const user = getUserData();
@@ -897,8 +887,6 @@ document.addEventListener('DOMContentLoaded', function() {
     renderTodosPostsSection(true);
 }); 
 
-// === INÍCIO DA NOVA LÓGICA DE POSTAGENS COM BACKEND ===
-
 // Função para obter token do usuário logado
 function getAuthToken() {
     const userData = localStorage.getItem('userData');
@@ -922,7 +910,6 @@ function getUserData() {
     }
 }
 
-// Tornar função global para uso no modal mobile
 window.getUserData = getUserData;
 
 // Função para criar um post no backend
@@ -989,7 +976,6 @@ async function atualizarPostBackend(postId, data) {
     }
 }
 
-// Tornar função global para uso no modal mobile
 window.atualizarPostBackend = atualizarPostBackend;
 
 // Função para renderizar o feed de posts
@@ -1048,9 +1034,9 @@ async function atualizarFeed() {
                 const ok = await deletarPostBackend(postId);
                 if (ok) {
                     mostrarMensagemSucesso('Post excluído com sucesso!');
-                    // Remove do array local
+
                     todosPostsUltimaBusca = todosPostsUltimaBusca.filter(p => p.id != postId);
-                    // Remove do DOM
+
                     this.closest('.twitter-post-card').remove();
                 } else {
                     alert('Erro ao excluir post.');
@@ -1060,14 +1046,12 @@ async function atualizarFeed() {
     });
 }
 
-// Paginação para todos os posts
 let todosPostsPagina = 1;
 const TODOS_POSTS_POR_PAGINA = 10;
 let todosPostsUltimaBusca = [];
 let todosPostsAcabou = false;
-let ordenacaoAtual = 'recentes'; // Padrão
+let ordenacaoAtual = 'recentes'; 
 
-// Tornar array global para uso no modal mobile
 window.todosPostsUltimaBusca = todosPostsUltimaBusca;
 
 async function renderTodosPostsSection(reset = false) {
@@ -1088,7 +1072,6 @@ async function renderTodosPostsSection(reset = false) {
         todosPostsSection.innerHTML = '<div style="margin: 2rem; color: #888;">Carregando posts...</div>';
     }
 
-    // Define o endpoint com base na ordenação
     let endpoint = `${baseUrl}/posts?_page=${todosPostsPagina}&_limit=${TODOS_POSTS_POR_PAGINA}`;
     if (ordenacaoAtual === 'recentes') {
         endpoint += '&_sort=id&_order=desc';
@@ -1096,7 +1079,6 @@ async function renderTodosPostsSection(reset = false) {
         endpoint += '&_sort=likes&_order=desc';
     }
 
-    // Buscar posts paginados
     const response = await fetch(endpoint);
     const posts = await response.json();
     if (todosPostsPagina === 1) {
@@ -1112,7 +1094,7 @@ async function renderTodosPostsSection(reset = false) {
         return;
     }
     todosPostsUltimaBusca = todosPostsUltimaBusca.concat(posts);
-    // Atualizar referência global
+
     window.todosPostsUltimaBusca = todosPostsUltimaBusca;
     posts.forEach((post, idx) => {
         const postEl = document.createElement('div');
@@ -1150,7 +1132,6 @@ async function renderTodosPostsSection(reset = false) {
     });
 }
 
-// === FIM DE POSTAGENS COM BACKEND === 
 document.addEventListener('DOMContentLoaded', () => {
     // Inicializar carrossel
     updateCarousel('todos');
@@ -1164,7 +1145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSortSelector();
 }); 
 
-// Função para abrir o modal de um post pelo ID e adaptar a UI
 function abrirModalPostPorId(postId) {
     const post = todosPostsUltimaBusca.find(p => p.id == postId);
     if (!post) return;
@@ -1242,10 +1222,9 @@ function setupNewPostsNotifier() {
 
     let isVisible = false;
 
-    // Função para verificar e popular os avatares
     const populateNotifierAvatars = async () => {
         const avatarStack = notifier.querySelector('.user-avatars-stack');
-        if (!avatarStack || avatarStack.children.length > 0) return; // Não busca se já tiver avatares
+        if (!avatarStack || avatarStack.children.length > 0) return; 
 
         try {
             const response = await fetch(`${baseUrl}/posts?_sort=id&_order=desc&_limit=5`);
@@ -1262,7 +1241,7 @@ function setupNewPostsNotifier() {
             }
             
             avatarStack.innerHTML = '';
-            uniqueUsers.reverse().forEach(user => { // Inverte para o mais recente ficar por cima
+            uniqueUsers.reverse().forEach(user => {
                 const img = document.createElement('img');
                 img.src = user.avatar || '/assets/img/user.png';
                 img.alt = user.autor;
@@ -1315,7 +1294,6 @@ function setupSortSelector() {
         return;
     }
 
-    // Remove event listeners anteriores para evitar duplicação
     const newFiltroBtn = filtroBtn.cloneNode(true);
     filtroBtn.parentNode.replaceChild(newFiltroBtn, filtroBtn);
     
@@ -1337,13 +1315,12 @@ function setupSortSelector() {
             console.log('Opção selecionada:', target.dataset.value);
             ordenacaoAtual = target.dataset.value;
 
-            // Atualiza o estado 'active'
             newFiltroOpcoes.querySelectorAll('a').forEach(a => a.classList.remove('active'));
             target.classList.add('active');
 
             newFiltroOpcoes.classList.remove('visible');
             newFiltroBtn.classList.remove('open');
-            renderTodosPostsSection(true); // Reseta e renderiza com a nova ordenação
+            renderTodosPostsSection(true);
         }
     });
     
@@ -1387,7 +1364,6 @@ function updateUIAfterInteraction(postId) {
     const isLiked = user && post.likedBy && post.likedBy.includes(user.id);
     const isSaved = user && post.savedBy && post.savedBy.includes(user.id);
     
-    // Atualiza o card no feed principal e no modal, se estiverem visíveis
     const elementsToUpdate = document.querySelectorAll(
         `.twitter-post-card[data-post-id="${postId}"], .modal-info-direita[data-post-id="${postId}"]`
     );
@@ -1455,7 +1431,6 @@ function setupPostInteractions() {
             post[key] = post[key] || [];
             const isInteracted = post[key].includes(userId);
 
-            // Atualização Otimista da UI
             if (isInteracted) {
                 post[countKey] = (post[countKey] || 1) - 1;
                 post[key] = post[key].filter(id => id !== userId);
@@ -1463,13 +1438,13 @@ function setupPostInteractions() {
                 post[countKey] = (post[countKey] || 0) + 1;
                 post[key].push(userId);
             }
-            updateUIAfterInteraction(postId); // Atualiza a UI imediatamente
+            updateUIAfterInteraction(postId); 
             
             try {
                 await atualizarPostBackend(postId, { [countKey]: post[countKey], [key]: post[key] });
             } catch (err) {
                  console.error(`Falha ao ${interactionType} o post. Revertendo.`, err);
-                 // Reverte a alteração nos dados locais em caso de erro na API
+               
                  if (isInteracted) {
                     post[countKey]++;
                     post[key].push(userId);
@@ -1477,7 +1452,7 @@ function setupPostInteractions() {
                     post[countKey]--;
                     post[key] = post[key].filter(id => id !== userId);
                  }
-                 // Atualiza a UI novamente para refletir o estado revertido
+
                  updateUIAfterInteraction(postId);
             }
         }
@@ -1487,7 +1462,6 @@ function setupPostInteractions() {
     modal.addEventListener('click', handleInteraction);
 }
 
-// Adicionar função auxiliar para re-renderizar comentários no modal
 function renderizarComentariosNoModal(post, modalComentariosContainer, user, modal, modalAcoes, modalIsLiked, modalIsSaved) {
     modalComentariosContainer.innerHTML = '';
     atualizarContadorComentarios(post.id, post.comentarios ? post.comentarios.length : 0);
@@ -1533,7 +1507,6 @@ function renderizarComentariosNoModal(post, modalComentariosContainer, user, mod
     }
 }
 
-// Função para atualizar o contador de comentários no feed e no modal
 function atualizarContadorComentarios(postId, novoTotal) {
     document.querySelectorAll(`.twitter-post-card[data-post-id="${postId}"] .comment-btn span`).forEach(span => {
         span.textContent = novoTotal;
@@ -1614,10 +1587,9 @@ function setupCommenting() {
     });
 }
 
-// Adicionar event listeners para cliques nos cards
 function setupCardClickListeners() {
     const todosPostsElement = document.getElementById('todos-posts');
-    if (!todosPostsElement) return; // Se o elemento não existe, não faz nada
+    if (!todosPostsElement) return; 
     
     todosPostsElement.addEventListener('click', function(e) {
         const postCard = e.target.closest('.twitter-post-card');
@@ -1625,26 +1597,23 @@ function setupCardClickListeners() {
 
         const postId = postCard.dataset.postId;
 
-        // Caso 1: Clicou no botão de comentário
         if (e.target.closest('.comment-btn')) {
-            e.stopPropagation(); // Impede que outros cliques no card sejam acionados
+            e.stopPropagation();  
             abrirModalPostPorId(postId);
             setTimeout(() => {
                 const commentInput = document.getElementById('input-comentario');
                 if (commentInput) {
                     commentInput.focus();
                 }
-            }, 150); // Delay para garantir que o modal esteja visível
+            }, 150); 
             return;
         }
 
-        // Caso 2: Clicou em outro botão de ação (like, save, delete) ou num link
         if (e.target.closest('button.action-btn') || e.target.closest('a')) {
-            // Deixa que os outros event listeners (setupPostInteractions) cuidem disso
+           
             return;
         }
 
-        // Caso 3: Clicou no card em geral (fora dos botões de ação)
         abrirModalPostPorId(postId);
     });
 }

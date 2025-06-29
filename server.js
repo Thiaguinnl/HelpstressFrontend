@@ -66,8 +66,8 @@ server.post('/register', (req, res) => {
         email, 
         senha, 
         celular,
-        bio: '', // Campo bio vazio por padrão
-        avatar: '/assets/img/user.png' // Avatar padrão
+        bio: '',  
+        avatar: '/assets/img/user.png' 
     };
     
     db.get('usuarios').push(newUser).write();

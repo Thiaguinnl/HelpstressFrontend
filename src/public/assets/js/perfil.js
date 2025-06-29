@@ -1,6 +1,5 @@
 import { baseUrl } from './auth.js';
 
-// --- INÍCIO: Variáveis de cache e skeleton ---
 let perfilCache = {
     userId: null,
     posts: null,
@@ -35,7 +34,7 @@ function showSkeletonLoader(container) {
         container.appendChild(skeleton);
     }
 }
-// --- FIM: Variáveis de cache e skeleton ---
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const perfilNomeUsuario = document.getElementById('perfil-nome-usuario');
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchProfileData(userId) {
         const loggedInUser = getLoggedInUser();
-        // Se o perfil visualizado for o do usuário logado, retorna os dados do localStorage, que são os mais completos.
+    
         if (loggedInUser && loggedInUser.id == userId) {
             return loggedInUser;
         }
@@ -84,13 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchContent(tab, userId) {
-        // --- INÍCIO: Lógica de cache ---
+
         if (perfilCache.userId === userId) {
             if (tab === postsTab && perfilCache.posts) return perfilCache.posts;
             if (tab === likesTab && perfilCache.likes) return perfilCache.likes;
             if (tab === savedTab && perfilCache.saved) return perfilCache.saved;
         }
-        // --- FIM: Lógica de cache ---
+        
         let endpoint = '';
         if (tab === postsTab) endpoint = `${baseUrl}/posts?userId=${userId}&_sort=id&_order=desc`;
         else if (tab === likesTab) endpoint = `${baseUrl}/posts?likedBy_like=${userId}&_sort=id&_order=desc`;
@@ -100,14 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(endpoint);
             if (!response.ok) throw new Error('Falha ao carregar conteúdo.');
             const data = await response.json();
-            // --- INÍCIO: Salva no cache ---
+            
             if (perfilCache.userId !== userId) {
                 perfilCache = { userId, posts: null, likes: null, saved: null };
             }
             if (tab === postsTab) perfilCache.posts = data;
             if (tab === likesTab) perfilCache.likes = data;
             if (tab === savedTab) perfilCache.saved = data;
-            // --- FIM: Salva no cache ---
+          
             return data;
         } catch (error) {
             console.error('Erro ao carregar conteúdo:', error);
@@ -139,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         perfilPostsGrid.classList.remove('hidden');
         showSkeletonLoader(perfilPostsGrid);
         perfilPostsGrid.style.alignItems = 'start';
-        // Aguarda o preload se ainda não foi feito
+
         if (!perfilCache.userId || perfilCache.userId !== userId || !perfilCache.posts || !perfilCache.likes || !perfilCache.saved) {
             await preloadAllTabs(userId);
         }
@@ -178,11 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 noPostsMessage.classList.remove('hidden');
                 perfilPostsGrid.innerHTML = '';
             }
-        }, 400); // Pequeno delay para o skeleton aparecer
+        }, 400); 
     }
 
     async function preloadAllTabs(userId) {
-        // Carrega todos os dados das três abas em paralelo e salva no cache
         perfilCache = { userId, posts: null, likes: null, saved: null };
         const [posts, likes, saved] = await Promise.all([
             fetchContent(postsTab, userId),
@@ -208,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         viewedUserId = targetUserId;
-        perfilCache = { userId: targetUserId, posts: null, likes: null, saved: null }; // Limpa cache ao trocar de usuário
+        perfilCache = { userId: targetUserId, posts: null, likes: null, saved: null };
         const profileData = await fetchProfileData(targetUserId);
 
         if (!profileData) {
@@ -221,8 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isOwner = loggedInUser && loggedInUser.id == targetUserId;
         setupEventListeners(targetUserId);
         initializeTagSystem(profileData, isOwner);
-        await preloadAllTabs(targetUserId); // Pré-carrega todas as abas
-        showContentForTab(postsTab, targetUserId); // Carrega a aba de posts por padrão
+        await preloadAllTabs(targetUserId); 
+        showContentForTab(postsTab, targetUserId); 
     }
 
     function setupEventListeners(userId) {
@@ -359,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
             containerElement.appendChild(card);
         });
 
-        // Adiciona event listener para exclusão
+
         containerElement.querySelectorAll('.delete-post-btn').forEach(btn => {
             btn.addEventListener('click', async function() {
                 if (confirm('Deseja realmente excluir este post?')) {
@@ -367,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const ok = await deletarPostBackend(postId);
                     if (ok) {
                         this.closest('.twitter-post-card').remove();
-                        // Opcional: mostrar mensagem de sucesso
+
                         alert('Post excluído com sucesso!');
                     } else {
                         alert('Erro ao excluir post.');
@@ -450,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Função para deletar post (copiada do scriptComunidade.js)
     async function deletarPostBackend(postId) {
         const token = getLoggedInUser()?.token;
         try {
@@ -468,7 +465,6 @@ document.addEventListener('DOMContentLoaded', () => {
     main();
 });
 
-// --- INÍCIO: CSS do skeleton loader ---
 const style = document.createElement('style');
 style.innerHTML = `
 .skeleton-card {
@@ -511,4 +507,3 @@ style.innerHTML = `
 }
 `;
 document.head.appendChild(style);
-// --- FIM: CSS do skeleton loader --- 

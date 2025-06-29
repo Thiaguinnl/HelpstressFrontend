@@ -1,6 +1,3 @@
-// Script para o modal mobile da comunidade
-
-// Função para atualizar a UI do feed principal
 function updateFeedUI(postId) {
   const post = window.todosPostsUltimaBusca ? window.todosPostsUltimaBusca.find(p => p.id == postId) : null;
   if (!post) return;
@@ -9,7 +6,6 @@ function updateFeedUI(postId) {
   const isLiked = user && post.likedBy && post.likedBy.includes(user.id);
   const isSaved = user && post.savedBy && post.savedBy.includes(user.id);
   
-  // Atualizar o card no feed principal
   const feedCard = document.querySelector(`.twitter-post-card[data-post-id="${postId}"]`);
   if (feedCard) {
     const likeBtn = feedCard.querySelector('.like-btn');
@@ -33,11 +29,10 @@ export function abrirModalPostMobile(post) {
   const modal = document.getElementById('modal-imagem-post-mobile');
   if (!modal) return;
 
-  // Preencher header
   const avatar = modal.querySelector('.modal-avatar-mobile');
   const autor = modal.querySelector('.modal-autor-mobile');
   const data = modal.querySelector('.modal-data-mobile');
-  // Fallback robusto para avatar
+
   if (avatar) {
     avatar.onerror = function() { this.src = '/assets/img/user.png'; };
     avatar.src = (post.avatar && post.avatar !== '' && post.avatar !== 'null' && post.avatar !== 'undefined') ? post.avatar : '/assets/img/user.png';
@@ -45,11 +40,9 @@ export function abrirModalPostMobile(post) {
   if (autor) autor.textContent = post.autor || 'Usuário';
   if (data) data.textContent = post.data || '';
 
-  // Preencher conteúdo
   const conteudo = modal.querySelector('.modal-conteudo-post-mobile');
   if (conteudo) conteudo.textContent = post.content || '';
 
-  // Preencher imagem do post
   const img = modal.querySelector('#imagem-modal-ampliada-mobile');
   const imgDiv = modal.querySelector('.modal-imagem-esquerda-mobile');
   if (img) {
@@ -65,10 +58,9 @@ export function abrirModalPostMobile(post) {
     }
   }
 
-  // Preencher ações (curtir, salvar, comentar)
   const acoes = modal.querySelector('.modal-acoes-mobile');
   if (acoes) {
-    // Determinar se o usuário atual curtiu/salvou
+
     const user = window.getUserData ? window.getUserData() : null;
     const isLiked = user && post.likedBy && post.likedBy.includes(user.id);
     const isSaved = user && post.savedBy && post.savedBy.includes(user.id);
@@ -79,7 +71,6 @@ export function abrirModalPostMobile(post) {
     `;
   }
 
-  // Adicionar listeners para curtir/salvar
   if (acoes) {
     const likeBtn = acoes.querySelector('.like-btn');
     const saveBtn = acoes.querySelector('.save-btn');
@@ -90,10 +81,10 @@ export function abrirModalPostMobile(post) {
         alert('Você precisa estar logado para curtir posts.');
         return;
       }
-      // Buscar post atualizado do array global
+
       let todosPostsUltimaBusca = window.todosPostsUltimaBusca || [];
       let postAtual = todosPostsUltimaBusca.find(p => p.id == post.id);
-      if (!postAtual) postAtual = post; // fallback
+      if (!postAtual) postAtual = post; 
       postAtual.likedBy = postAtual.likedBy || [];
       const isLiked = postAtual.likedBy.includes(user.id);
       if (isLiked) {
@@ -103,7 +94,7 @@ export function abrirModalPostMobile(post) {
         postAtual.likes = (postAtual.likes || 0) + 1;
         postAtual.likedBy.push(user.id);
       }
-      // Atualizar UI imediatamente (modal e feed)
+
       abrirModalPostMobile(postAtual);
       updateFeedUI(postAtual.id);
       try {
@@ -123,7 +114,7 @@ export function abrirModalPostMobile(post) {
       }
       let todosPostsUltimaBusca = window.todosPostsUltimaBusca || [];
       let postAtual = todosPostsUltimaBusca.find(p => p.id == post.id);
-      if (!postAtual) postAtual = post; // fallback
+      if (!postAtual) postAtual = post; 
       postAtual.savedBy = postAtual.savedBy || [];
       const isSaved = postAtual.savedBy.includes(user.id);
       if (isSaved) {
@@ -133,7 +124,7 @@ export function abrirModalPostMobile(post) {
         postAtual.salvos = (postAtual.salvos || 0) + 1;
         postAtual.savedBy.push(user.id);
       }
-      // Atualizar UI imediatamente (modal e feed)
+
       abrirModalPostMobile(postAtual);
       updateFeedUI(postAtual.id);
       try {
@@ -169,18 +160,15 @@ export function abrirModalPostMobile(post) {
     }
   }
 
-  // Preencher avatar do campo de comentário
   const commentUserAvatar = modal.querySelector('#comment-user-avatar-mobile');
   if (commentUserAvatar) {
     commentUserAvatar.onerror = function() { this.src = '/assets/img/user.png'; };
     commentUserAvatar.src = (post.avatar && post.avatar !== '' && post.avatar !== 'null' && post.avatar !== 'undefined') ? post.avatar : '/assets/img/user.png';
   }
 
-  // Limpar campo de comentário
   const inputComentario = modal.querySelector('#input-comentario-mobile');
   if (inputComentario) inputComentario.value = '';
 
-  // Exibir modal usando classe .aberto
   modal.classList.add('aberto');
 }
 
@@ -192,7 +180,6 @@ export function fecharModalPostMobile() {
   }
 }
 
-// Delegação para garantir que o botão de fechar funcione mesmo se o DOM mudar
 if (!window._modalMobileCloseListener) {
   document.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'fechar-modal-imagem-mobile') {

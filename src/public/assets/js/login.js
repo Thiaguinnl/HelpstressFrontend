@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const senhaInput = document.getElementById('senha');
 
-    // Função para exibir mensagens
     function showMessage(message, type) {
         loginMessage.textContent = message;
         loginMessage.style.color = (type === 'success') ? '#28a745' : '#dc3545'; 

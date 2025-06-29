@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 token: dados.token
             }));
 
-            // Redireciona para a página de login após um pequeno delay
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 1200);

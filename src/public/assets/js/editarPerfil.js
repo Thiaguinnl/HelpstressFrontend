@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (userPosts.length > 0) {
                 noPostsMessage.style.display = 'none';
-                // Usar grid para exibir os posts
+
                 const grid = document.createElement('div');
                 grid.className = 'posts-grid';
                 userPosts.forEach(post => {
@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event Listeners para a aba Editar Perfil
     uploadProfilePictureInput.addEventListener('change', async (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -121,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             try {
-                // Faz upload para o Cloudinary
                 if (window.uploadToCloudinary) {
                     const imageUrl = await window.uploadToCloudinary(file);
                     profileAvatar.src = imageUrl;
@@ -296,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (categoriasMenu.length > 0) {
         setActiveCategory(categoriasMenu[0]);
     }
-
+    
     // Event Listener para logout
     const logoutButtonGeral = document.getElementById('logoutButtonGeral');
     if (logoutButtonGeral) {

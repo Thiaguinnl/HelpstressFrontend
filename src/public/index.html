@@ -52,7 +52,6 @@
                 <input type="text" placeholder="Pesquisa">
                 <button><img src="/assets/img/pesquisa.png" alt="Pesquisar" height="10"></button>
                 <div id="search-suggestions" style="display:none; position:absolute; left:0; right:0; top:100%; background:#fff; border-radius:0 0 1rem 1rem; box-shadow:0 4px 16px rgba(37,99,235,0.10); z-index:1002; padding:0.5rem 0; margin-top:0.2rem;">
-                  <!-- Sugestões serão inseridas aqui via JS -->
                 </div>
             </div>
         </div>
@@ -146,7 +145,6 @@
     <section class="carousel-section">
       <div class="carousel-container">
         <div class="testimonial-card" id="card-display">
-          <!-- Card será carregado aqui pelo js -->
         </div>
       </div>
     </section>
@@ -195,7 +193,7 @@
         }
     </script>
     <script>
-      // Sugestões ajustadas para refletir os destinos reais do site
+
       const sugestoesComunidade = [
         'Ansiedade (Blog)',
         'Dicas & Técnicas',
@@ -264,8 +262,7 @@
                 searchInput.value = valorSelecionado;
                 suggestionsBox.style.display = 'none';
                 searchInput.focus();
-                // Redirecionamento correto ao clicar na sugestão
-                // Busca no mapaBusca o destino correto
+
                 const termoBusca = valorSelecionado.toLowerCase();
                 let destino = null;
                 for (const item of mapaBusca) {
@@ -280,7 +277,7 @@
               });
             });
           });
-          // Esconde sugestões ao clicar fora
+
           document.addEventListener('mousedown', function(e) {
             if (!suggestionsBox.contains(e.target) && e.target !== searchInput) {
               suggestionsBox.style.display = 'none';
@@ -290,7 +287,7 @@
       });
     </script>
     <script>
-      // Mapeamento de palavras-chave para páginas/seções
+
       const mapaBusca = [
         { termos: ['exercícios', 'exercicios para ansiedade', 'exercício', 'exercicio'], destino: 'dicasTecnicas.html#main' },
         { termos: ['aqui e agora', 'ancora', 'presente'], destino: 'detalhes.html?card=aquieagora' },

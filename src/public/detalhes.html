@@ -104,11 +104,10 @@
 <body>
   <main class="detalhes-main">
     <section class="detalhes-card" id="detalhes-card">
-      <!-- Conteúdo dinâmico será inserido aqui -->
     </section>
   </main>
 
-  <!-- Miniplayer YouTube arrastável -->
+  <!-- Miniplayer YouTube -->
   <div id="miniplayer-youtube" style="display:none; position:fixed; bottom:32px; right:32px; z-index:9999; width:340px; background:linear-gradient(120deg, #1e2746 60%, #2563eb 100%); border-radius:18px; box-shadow:0 8px 32px #0002; border:2px solid #2563EB; padding:0.7rem 0.7rem 0.4rem 0.7rem;">
     <div style="display:flex; flex-direction:row; align-items:center; gap:0.7rem; margin-bottom:0.4rem; position:relative;">
       <div style="display:flex; align-items:center; gap:0.4rem; background:rgba(30,39,70,0.85); border-radius:22px; padding:0.18rem 0.7rem 0.18rem 0.18rem;">
@@ -130,13 +129,11 @@
   </div>
 
   <script>
-    // Função para obter o parâmetro da URL
     function getCardParam() {
       const params = new URLSearchParams(window.location.search);
       return params.get('card');
     }
 
-    // Conteúdo dos cards
     const cardsContent = {
       desacelera: {
         titulo: 'Desacelera',
@@ -205,10 +202,8 @@
           </div>
         `
       },
-      // Futuramente: aquieagora...
     };
 
-    // Renderização dinâmica
     const card = getCardParam();
     const detalhesCard = document.getElementById('detalhes-card');
     if (cardsContent[card]) {
@@ -221,7 +216,7 @@
             renderizarChecklistAmbiente();
           });
         }
-        // Adiciona listeners para o card 'desacelera'
+
         var btnProximo = document.getElementById('btn-proximo');
         if (btnProximo) {
           btnProximo.addEventListener('click', function() {
@@ -238,14 +233,14 @@
             }
           });
         }
-        // Listener para o botão "O que é Mindfulness?" na tela Aqui e Agora
+
         var btnMindfulnessInfo = document.getElementById('btn-mindfulness-info');
         if (btnMindfulnessInfo) {
           btnMindfulnessInfo.addEventListener('click', function() {
             renderizarMindfulnessInfo();
           });
         }
-        // Listener para o botão "Começar" (a ser implementado)
+
         var btnComecarAquiAgora = document.getElementById('btn-comecar-aquieagora');
         if (btnComecarAquiAgora) {
           btnComecarAquiAgora.addEventListener('click', function() {
@@ -258,7 +253,6 @@
       fadeInExercicio();
     }
 
-    // Função para animar fade in na .respira-detalhe
     function fadeInExercicio() {
       setTimeout(function() {
         var el = document.querySelector('.respira-detalhe');
@@ -269,7 +263,7 @@
       }, 40);
     }
 
-    // Adicione no início do <script> principal, após a função fadeInExercicio()
+
     function renderizarEscolhaPlataforma() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
@@ -338,10 +332,8 @@
         });
         btnProximoMusica.addEventListener('click', function() {
           if (plataformaSelecionada === 'spotify') {
-            // ...renderiza tela do Spotify...
             renderizarTelaSpotify();
           } else if (plataformaSelecionada === 'youtube') {
-            // ...renderiza tela do YouTube...
             renderizarTelaYoutube();
           }
         });
@@ -349,7 +341,6 @@
           }, 100);
     }
 
-    // Crie as funções para renderizar as telas do Spotify e do YouTube:
     function renderizarTelaSpotify() {
                 const detalhesCard = document.getElementById('detalhes-card');
                 detalhesCard.innerHTML = `
@@ -411,7 +402,7 @@
             renderizarEscolhaPlataforma();
           });
         }
-        // Lógica do botão iniciar exercício...
+
         const btnIniciarExercicioSpotify = document.getElementById('btn-iniciar-exercicio-spotify');
         if (btnIniciarExercicioSpotify) {
           btnIniciarExercicioSpotify.addEventListener('click', function() {
@@ -421,7 +412,6 @@
                                         }, 100);
     }
 
-    // Lista de vídeos do YouTube para o miniplayer
     const videosYoutube = [
       {
         src: "https://www.youtube.com/embed/G55IO9IDhzg?si=xBYvqvsHUQUz5KGe&controls=1&autoplay=1",
@@ -447,9 +437,9 @@
       const videoContainer = document.getElementById('miniplayer-video-container');
       miniplayer.style.display = 'block';
       videoContainer.innerHTML = `<div style='font-weight:700; color:#8ecae6; margin-bottom:0.3rem; font-size:1.01rem; text-align:left;'>${videoTitle}</div><iframe width='100%' height='180' src='${videoSrc}' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen style='border-radius:12px; box-shadow:0 4px 18px rgba(37,99,235,0.10);'></iframe>`;
-      // Atualiza o índice do vídeo atual
+
       videoAtualIndex = videosYoutube.findIndex(v => v.src.split('?')[0] === videoSrc.split('?')[0]);
-      // (Re)atribui listeners das setas sempre que o miniplayer for exibido
+
                                                   setTimeout(function() {
         const btnPrev = document.getElementById('btn-prev-video');
         const btnNext = document.getElementById('btn-next-video');
@@ -460,7 +450,6 @@
       }, 50);
     }
 
-    // Função para trocar vídeo do miniplayer
     function trocarVideoMiniplayer(direcao) {
       if (direcao === 'prev') {
         videoAtualIndex = (videoAtualIndex - 1 + videosYoutube.length) % videosYoutube.length;
@@ -471,7 +460,6 @@
       ativarMiniplayerYoutube(video.src, video.title);
     }
 
-    // Drag and drop do miniplayer (apenas pelo ícone de arrastar)
     (function() {
       const miniplayer = document.getElementById('miniplayer-youtube');
       const dragIcon = document.getElementById('drag-miniplayer');
@@ -506,6 +494,7 @@
         document.body.style.userSelect = '';
         unfixMiniplayerSize();
       });
+
       // Suporte a touch para mobile
       dragIcon.addEventListener('touchstart', function(e) {
         isDragging = true;
@@ -538,7 +527,6 @@
       });
     }
 
-    // --- NOVO: esconder/mostrar miniplayer no mobile ---
     function isMobile() {
       return window.innerWidth <= 768;
     }
@@ -597,11 +585,10 @@
       };
       btnNext.parentNode.insertBefore(btnHide, btnNext.nextSibling);
     }
-    // Executar ao abrir miniplayer
     if (isMobile()) {
       setTimeout(adicionarBotaoEsconderMiniplayer, 300);
     }
-    // Re-adicionar ao redimensionar
+
     window.addEventListener('resize', function() {
       if (isMobile()) {
         setTimeout(adicionarBotaoEsconderMiniplayer, 300);
@@ -708,10 +695,10 @@
               title: opcao.getAttribute('data-title')
             };
             ativarMiniplayerYoutube(videoSelecionado.src, videoSelecionado.title);
-            overlay.style.display = 'none'; // Remove o overlay após o clique
+            overlay.style.display = 'none';
           });
         });
-        // Lógica do botão iniciar exercício...
+
         const btnIniciarExercicio = document.getElementById('btn-iniciar-exercicio-youtube');
         if (btnIniciarExercicio) {
           btnIniciarExercicio.onclick = function() {
@@ -721,7 +708,6 @@
       }, 100);
     }
 
-    // Adicione a função para renderizar o checklist do ambiente
     function renderizarChecklistAmbiente() {
           const detalhesCard = document.getElementById('detalhes-card');
           detalhesCard.innerHTML = `
@@ -923,7 +909,7 @@
             slideContent.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease';
             slideContent.style.opacity = '1';
             slideContent.style.transform = 'translateX(0)';
-          }, 20); // Pequeno delay para o browser aplicar a transição
+          }, 20); 
 
           setTimeout(() => {
             isAnimating = false;
@@ -1043,9 +1029,6 @@
       }, 100);
     }
 
-    // Substitua todos os window.location.reload() e renderizações manuais da tela de plataforma por renderizarEscolhaPlataforma();
-    // E, ao finalizar o checklist do ambiente, chame renderizarEscolhaPlataforma() ao invés de repetir o HTML da tela de plataforma.
-
     // Função de agradecimento do Desacelera
     function renderizarTelaAgradecimento() {
       const detalhesCard = document.getElementById('detalhes-card');
@@ -1093,7 +1076,7 @@
       `;
       fadeInExercicio();
       setTimeout(function() {
-        // Animação sequencial dos passos
+
         const steps = document.querySelectorAll('.grounding-steps .step');
         steps.forEach((step, i) => {
           setTimeout(() => {
@@ -1151,7 +1134,6 @@
       }, 100);
     }
 
-    // Nova etapa do grounding: 3 sons
     function renderizarDesacelera4() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
@@ -1188,7 +1170,6 @@
       }, 100);
     }
 
-    // Nova etapa do grounding: 2 cheiros
     function renderizarDesacelera5() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
@@ -1224,7 +1205,7 @@
       }, 100);
     }
 
-    // Última etapa do grounding: 1 sabor
+    // Última etapa do grounding
     function renderizarDesacelera6() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
@@ -1306,14 +1287,14 @@
             renderizarTelaAgradecimento();
           });
         }
-        // Próxima etapa se desejar expandir
+
         const btnProximoExercicio2 = document.getElementById('btn-proximo-exercicio2');
         if (btnProximoExercicio2) {
           btnProximoExercicio2.addEventListener('click', function() {
             renderizarTelaVideoFinalDesacelera();
           });
         }
-        // Toggle da dica
+
         const btnToggleDica = document.getElementById('toggle-dica');
         const caixaDica = document.getElementById('caixa-dica');
         const setaDica = document.getElementById('seta-dica');
@@ -1331,7 +1312,7 @@
       }, 100);
     }
 
-    // Etapa final: vídeo e modal de zoom
+    // Etapa final
     function renderizarTelaVideoFinalDesacelera() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = `
@@ -1441,13 +1422,12 @@
       }, 100);
     }
 
-    // Função auxiliar para voltar à tela inicial do Aqui e Agora
     function renderizarTelaAquiAgora() {
       const detalhesCard = document.getElementById('detalhes-card');
       detalhesCard.innerHTML = cardsContent.aquieagora.conteudo;
       fadeInExercicio();
       setTimeout(function() {
-        // Re-adiciona os listeners
+
         var btnMindfulnessInfo = document.getElementById('btn-mindfulness-info');
         if (btnMindfulnessInfo) {
           btnMindfulnessInfo.addEventListener('click', function() {

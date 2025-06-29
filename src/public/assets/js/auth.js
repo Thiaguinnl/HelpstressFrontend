@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         }
 
-        // NÃO redireciona se estiver em login ou cadastro
         const currentPage = window.location.pathname.split('/').pop();
         if (['login.html', 'cadastro.html'].includes(currentPage)) {
             console.log('Página de login/cadastro detectada, não redirecionar.');
