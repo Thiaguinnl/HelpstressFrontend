@@ -1,4 +1,4 @@
-export const baseUrl = "https://helpstress-backend.onrender.com";
+export const baseUrl = "https://helpstressbackend.onrender.com";
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('auth.js carregado!');
