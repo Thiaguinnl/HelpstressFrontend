@@ -72,33 +72,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            const resposta = await fetch(`${baseUrl}/register`, {
+            // Primeiro, verificar se o email já existe
+            const checkEmail = await fetch(`${baseUrl}/usuarios?email=${encodeURIComponent(email)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const existingUsers = await checkEmail.json();
+            
+            if (existingUsers && existingUsers.length > 0) {
+                emailInput.closest('.input-group').classList.add('input-error');
+                throw new Error('Email já cadastrado');
+            }
+
+            // Se não existe, criar o usuário
+            const resposta = await fetch(`${baseUrl}/usuarios`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nome, email, senha, celular })
+                body: JSON.stringify({ 
+                    nome, 
+                    email, 
+                    senha, 
+                    celular,
+                    bio: '',
+                    avatar: '/assets/img/user.png'
+                })
             });
 
             const dados = await resposta.json();
 
             if (!resposta.ok) {
-                
-                if (dados.mensagem && dados.mensagem.includes('Email já cadastrado')) {
-                    emailInput.closest('.input-group').classList.add('input-error');
-                }
-                throw new Error(dados.mensagem || 'Erro ao realizar cadastro');
+                throw new Error('Erro ao realizar cadastro');
             }
 
             showMessage('Cadastro realizado com sucesso! Redirecionando para o login...', 'success');
             formCadastro.reset();
             clearInputErrors();
 
+            // Criar um token simples (em produção, isso deveria ser feito no backend)
+            const token = btoa(JSON.stringify({ id: dados.id, email: dados.email, nome: dados.nome }));
+
             // Salva o token JUNTO com os dados do usuário
-            localStorage.setItem('authToken', dados.token);
+            localStorage.setItem('authToken', token);
             localStorage.setItem('userData', JSON.stringify({
-                ...dados.usuario,
-                token: dados.token
+                ...dados,
+                token: token
             }));
 
             setTimeout(() => {

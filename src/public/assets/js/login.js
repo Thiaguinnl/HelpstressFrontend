@@ -50,12 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            const resposta = await fetch(`${baseUrl}/login`, {
-                method: 'POST',
+            const resposta = await fetch(`${baseUrl}/usuarios?email=${encodeURIComponent(email)}&senha=${encodeURIComponent(senha)}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, senha })
+                }
             });
 
             console.log('Server response status:', resposta.status); 
@@ -63,21 +62,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const dados = await resposta.json();
             console.log('Server response data:', dados); 
 
-            if (!resposta.ok) {
-                if (dados.mensagem && (dados.mensagem.includes('Email ou senha inválidos'))) {
-                    emailInput.closest('.input-group').classList.add('input-error');
-                    senhaInput.closest('.input-group').classList.add('input-error');
-                }
-                throw new Error(dados.mensagem || 'Erro ao realizar login');
+            if (!resposta.ok || !dados || dados.length === 0) {
+                emailInput.closest('.input-group').classList.add('input-error');
+                senhaInput.closest('.input-group').classList.add('input-error');
+                throw new Error('Email ou senha inválidos');
             }
 
-            localStorage.setItem('authToken', dados.token);
+            // JSON Server retorna um array, pegamos o primeiro usuário
+            const usuario = dados[0];
+            
+            // Criar um token simples (em produção, isso deveria ser feito no backend)
+            const token = btoa(JSON.stringify({ id: usuario.id, email: usuario.email, nome: usuario.nome }));
+
+            localStorage.setItem('authToken', token);
             localStorage.setItem('userData', JSON.stringify({
-                ...dados.usuario,
-                token: dados.token
+                ...usuario,
+                token: token
             }));
 
-            console.log('User data from server (login.js):', dados.usuario); 
+            console.log('User data from server (login.js):', usuario); 
 
             showMessage('Login realizado com sucesso! Redirecionando...', 'success');
             window.location.href = '/index.html'; 
