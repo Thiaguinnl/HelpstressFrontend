@@ -1,4 +1,5 @@
-export const baseUrl = "https://helpstress-backend.onrender.com";
+// Versão: 2.0 - URL atualizada para backhelpstress.onrender.com
+export const baseUrl = "https://backhelpstress.onrender.com";
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('auth.js carregado!');
